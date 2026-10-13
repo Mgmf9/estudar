@@ -1,3 +1,4 @@
+
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -7,19 +8,26 @@ const API_KEY = process.env.GROQ_API_KEY;
 
 const ALLOWED_ORIGIN = (
   process.env.ALLOWED_ORIGIN ||
-  'https://estudar-kp6f.onrender.com'
+  'https://estudar-kp8f.onrender.com'
 ).replace(/\/+$/, '');
 
-const AI_API_BASE = 'https://estudar-kp8f.onrender.com';
+const AI_API_BASE = 'https://estudar-kp6f.onrender.com';
 
 const HTML = path.join(__dirname, 'index.html');
 const MAX_BODY = 24 * 1024;
-const MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+
+// Modelo atualizado
+const MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
 
 let windowStart = Date.now();
 let requestCount = 0;
 
-function send(res, status, data, type = 'application/json; charset=utf-8') {
+function send(
+  res,
+  status,
+  data,
+  type = 'application/json; charset=utf-8'
+) {
   res.writeHead(status, {
     'Content-Type': type,
     'X-Content-Type-Options': 'nosniff',
@@ -87,14 +95,19 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === '/api/chat' && req.method === 'OPTIONS') {
     if (!cors(req, res)) {
-      return send(res, 403, { error: 'Origem não autorizada.' });
+      return send(res, 403, {
+        error: 'Origem não autorizada.'
+      });
     }
 
     res.writeHead(204);
     return res.end();
   }
 
-  if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
+  if (
+    req.method === 'GET' &&
+    (url.pathname === '/' || url.pathname === '/index.html')
+  ) {
     try {
       return send(
         res,
@@ -119,7 +132,9 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'POST' && url.pathname === '/api/chat') {
     if (!cors(req, res)) {
-      return send(res, 403, { error: 'Origem não autorizada.' });
+      return send(res, 403, {
+        error: 'Origem não autorizada.'
+      });
     }
 
     if (!API_KEY) {
@@ -149,11 +164,17 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    const question = String(body.question || '').trim().slice(0, 1200);
-    const context = String(body.context || '').slice(0, 16000);
+    const question = String(body.question || '')
+      .trim()
+      .slice(0, 1200);
+
+    const context = String(body.context || '')
+      .slice(0, 16000);
 
     if (!question) {
-      return send(res, 400, { error: 'Escreva uma pergunta.' });
+      return send(res, 400, {
+        error: 'Escreva uma pergunta.'
+      });
     }
 
     if (!context) {
@@ -179,7 +200,11 @@ const server = http.createServer(async (req, res) => {
               {
                 role: 'system',
                 content:
-                  'Você é uma assistente didática de segurança em laboratórios escolares. Responda em português claro e objetivo. Baseie as respostas prioritariamente no texto de leitura. Não invente fatos. Se o material não contiver a resposta, diga isso explicitamente. Em temas de segurança, respeite os procedimentos, o professor e os equipamentos de proteção.'
+                  'Você é uma assistente didática de segurança em laboratórios escolares. ' +
+                  'Responda em português claro e objetivo. Baseie as respostas prioritariamente ' +
+                  'no texto de leitura. Não invente fatos. Se o material não contiver a resposta, ' +
+                  'diga isso explicitamente. Em temas de segurança, respeite os procedimentos, ' +
+                  'o professor e os equipamentos de proteção.'
               },
               {
                 role: 'user',
@@ -200,6 +225,8 @@ const server = http.createServer(async (req, res) => {
         const message =
           (data.error && data.error.message) ||
           'A Groq retornou HTTP ' + response.status + '.';
+
+        console.error('Erro da Groq:', response.status, message);
 
         return send(res, response.status === 429 ? 429 : 502, {
           error: message
@@ -227,11 +254,14 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  return send(res, 404, { error: 'Rota não encontrada.' });
+  return send(res, 404, {
+    error: 'Rota não encontrada.'
+  });
 });
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log('Backend iniciado na porta ' + PORT);
   console.log('Origem autorizada: ' + ALLOWED_ORIGIN);
-  console.log('Frontend configurado: ' + AI_API_BASE);
+  console.log('Backend configurado: ' + AI_API_BASE);
+  console.log('Modelo configurado: ' + MODEL);
 });
