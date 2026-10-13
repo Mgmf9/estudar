@@ -6,17 +6,19 @@ const path = require('node:path');
 const PORT = Number(process.env.PORT || 3000);
 const API_KEY = process.env.GROQ_API_KEY;
 
+// Origem do site que o navegador está acessando.
 const ALLOWED_ORIGIN = (
   process.env.ALLOWED_ORIGIN ||
-  'https://estudar-kp8f.onrender.com'
+  'https://estudar-kp6f.onrender.com'
 ).replace(/\/+$/, '');
 
+// Endereço do backend.
 const AI_API_BASE = 'https://estudar-kp6f.onrender.com';
 
 const HTML = path.join(__dirname, 'index.html');
 const MAX_BODY = 24 * 1024;
 
-// Modelo atualizado
+// Modelo padrão da Groq.
 const MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
 
 let windowStart = Date.now();
@@ -44,8 +46,14 @@ function send(
 function cors(req, res) {
   const origin = (req.headers.origin || '').replace(/\/+$/, '');
 
+  // Permite requisições sem Origin, como alguns acessos diretos.
   if (!origin) return true;
-  if (origin !== ALLOWED_ORIGIN) return false;
+
+  if (origin !== ALLOWED_ORIGIN) {
+    console.warn('Origem bloqueada:', origin);
+    console.warn('Origem permitida:', ALLOWED_ORIGIN);
+    return false;
+  }
 
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
   res.setHeader('Vary', 'Origin');
@@ -93,6 +101,7 @@ const server = http.createServer(async (req, res) => {
     'http://' + (req.headers.host || 'localhost')
   );
 
+  // Preflight do navegador para CORS.
   if (url.pathname === '/api/chat' && req.method === 'OPTIONS') {
     if (!cors(req, res)) {
       return send(res, 403, {
@@ -104,6 +113,7 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
+  // Página inicial.
   if (
     req.method === 'GET' &&
     (url.pathname === '/' || url.pathname === '/index.html')
@@ -115,21 +125,26 @@ const server = http.createServer(async (req, res) => {
         fs.readFileSync(HTML, 'utf8'),
         'text/html; charset=utf-8'
       );
-    } catch {
+    } catch (error) {
+      console.error('Erro ao abrir index.html:', error.message);
+
       return send(res, 500, {
         error: 'Não foi possível abrir index.html.'
       });
     }
   }
 
+  // Verificação do backend.
   if (req.method === 'GET' && url.pathname === '/health') {
     return send(res, 200, {
       status: 'ok',
       model: MODEL,
-      apiConfigured: Boolean(API_KEY)
+      apiConfigured: Boolean(API_KEY),
+      allowedOrigin: ALLOWED_ORIGIN
     });
   }
 
+  // Endpoint de chat com a IA.
   if (req.method === 'POST' && url.pathname === '/api/chat') {
     if (!cors(req, res)) {
       return send(res, 403, {
@@ -143,6 +158,7 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
+    // Limite de 25 perguntas por minuto.
     if (Date.now() - windowStart > 60000) {
       windowStart = Date.now();
       requestCount = 0;
@@ -158,9 +174,9 @@ const server = http.createServer(async (req, res) => {
 
     try {
       body = await readBody(req);
-    } catch (e) {
+    } catch (error) {
       return send(res, 400, {
-        error: e.message || 'Pedido inválido.'
+        error: error.message || 'Pedido inválido.'
       });
     }
 
@@ -223,10 +239,14 @@ const server = http.createServer(async (req, res) => {
 
       if (!response.ok) {
         const message =
-          (data.error && data.error.message) ||
+          data.error?.message ||
           'A Groq retornou HTTP ' + response.status + '.';
 
-        console.error('Erro da Groq:', response.status, message);
+        console.error(
+          'Erro da Groq:',
+          response.status,
+          message
+        );
 
         return send(res, response.status === 429 ? 429 : 502, {
           error: message
@@ -245,8 +265,8 @@ const server = http.createServer(async (req, res) => {
         answer: String(answer).slice(0, 9000),
         model: MODEL
       });
-    } catch (e) {
-      console.error('Erro ao acessar a Groq:', e.message);
+    } catch (error) {
+      console.error('Erro ao acessar a Groq:', error.message);
 
       return send(res, 502, {
         error: 'Falha ao acessar a Groq. Confira a conexão e a chave.'
