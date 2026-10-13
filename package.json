@@ -1,0 +1,12 @@
+{
+  "name": "estudo-seguranca-laboratorio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site educacional com progresso persistente e assistente Groq",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

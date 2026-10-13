@@ -1,0 +1,10 @@
+PUBLICAÇÃO NO GITHUB PAGES + GROQ
+
+1) Publique index.html na raiz do repositório do GitHub Pages.
+2) O GitHub Pages é estático: não executa server.js nem protege segredos.
+3) Crie um Web Service no Render conectado ao repositório. Comando: npm start.
+4) No painel Environment do Render, configure GROQ_API_KEY (a sua chave atual, se ainda ativa), e ALLOWED_ORIGIN com a origem do Pages, ex.: https://SEU-USUARIO.github.io (sem caminho e sem barra final).
+5) Depois do deploy, copie a URL do serviço Render e substitua AI_API_BASE no index.html por essa URL.
+6) Envie o index.html atualizado ao GitHub.
+
+Não coloque a chave no repositório. Se já publicou uma chave em um repositório público, revogue-a e gere outra. O progresso fica no localStorage do navegador e não sincroniza entre dispositivos.

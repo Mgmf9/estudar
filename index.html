@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sicurezza nei laboratori scolastici</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Estilo de aprendizado em etapas curtas: uma tela por vez, botão grande embaixo, trilha de módulos.
+   Cores vêm das placas de segurança: amarelo (ação), azul (seleção), verde (acerto/progresso), vermelho (erro). */
+:root{
+  --bg:#f5f7fa;
+  --surface:#ffffff;
+  --ink:#1b2631;
+  --muted:#5d6b77;
+  --line:#dde3e9;
+  --line-dark:#c2cbd3;
+  --soft:#edf1f5;
+  --accent:#ffc800;
+  --accent-edge:#d19f00;
+  --on-accent:#1b2631;
+  --ok:#1f9d63;
+  --ok-edge:#157a4a;
+  --ok-bg:#dff5e9;
+  --bad:#d6403a;
+  --bad-edge:#a92f2a;
+  --bad-bg:#fde6e4;
+  --blue:#1b6fc9;
+  --blue-bg:#e3effb;
+  --s-yellow:#ffc800;
+  --s-blue:#1b6fc9;
+  --s-red:#d6403a;
+  --s-green:#1f9d63;
+  --f:"Nunito","Trebuchet MS",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1519;--surface:#172128;--ink:#eaf0f3;--muted:#9dadb6;--line:#2a3a43;--line-dark:#3b4e5a;--soft:#1c2a32;
+    --ok:#34c47f;--ok-edge:#1f9d63;--ok-bg:#123225;--bad:#ff6b62;--bad-edge:#c9443d;--bad-bg:#3a1c1c;
+    --blue:#5aa6f0;--blue-bg:#14283b;--s-blue:#4d94e0;--s-red:#ee5a50;--s-green:#34a873;--accent-edge:#b88b00;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1519;--surface:#172128;--ink:#eaf0f3;--muted:#9dadb6;--line:#2a3a43;--line-dark:#3b4e5a;--soft:#1c2a32;
+  --ok:#34c47f;--ok-edge:#1f9d63;--ok-bg:#123225;--bad:#ff6b62;--bad-edge:#c9443d;--bad-bg:#3a1c1c;
+  --blue:#5aa6f0;--blue-bg:#14283b;--s-blue:#4d94e0;--s-red:#ee5a50;--s-green:#34a873;--accent-edge:#b88b00;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}
+#app{min-height:100dvh;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:640px;margin-inline:auto;padding-inline:20px}
+button{font-family:var(--f)}
+
+/* Botões grandes com borda inferior, para tocar fácil */
+.btn{font-weight:800;font-size:17px;line-height:1.1;border-radius:16px;padding:15px 22px;min-height:54px;cursor:pointer;border:2px solid var(--line-dark);background:var(--surface);color:var(--ink);box-shadow:0 4px 0 var(--line-dark);transition:transform .08s,box-shadow .08s}
+.btn:active:not([disabled]){transform:translateY(4px);box-shadow:0 0 0 transparent}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);box-shadow:0 4px 0 var(--accent-edge)}
+.btn.good{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:0 4px 0 var(--ok-edge)}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff;box-shadow:0 4px 0 var(--bad-edge)}
+.btn.ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--blue);padding-inline:14px}
+.btn.wide{flex:1}
+.btn[disabled]{background:var(--soft);border-color:var(--soft);color:var(--muted);box-shadow:none;cursor:not-allowed;opacity:.8}
+.btn:focus-visible,.opt:focus-visible,.mod:focus-visible,.x:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+/* Tela inicial: trilha */
+.hero{padding-block:28px 8px;display:flex;flex-direction:column;gap:10px}
+.kicker{margin:0;font-weight:800;font-size:15px;color:var(--muted)}
+h1{margin:0;font-weight:900;font-size:clamp(28px,7vw,36px);line-height:1.08;letter-spacing:-.01em;text-wrap:balance}
+.sub{margin:0;color:var(--muted);font-weight:600;max-width:42ch}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:15px;background:var(--surface);border:2px solid var(--line);border-radius:99px;padding:6px 14px}
+.pill svg{color:var(--accent-edge)}
+.pbar{height:12px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:4px}
+.pbar i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .5s ease}
+.path{display:flex;flex-direction:column;gap:12px;padding-block:18px 24px}
+.mod{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:2px solid var(--line);box-shadow:0 4px 0 var(--line);border-radius:20px;padding:14px;cursor:pointer}
+.mod:active:not([disabled]){transform:translateY(4px);box-shadow:none}
+.mod.cur{border-color:var(--accent);box-shadow:0 4px 0 var(--accent-edge)}
+.mod.done{border-color:var(--line)}
+.mod.locked{opacity:.55;cursor:not-allowed;box-shadow:none}
+.node{position:relative;width:62px;height:62px;border-radius:50%;background:var(--soft);display:grid;place-items:center;flex:none}
+.node .sign{width:36px;height:36px}
+.mod.locked .node .sign{filter:grayscale(1);opacity:.55}
+.badge{position:absolute;right:-3px;bottom:-3px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--surface);background:var(--ok);color:#fff}
+.badge.lock{background:var(--muted)}
+.mt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.mt strong{font-size:18px;font-weight:800;line-height:1.2}
+.meta{font-size:14.5px;font-weight:600;color:var(--muted);line-height:1.3}
+.st{font-weight:800;font-size:14px;color:var(--blue);flex:none}
+.kind{align-self:flex-start;font-size:13px;font-weight:800;border-radius:99px;padding:1px 10px;color:#fff}
+.k-w{background:#c79500;color:#1b2631}
+.k-m{background:var(--s-blue)}
+.k-p{background:var(--s-red)}
+.k-s{background:var(--s-green)}
+.foot{padding-block:0 28px;display:flex;justify-content:center}
+
+/* Barra de baixo (sempre visível) */
+.bar{position:sticky;bottom:0;margin-top:auto;background:var(--bg);border-top:2px solid var(--line);padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));z-index:5}
+.bar .wrap{display:flex;gap:12px}
+.bar.sheet{border-top-width:0}
+.bar.sheet.ok{background:var(--ok-bg)}
+.bar.sheet.no{background:var(--bad-bg)}
+.sheet .wrap{flex-direction:column;gap:12px}
+.sheet strong{display:block;font-size:20px;font-weight:900}
+.sheet.ok strong{color:var(--ok)}
+.sheet.no strong{color:var(--bad)}
+.sheet p{margin:4px 0 0;font-weight:600;font-size:16px;line-height:1.45}
+.sheet .row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Lição */
+.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:6;padding-block:14px 8px}
+.top .wrap{display:flex;align-items:center;gap:12px}
+.x{width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center;flex:none}
+.x:hover{background:var(--soft)}
+.segs{flex:1;display:flex;gap:5px}
+.segs i{flex:1;height:10px;border-radius:99px;background:var(--line)}
+.segs i.on{background:var(--ok)}
+.segs i.now{background:var(--accent)}
+.body{flex:1;padding-block:14px 28px;display:flex;flex-direction:column;gap:18px}
+.crumb{margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:15px;color:var(--muted)}
+h2{margin:0;font-weight:900;font-size:clamp(26px,6vw,32px);line-height:1.15;text-wrap:balance}
+.stack{display:flex;flex-direction:column;gap:14px;font-size:18px;line-height:1.55}
+.stack p{margin:0}
+.item{border:2px solid var(--line);border-radius:18px;background:var(--surface);padding:14px 16px}
+.item h4{margin:0 0 6px;font-size:19px;font-weight:800;line-height:1.25}
+.item h4 small{font-weight:600;color:var(--muted);font-size:15px}
+.item dl{margin:0}
+.item dt{font-size:14px;font-weight:800;color:var(--muted);margin-top:10px}
+.item dt:first-child{margin-top:0}
+.item dd{margin:2px 0 0}
+.item dd.it{font-style:italic}
+.pts{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.pts li{position:relative;padding-left:26px}
+.pts li::before{content:"";position:absolute;left:3px;top:.55em;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.num{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:n}
+.num li{counter-increment:n;position:relative;padding-left:40px;min-height:30px}
+.num li::before{content:counter(n);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-weight:800;font-size:15px;display:grid;place-items:center}
+.key{background:color-mix(in srgb,var(--accent) 22%,var(--surface));border:2px solid var(--accent);border-radius:18px;padding:14px 16px}
+.key .lbl{display:block;font-weight:900;margin-bottom:2px}
+.stack b{font-weight:800}
+
+/* Perguntas */
+.q{font-size:clamp(22px,5vw,26px);line-height:1.3;font-weight:800}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;font-weight:700;font-size:17px;line-height:1.4;color:var(--ink);background:var(--surface);border:2px solid var(--line);box-shadow:0 3px 0 var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
+.opt .l{width:30px;height:30px;border-radius:50%;border:2px solid var(--line-dark);display:grid;place-items:center;flex:none;font-size:14px;font-weight:800;color:var(--muted)}
+.opt span:last-child{min-width:0}
+.opt:hover:not([disabled]){background:var(--soft)}
+.opt.sel{border-color:var(--blue);background:var(--blue-bg);box-shadow:0 3px 0 var(--blue)}
+.opt.sel .l{border-color:var(--blue);background:var(--blue);color:#fff}
+.opt.right{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 3px 0 var(--ok)}
+.opt.right .l{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);box-shadow:0 3px 0 var(--bad)}
+.opt.wrong .l{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt[disabled]{cursor:default}
+
+/* Fim de módulo */
+.center{align-items:center;text-align:center;justify-content:center}
+.center .sign{width:96px;height:96px}
+.xp{display:inline-flex;align-items:center;gap:8px;font-weight:900;font-size:22px;background:color-mix(in srgb,var(--accent) 25%,var(--surface));border:2px solid var(--accent);border-radius:99px;padding:8px 20px}
+.lead{margin:0;color:var(--muted);font-weight:600;max-width:36ch}
+.recap{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;width:100%;text-align:left}
+.recap div{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:10px 14px;font-weight:600;font-size:15px;line-height:1.3;color:var(--muted)}
+.recap b{display:block;font-size:20px;font-weight:900;color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){.pbar i,.btn{transition:none}}
+
+/* ===== Camada visual refinada ===== */
+:root {
+  --bg: #f3f6fb;
+  --surface: #ffffff;
+  --ink: #172334;
+  --muted: #65758b;
+  --line: #e1e8f0;
+  --line-dark: #c7d2df;
+  --soft: #f0f4f9;
+  --accent: #ffd447;
+  --accent-edge: #d5a91c;
+  --blue: #316ee8;
+  --blue-bg: #eaf1ff;
+  --ok: #159765;
+  --ok-edge: #0d754d;
+  --ok-bg: #e3f8ee;
+  --bad: #dc4c55;
+  --bad-edge: #ad303a;
+  --bad-bg: #fff0f0;
+}
+body {
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(49,110,232,.08), transparent 34rem),
+    radial-gradient(ellipse at 100% 12%, rgba(255,212,71,.12), transparent 28rem),
+    var(--bg);
+  letter-spacing: .005em;
+}
+.wrap { max-width: 720px; padding-inline: 22px; }
+.hero { padding-block: 38px 12px; gap: 13px; }
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  text-transform: uppercase; letter-spacing: .12em; font-size: 12px;
+  color: var(--blue);
+}
+h1 { letter-spacing: -.035em; line-height: 1.04; }
+.sub { font-size: 16px; line-height: 1.65; }
+.stats { gap: 8px; margin-top: 10px; }
+.pill {
+  border: 1px solid var(--line); box-shadow: 0 3px 10px rgba(25,45,75,.035);
+  padding: 8px 13px; font-size: 13px;
+}
+.pbar { height: 9px; margin-top: 10px; background: #e4eaf2; }
+.pbar i { background: linear-gradient(90deg, #159765, #4acb93); }
+.path { gap: 14px; padding-block: 22px 30px; }
+.mod {
+  border: 1px solid var(--line); border-radius: 22px; padding: 16px;
+  box-shadow: 0 5px 16px rgba(29,49,78,.045);
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.mod:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(29,49,78,.09); }
+.mod.cur { border-color: var(--accent-edge); box-shadow: 0 0 0 3px rgba(255,212,71,.18), 0 7px 20px rgba(29,49,78,.06); }
+.node { width: 58px; height: 58px; background: linear-gradient(145deg, #f5f7fb, #e8eef7); }
+.mt strong { font-size: 17px; letter-spacing: -.015em; }
+.meta { font-size: 13px; line-height: 1.45; }
+.kind { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; }
+.btn {
+  border-radius: 14px; min-height: 52px; font-size: 15px;
+  box-shadow: 0 3px 0 var(--line-dark);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn:hover:not([disabled]) { filter: brightness(.985); }
+.btn.primary { background: linear-gradient(135deg, #ffdc65, #ffd447); }
+.bar {
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(16px); border-top: 1px solid var(--line);
+}
+.top { backdrop-filter: blur(14px); border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent); }
+.x { background: var(--surface); border: 1px solid var(--line); }
+.segs { gap: 6px; }
+.segs i { height: 7px; }
+.body { gap: 20px; padding-block: 20px 34px; }
+.crumb { font-size: 12px; text-transform: uppercase; letter-spacing: .075em; }
+h2 { letter-spacing: -.025em; }
+.stack { gap: 15px; font-size: 16px; line-height: 1.7; }
+.item {
+  border: 1px solid var(--line); border-radius: 18px; padding: 17px 18px;
+  box-shadow: 0 4px 15px rgba(29,49,78,.035);
+}
+.item h4 { font-size: 17px; letter-spacing: -.01em; }
+.item dt { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; }
+.key {
+  border: 1px solid rgba(213,169,28,.55);
+  background: linear-gradient(135deg, rgba(255,212,71,.20), rgba(255,212,71,.07));
+  border-radius: 18px; padding: 17px 18px;
+}
+.key .lbl { text-transform: uppercase; letter-spacing: .09em; font-size: 12px; }
+.pts { gap: 12px; }
+.pts li { padding-left: 25px; }
+.pts li::before { width: 8px; height: 8px; top: .7em; background: var(--blue); }
+.num { gap: 13px; }
+.num li::before { background: var(--blue); color: white; }
+.q { letter-spacing: -.025em; }
+.opts { gap: 11px; }
+.opt {
+  border: 1px solid var(--line); border-radius: 17px; padding: 15px 16px;
+  box-shadow: 0 3px 0 #e4eaf2; transition: border-color .12s ease, background .12s ease, transform .12s ease;
+}
+.opt:hover:not([disabled]) { transform: translateY(-1px); border-color: #a9c1f8; }
+.opt .l { border: 1px solid var(--line-dark); background: var(--soft); }
+.opt.sel { border-color: var(--blue); box-shadow: 0 3px 0 var(--blue); }
+.opt.right { border-color: var(--ok); box-shadow: 0 3px 0 var(--ok); }
+.opt.wrong { border-color: var(--bad); box-shadow: 0 3px 0 var(--bad); }
+.sheet .wrap { padding-block: 3px; }
+.sheet strong { letter-spacing: -.02em; }
+.recap { gap: 12px; }
+.recap div { border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(29,49,78,.04); padding: 15px; }
+.recap b { color: var(--blue); letter-spacing: -.025em; }
+.xp { box-shadow: 0 4px 15px rgba(29,49,78,.04); }
+@media (min-width: 600px) {
+  .hero { padding-top: 48px; }
+  .path { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  .mod { height: 100%; }
+  .node { width: 52px; height: 52px; }
+  .node .sign { width: 30px; height: 30px; }
+}
+@media (max-width: 420px) {
+  .wrap { padding-inline: 16px; }
+  .hero { padding-top: 27px; }
+  .mod { gap: 11px; padding: 12px; border-radius: 18px; }
+  .node { width: 48px; height: 48px; }
+  .node .sign { width: 29px; height: 29px; }
+  .mt strong { font-size: 15px; }
+  .meta { font-size: 12px; }
+  .st { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mod, .opt, .btn { transition: none; }
+  .mod:hover:not([disabled]), .opt:hover:not([disabled]) { transform: none; }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1220; --surface: #121d2d; --ink: #edf3fc; --muted: #9cacc2;
+    --line: #26364b; --line-dark: #354961; --soft: #1a2940;
+    --blue: #79a7ff; --blue-bg: #192b49; --ok-bg: #123427; --bad-bg: #3a2028;
+  }
+  body {
+    background: radial-gradient(ellipse at 10% 0%, rgba(49,110,232,.13), transparent 34rem), var(--bg);
+  }
+  .node { background: linear-gradient(145deg, #1a2940, #152236); }
+  .pbar { background: #26364b; }
+  .opt { box-shadow: 0 3px 0 #26364b; }
+  .opt.sel { box-shadow: 0 3px 0 var(--blue); }
+  .opt.right { box-shadow: 0 3px 0 var(--ok); }
+  .opt.wrong { box-shadow: 0 3px 0 var(--bad); }
+}
+
+
+/* Assistente de IA */
+#ai-assistant-root{font-family:var(--f);position:relative;z-index:30}
+.ai-launch{position:fixed;right:22px;bottom:22px;border:0;border-radius:999px;padding:14px 18px;background:linear-gradient(135deg,#2563eb,#6d5dfc);color:#fff;font:800 15px var(--f);box-shadow:0 12px 30px #1d4ed855;cursor:pointer;display:flex;align-items:center;gap:9px;transition:transform .18s,box-shadow .18s}
+.ai-launch:hover{transform:translateY(-2px);box-shadow:0 16px 34px #1d4ed866}
+.ai-launch svg{width:21px;height:21px}
+.ai-panel{position:fixed;right:22px;bottom:84px;width:min(410px,calc(100vw - 28px));height:min(590px,calc(100dvh - 120px));background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 70px #0b122044;display:none;overflow:hidden;flex-direction:column;color:var(--ink)}
+.ai-panel.open{display:flex}
+.ai-head{padding:16px 17px;background:linear-gradient(135deg,#1d4ed8,#6656e8);color:white;display:flex;align-items:center;gap:11px}
+.ai-avatar{width:40px;height:40px;border-radius:14px;background:#ffffff25;display:grid;place-items:center;font-size:22px}
+.ai-head-copy{flex:1;min-width:0}.ai-head-copy strong{display:block;font-size:16px}.ai-head-copy small{opacity:.85;font-size:12px}
+.ai-close{border:0;background:#ffffff22;color:white;width:34px;height:34px;border-radius:10px;font-size:22px;cursor:pointer}
+.ai-controls{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;gap:8px}
+.ai-controls select{min-width:0;flex:1;border:1px solid var(--line-dark);border-radius:10px;background:var(--surface);color:var(--ink);padding:8px;font:700 13px var(--f)}
+.ai-messages{padding:13px;display:flex;flex-direction:column;gap:10px;flex:1;overflow:auto;background:var(--bg)}
+.ai-msg{max-width:91%;padding:10px 12px;border-radius:15px;font-size:14px;line-height:1.48;white-space:pre-wrap;overflow-wrap:anywhere}
+.ai-msg.bot{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:5px}
+.ai-msg.user{align-self:flex-end;background:var(--blue);color:white;border-bottom-right-radius:5px}
+.ai-msg.error{border-color:var(--bad);color:var(--bad)}
+.ai-compose{padding:11px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:flex-end;background:var(--surface)}
+.ai-compose textarea{resize:none;max-height:110px;min-height:43px;flex:1;min-width:0;border:1px solid var(--line-dark);border-radius:13px;padding:11px 12px;background:var(--bg);color:var(--ink);font:600 14px var(--f)}
+.ai-send{width:44px;height:43px;flex:none;border:0;border-radius:13px;background:#315ee8;color:white;font-size:20px;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:wait}
+.ai-note{padding:0 13px 9px;color:var(--muted);font-size:11px;background:var(--surface)}
+@media(max-width:520px){.ai-launch{right:14px;bottom:14px;padding:13px 15px}.ai-panel{right:8px;bottom:72px;width:calc(100vw - 16px);height:min(72dvh,620px)}}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="ai-assistant-root"></div>
+
+<script>
+/* ---------- Auxiliares para montar o conteúdo ---------- */
+function P(t){return '<p>'+t+'</p>';}
+function it(h,sm,body){return '<div class="item"><h4>'+h+(sm?' <small>'+sm+'</small>':'')+'</h4>'+body+'</div>';}
+function dl(rows){return '<dl>'+rows.map(function(r){return '<dt>'+r[0]+'</dt><dd'+(r[2]?' class="'+r[2]+'"':'')+'>'+r[1]+'</dd>';}).join('')+'</dl>';}
+function ul(a){return '<ul class="pts">'+a.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';}
+function ol(a,start){return '<ol class="num"'+(start?' style="counter-reset:n '+(start-1)+'"':'')+'>'+a.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol>';}
+function key(l,t){return '<div class="key"><span class="lbl">'+l+'</span>'+t+'</div>';}
+function Q(p,ok,bad,e){return {p:p,o:[ok].concat(bad),c:0,e:e};}
+
+/* s = tipo de sinal: w risco, m obrigação, p proibição, s prevenção */
+var KIND = {w:"Risco", m:"Obrigação", p:"Proibição", s:"Prevenção"};
+
+var M = [
+/* 1 */
+{ s:"w", t:"Rischio e rischi infortunistici", tag:"Definições e acidentes de laboratório",
+ steps:[
+  {t:"O que é rischio?", h:
+    P("Qualquer agente (<i>chimico, fisico, microbiologico</i>) ou, mais em geral, qualquer situação que tenha probabilidade de provocar uma lesão (<b>infortunio</b>) ou um dano à saúde da pessoa ou ao ambiente.")+
+    key("Entità del rischio","Vem da combinação entre a <b>probabilidade</b> de o acidente/dano acontecer e a <b>gravidade</b> das lesões ou do dano.")},
+  {t:"Cortes e queimaduras", h:
+    it("Ferite da taglio","(cortes)",dl([["Quando acontece","Uso de instrumentos cortantes; manipulação de vidraria não íntegra; quebra acidental de material que vira cortante."],["Da non fare","Submeter vidro a esforço mecânico impróprio; usar mal um instrumento cortante."]]))+
+    it("Ustioni termiche","(queimaduras)",dl([["Quando acontece","Contato com superfícies quentes; uso de chamas livres; trabalho com vidro; gelo seco e nitrogênio líquido."],["Da non fare","Usar chamas, aquecedores, material aquecido, gelo seco ou N₂ líquido <b>sem DPI</b>."]]))},
+  {t:"Pressão, vácuo e eletricidade", h:
+    it("Apparecchiature a pressione","",P("Autoclaves, cilindros de gás comprimido: explosão, incêndio, queimaduras, feridas, morte."))+
+    it("Apparecchiature sotto vuoto","",P("Destilador, dessecação, filtração: <b>implosão</b>, queimaduras, feridas, morte."))+
+    it("Elettrocuzione","",P("Uso impróprio de equipamentos elétricos ou aparelhos elétricos fora da norma: queimaduras, fulguração."))}
+ ],
+ qs:[
+  Q("Como se define a entità del rischio?","Combinação entre a probabilidade de o dano ocorrer e a gravidade das lesões ou do dano",["Apenas a gravidade da lesão causada","Apenas o número de pessoas presentes no laboratório","O tempo total em que o aluno fica no laboratório"],"A entità del rischio é a combinação de probabilidade e gravidade (lesões e/ou dano à saúde)."),
+  Q("Qual perigo específico existe nas apparecchiature sotto vuoto, como destiladores e filtração?","Implosão",["Fulguração","Ruído excessivo","Intoxicação por ingestão"],"Em aparelhos sob vácuo o risco é a implosão, além de queimaduras, feridas e morte."),
+  Q("Gelo seco e nitrogênio líquido usados sem DPI causam principalmente qual tipo de rischio infortunistico?","Ustioni termiche (queimaduras)",["Elettrocuzione","Ferite da taglio","Rischio biologico generico"],"Gelo seco, N₂ líquido, chamas e superfícies quentes causam ustioni termiche quando se trabalha sem DPI."),
+  Q("O que NÃO se deve fazer para evitar ferite da taglio?","Submeter o vidro a esforço mecânico impróprio",["Usar vidraria íntegra","Usar o instrumento cortante do jeito certo","Manter a vidraria ordenada"],"Esforço mecânico impróprio no vidro pode quebrá-lo e criar fragmentos cortantes."),
+  Q("Autoclaves e cilindros de gás comprimido pertencem a qual categoria de rischi infortunistici?","Apparecchiature a pressione",["Apparecchiature sotto vuoto","Elettrocuzione","Ustioni termiche"],"São apparecchiature a pressione: explosão, incêndio, queimaduras, feridas e morte.")
+ ]},
+
+/* 2 */
+{ s:"w", t:"Rischio fisico", tag:"Rumore, vibrazioni, radiazioni, illuminazione, microclima",
+ steps:[
+  {t:"Rumore", h:
+    it("Rumore","",P("Som que provoca sensação desagradável, fastidiosa ou intolerável. O <b>inquinamento acustico</b> é definido pela <b>legge 447 del 26/10/95</b>."))+
+    key("Decorar","Poluição acústica: <b>legge 447 del 26/10/95</b>.")},
+  {t:"Vibrazioni", h:
+    P("Oscilações ou sacudidas de uma parte ou do corpo todo (condutores de máquinas, operários em terra, com vários aparelhos).")+
+    it("Efeitos","",ul(["Reações <b>neurovegetativas</b>: náusea, suor frio, vômito, dificuldade digestiva","Reações <b>neuropsíquicas</b>: cefaleia, vertigem, irritabilidade","Distúrbios visuais","Alterações da coluna lombar e torácica, falanges, ombro"]))},
+  {t:"Radiazioni e illuminazione", h:
+    it("Radiazioni","",P("Radiações ópticas (UV, visíveis, infravermelhas) e <b>laser</b>. Podem prejudicar o aparelho visual, a pele e os órgãos internos."))+
+    it("Illuminazione","",P("Luz natural ou artificial. Influencia a qualidade do trabalho, diminui a concentração e causa distúrbios oculo-visivos (cansaço, ardência)."))},
+  {t:"Microclima", h:
+    it("Microclima","",P("Temperatura, umidade e velocidade do ar em um ambiente não idôneo."))+
+    it("Efeitos","",P("Distúrbios do aparelho respiratório (alergias, asma), cansaço geral, perda dos sentidos, patologias musculoesqueléticas."))}
+ ],
+ qs:[
+  Q("Qual norma define o inquinamento acustico (poluição sonora)?","Legge 447 del 26/10/95",["D.Lgs. 626/94, allegato XI","D.Lgs. 626/94, allegato XII","Legge 26/10/94, número 70"],"O ruído é tratado na legge 447 de 26/10/95. Os allegati XI e XII do D.Lgs. 626/94 falam de agentes biológicos."),
+  Q("Qual fator físico inclui radiações UV, luz visível, infravermelho e laser?","Radiazioni",["Rumore","Microclima","Vibrazioni"],"As radiazioni ópticas (UV, visíveis, infravermelhas) e o laser podem prejudicar visão, pele e órgãos internos."),
+  Q("Temperatura, umidade e velocidade do ar inadequadas definem qual fator?","Microclima",["Illuminazione","Rumore","Radiazioni"],"O microclima não idôneo pode causar problemas respiratórios, cansaço e patologias musculoesqueléticas."),
+  Q("Náusea, suor frio e vômito são reações neurovegetativas a qual fator físico?","Vibrazioni",["Illuminazione","Rumore","Microclima"],"As vibrazioni causam reações neurovegetativas (náusea, suor frio, vômito), neuropsíquicas e alterações na coluna."),
+  Q("Qual é um efeito da má illuminazione?","Menor concentração e distúrbios oculo-visivos, como cansaço e ardência",["Implosão de vidraria","Intoxicação aguda","Perda de audição imediata"],"A luz inadequada influencia a qualidade do trabalho, reduz a concentração e cansa os olhos.")
+ ]},
+
+/* 3 */
+{ s:"w", t:"Rischio chimico", tag:"Agentes, substâncias, misturas e tipos de efeito",
+ steps:[
+  {t:"Agente chimico", h:
+    P("Qualquer produto químico (substância e/ou preparado), líquido, sólido ou aeriforme, nocivo por <b>inalação, contato e/ou ingestão</b> ao interagir com o organismo humano.")},
+  {t:"Sostanza e miscele", h:
+    it("Sostanza","",P("Elementos químicos e seus compostos, no estado natural ou obtidos por processos industriais."))+
+    it("Miscele","",P("Misturas ou soluções <b>intencionais</b>, compostas por duas ou mais substâncias."))},
+  {t:"Como o organismo responde", h:
+    P("Cada substância age conforme suas características de absorção, metabolização e eliminação, atingindo um ou mais órgãos (bexiga, pulmões, sangue, fígado) ou aparelhos (respiratório, circulatório, digestivo, tegumentar).")+
+    P("A resposta depende das propriedades nocivas da substância, da <b>concentração ambiental</b> e do <b>tempo de exposição</b>.")},
+  {t:"Efeitos acuti e cronici", h:
+    it("Acuti","",dl([["Exposição","Breve, a concentração <b>alta</b> (massiça)"],["Quadro","Distúrbios como falta de ar, ardência nos olhos e vias respiratórias, náusea e vômito, até perda de consciência. Exigem <b>afastamento imediato</b> da área de risco."]]))+
+    it("Cronici","",dl([["Exposição","Longa, a concentração <b>baixa</b>"],["Quadro","Distúrbios leves ou ausentes, por muito tempo, que <b>pioram progressivamente</b>."]]))}
+ ],
+ qs:[
+  Q("Qual alternativa descreve corretamente os effetti cronici de um agente químico?","Exposição longa a concentração baixa, com distúrbios leves que pioram progressivamente",["Exposição breve a concentração alta, com sintomas imediatos","Exposição a duas substâncias misturadas de propósito","Exposição apenas pela pele íntegra"],"Cronici: exposição longa a baixa concentração. Acuti: exposição breve a concentração massiça."),
+  Q("Uma exposição breve a concentração alta (massiça) causa qual tipo de efeito?","Effetti acuti, que exigem afastamento imediato da área de risco",["Effetti cronici, que pioram devagar","Nenhum efeito, apenas desconforto","Apenas efeitos biológicos"],"Os effetti acuti aparecem rápido (falta de ar, ardência, náusea) e exigem afastamento imediato."),
+  Q("O que são miscele?","Misturas ou soluções intencionais de duas ou mais substâncias",["Elementos químicos puros","Qualquer agente infeccioso","Gases presentes no ar"],"Miscele são misturas ou soluções intencionais, compostas por duas ou mais substâncias."),
+  Q("Do que depende a resposta do organismo a um agente químico?","Das propriedades nocivas da substância, da concentração ambiental e do tempo de exposição",["Somente da cor da substância","Somente do horário do experimento","Apenas do tipo de embalagem"],"Propriedades nocivas, concentração ambiental e tempo de exposição determinam a resposta."),
+  Q("Por quais vias um agente chimico pode ser nocivo?","Inalação, contato e/ou ingestão",["Apenas pela visão","Apenas por ruído","Apenas por radiação"],"O agente chimico é nocivo por inalação, contato e/ou ingestão.")
+ ]},
+
+/* 4 */
+{ s:"w", t:"Vie di penetrazione e fattori", tag:"Como o agente entra e do que depende a resposta",
+ steps:[
+  {t:"Inalazione", h:
+    it("Inalazione","",P("Pelo nariz e/ou boca até os pulmões. A superfície de contato ar-sangue nos pulmões é de cerca de <b>70 m²</b>."))+
+    key("Decorar","Superfície de contato ar-sangue nos pulmões: <b>70 m²</b>.")},
+  {t:"Ingestione e contatto", h:
+    it("Ingestione","",P("Pela boca."))+
+    it("Contatto","",P("Pela pele íntegra (substâncias <b>liposolúveis</b>) ou por pequenas feridas, lesões cutâneas e abrasões."))},
+  {t:"Fattori che condizionano la risposta", h:
+    it("Proprietà fisico-chimiche","",ul(["Estado físico: aeriforme (gases e vapores) ou particulado (fumos, névoas, poeiras, fibras)","Solubilidade (hidro e lipossolubilidade)","Ação corrosiva, irritante"]))+
+    it("Fattori ambientali","",ul(["Concentração da substância","Condições microclimáticas","Presença de outros poluentes com os quais pode interagir (incompatibilidade, efeitos cumulativos)"]))},
+  {t:"Fatores individuais e tempo", h:
+    it("Fattori individuali / biologici","",P("Idade, sexo, raça, alterações congênitas, hábitos voluntários, estados físicos particulares, estados patológicos."))+
+    it("Tempo di esposizione","",P("Sempre <b>diretamente proporcional</b> aos efeitos."))}
+ ],
+ qs:[
+  Q("Por qual via de penetração o agente químico atravessa a superfície de contato ar-sangue de cerca de 70 m²?","Inalazione",["Ingestione","Contatto cutaneo","Inoculazione"],"É a inalação: nos pulmões, a superfície de contato ar-sangue é de aproximadamente 70 m²."),
+  Q("Quais substâncias atravessam principalmente a pele íntegra?","As liposolúveis",["As hidrossolúveis apenas","Somente os gases inertes","Somente as poeiras"],"Pela pele íntegra passam as substâncias liposolúveis. Feridas e abrasões abrem outras entradas."),
+  Q("Como o tempo di esposizione se relaciona com os efeitos?","É sempre diretamente proporcional aos efeitos",["É inversamente proporcional","Não tem relação com os efeitos","Só importa para agentes biológicos"],"Quanto maior o tempo de exposição, maiores os efeitos."),
+  Q("Qual item pertence aos fattori individuali / biologici?","Idade, sexo, raça e estados patológicos",["Concentração da substância","Estado físico aeriforme","Ação corrosiva"],"Idade, sexo, raça, alterações congênitas, hábitos e estados patológicos são fatores individuais."),
+  Q("Fumos, névoas, poeiras e fibras são exemplos de qual estado físico?","Particulado",["Aeriforme","Líquido puro","Sólido maciço"],"Aeriforme: gases e vapores. Particulado: fumos, névoas, poeiras e fibras.")
+ ]},
+
+/* 5 */
+{ s:"w", t:"Rischio biologico", tag:"Definição, classificação e fontes de exposição",
+ steps:[
+  {t:"O que é rischio biologico", h:
+    P("É representado por qualquer <b>agente infeccioso (patogeno)</b> ou parte dele que seja real ou potencialmente nocivo para a saúde humana, para animais ou plantas, <b>direta</b> ou <b>indiretamente</b> (por alteração ou destruição do ambiente).")+
+    P("Inclui também plantas e animais venenosos.")},
+  {t:"Generico e specifico", h:
+    it("Generico","",P("Presente em qualquer ambiente com várias pessoas. Transmissão principalmente aérea, às vezes oro-fecal."))+
+    it("Specifico","",P("Ligado a uma atividade laboral particular (biotecnologia, laboratórios) ou à manipulação de agentes."))},
+  {t:"Tipo de exposição", h:
+    it("Uso deliberato","",P("Exposição voluntária a agentes infecciosos (biotecnologia, produção de microrganismos selecionados como micobactérias, poliovírus, retrovírus; culturas celulares)."))+
+    it("Esposizione involontaria","",P("Exposição potencial a fontes de emissão incontroláveis, como laboratórios de análise e diagnóstico com material infeccioso."))},
+  {t:"Fontes potenciais (1/2)", h:
+    ul(["<b>Genetica:</b> tecidos, sangue, excreções, culturas de células ou tecidos com agentes transmissíveis; <b>DNA/RNA recombinante</b> usado também para modificação genética de células ou organismos.","Microrganismos patogênicos; animais vetores ou suspeitos de serem vetores.","Animais venenosos (víbora, viúva-negra); insetos e artrópodes transmissores."])},
+  {t:"Fontes potenciais (2/2)", h:
+    ul(["Outros agentes nocivos ou infestantes: insetos, ácaros, nematódeos, moluscos, protozoários, invertebrados; fungos, bactérias, vírus.","Agentes particulares: <b>OGM</b> (organismos geneticamente modificados); transporte e movimentação.","Patógenos animais e vegetais, com atenção a espécies <b>não endêmicas</b> ou autóctones infectadas levadas para fora da zona de origem."])}
+ ],
+ qs:[
+  Q("O que caracteriza o rischio biologico specifico?","É devido a uma atividade laboral particular, como biotecnologia ou laboratórios, ou à manipulação de agentes",["Está presente em qualquer ambiente onde haja várias pessoas","Só existe em laboratórios de nível 4","Refere-se apenas a animais venenosos"],"O generico está em qualquer ambiente com pessoas (transmissão aérea ou oro-fecal). O specifico decorre de uma atividade lavorativa particular."),
+  Q("Qual rischio biologico está presente em qualquer ambiente com várias pessoas, com transmissão aérea ou oro-fecal?","Generico",["Specifico","Uso deliberato","Genetica"],"O generico acompanha qualquer ambiente com várias pessoas."),
+  Q("O que é o uso deliberato de agentes biológicos?","Exposição voluntária, como em biotecnologia e culturas celulares",["Exposição acidental a fontes incontroláveis","Contato apenas com animais venenosos","Exposição a ruído"],"No uso deliberato a exposição é voluntária (biotecnologia, microrganismos selecionados, culturas celulares)."),
+  Q("O que significa a sigla OGM?","Organismi geneticamente modificati",["Organismos de gestão microbiológica","Origem de gases e microrganismos","Operações gerais de manipulação"],"OGM são organismos geneticamente modificados, uma das fontes particulares de rischio biologico."),
+  Q("Em qual situação ocorre tipicamente a esposizione involontaria?","Em laboratórios de análise e diagnóstico com material infeccioso",["Em biotecnologia com cultura planejada","Ao produzir micobactérias selecionadas","Ao usar jaleco"],"A esposizione involontaria é potencial, ligada a fontes de emissão incontroláveis, como laboratórios de diagnóstico.")
+ ]},
+
+/* 6 */
+{ s:"w", t:"Valutazione e gruppi di rischio", tag:"11 fatores e os 4 grupos de agentes biológicos",
+ steps:[
+  {t:"Como avaliar o risco (1/2)", h:
+    P("A ferramenta mais útil é a <b>classificação dos agentes em grupos de risco</b>, mas a avaliação completa considera também:")+
+    ol(["Patogenicidade e dose infectante","Consequência potencial da exposição","Modalidade natural de transmissão","Modalidade de transmissão resultante da manipulação","Persistência do agente no ambiente","Concentração do agente e volume do material manipulado"])},
+  {t:"Como avaliar o risco (2/2)", h:
+    ol(["Presença de hospedeiros receptivos","Disponibilidade de informações de diversos estudos","Atividades previstas que geram <b>aerossol</b> (sonicação, centrifugação…)","Qualquer manipulação genética","Disponibilidade de profilaxia e terapia eficazes"],7)},
+  {t:"Gruppi 1 e 2", h:
+    it("Grupo 1","",dl([["Risco","Nenhum ou baixo, individual ou coletivo"],["Características","Poucas probabilidades de causar doença em humanos"]]))+
+    it("Grupo 2","",dl([["Risco","<b>Moderado</b> individual, <b>limitado</b> coletivo"],["Características","Podem causar doença; pouco provável que se propaguem; <b>existem</b> medidas profiláticas ou terapêuticas"]]))},
+  {t:"Gruppi 3 e 4", h:
+    it("Grupo 3","",dl([["Risco","<b>Elevado</b> individual, <b>baixo</b> coletivo"],["Características","Doença grave, risco sério para trabalhadores; podem se propagar, mas <b>existem</b> medidas eficazes"]]))+
+    it("Grupo 4","",dl([["Risco","<b>Elevado</b> individual <b>e</b> coletivo"],["Características","Doença grave, alto risco de propagação; <b>não existem</b> medidas eficazes"]]))+
+    key("Decorar","Lista dos grupos 2, 3, 4: <b>allegato XI</b> do D.Lgs. 626/94. Medidas e níveis de contenção: <b>allegato XII</b>. No grupo 4 há <b>apenas vírus</b>.")},
+  {t:"Exemplos do grupo 2", h:
+    it("Grupo 2","",dl([["Bactérias","Bordetella pertussis, Borrelia burgdorferi, Campylobacter, Clostridium, Corynebacterium, E. coli patogênica, Klebsiella, Legionella, Listeria, Neisseria meningitidis, Pseudomonas, Salmonella (exceto S. typhi), Staphylococcus, Streptococcus, Vibrio cholerae","it"],["Fungos","Aspergillus, Candida, Cryptococcus","it"],["Parasitas","Ascaris, Cryptosporidium, Entamoeba histolytica, Strongyloides, Taenia saginata, Trichinella","it"]]))},
+  {t:"Exemplos do grupo 3", h:
+    it("Grupo 3","",dl([["Bactérias","Brucella, Burkholderia mallei, B. pseudomallei, Chlamydia psittaci, Coxiella burnetii, Mycobacterium tuberculosis, Rickettsia, Salmonella typhi, Shigella dysenteriae, Yersinia pestis","it"],["Fungos","Blastomyces dermatitidis, Coccidioides immitis, Histoplasma capsulatum, Paracoccidioides brasiliensis","it"],["Parasitas","Echinococcus, Leishmania, Plasmodium falciparum, Taenia solium, Trypanosoma","it"],["Vírus","Encefalites (vários tipos), hepatite B, C, delta, E; <b>HIV</b>; raiva"]]))},
+  {t:"Exemplos do grupo 4", h:
+    it("Grupo 4 (só vírus)","",P("Junin, Lassa, Machupo, <b>Ebola</b>, <b>Marburg</b>, febre hemorrágica da Crimeia/Congo, <b>vaiolo</b> (varíola)."))}
+ ],
+ qs:[
+  Q("Qual afirmação sobre os agentes biológicos do grupo 4 está correta?","Têm risco elevado individual e coletivo, não há medidas eficazes de norma, e incluem somente vírus",["Têm baixo risco individual e coletivo","Existem medidas profiláticas ou terapêuticas eficazes na maioria dos casos","Incluem bactérias como Yersinia pestis e fungos"],"Grupo 4: elevado risco individual e coletivo, sem medidas eficazes de norma e somente vírus (Ebola, Marburg, Lassa, varíola…). Yersinia pestis é do grupo 3."),
+  Q("Qual allegato do D.Lgs. 626/94 lista os agentes biológicos dos grupos 2, 3 e 4?","Allegato XI",["Allegato XII","Allegato X","Legge 447/95"],"O allegato XI lista os grupos 2, 3 e 4. O allegato XII trata de medidas e níveis de contenção."),
+  Q("Qual dos agentes abaixo pertence ao grupo 4?","Ebola",["HIV","Mycobacterium tuberculosis","Salmonella typhi"],"Ebola é do grupo 4. HIV, M. tuberculosis e Salmonella typhi são do grupo 3."),
+  Q("Qual é a ferramenta mais útil na avaliação do rischio biologico?","A classificação dos agentes em grupos de risco",["A cor do jaleco","O número de alunos","O horário da aula"],"A classificação em grupos de risco é a ferramenta mais útil, junto com outros 11 fatores."),
+  Q("Em qual grupo de risco está o HIV?","Grupo 3",["Grupo 1","Grupo 2","Grupo 4"],"O HIV está no grupo 3, com hepatites B, C, delta e E e raiva."),
+  Q("O que caracteriza os agentes do grupo 2?","Risco moderado individual, limitado coletivo, com medidas profiláticas ou terapêuticas",["Nenhum risco","Alto risco coletivo sem medidas eficazes","Apenas vírus"],"No grupo 2 podem causar doença, é pouco provável que se propaguem e existem medidas eficazes.")
+ ]},
+
+/* 7 */
+{ s:"m", t:"Livelli di biosicurezza e DPI", tag:"Níveis 1 a 4 e barreiras primárias",
+ steps:[
+  {t:"Três coisas a proteger", h:
+    P("As medidas de contenção devem garantir a proteção do <b>campione</b> (amostra), do <b>operatore</b> e do <b>ambiente</b>.")+
+    P("As <i>attrezzature</i> ajudam, mas <b>não substituem</b> a boa técnica e o preparo dos operadores.")},
+  {t:"Livelli 1 e 2", h:
+    it("Nível 1","",dl([["Usado com","Agentes bem caracterizados, risco mínimo ou nulo (grupo 1)"],["Medidas","Trabalho na <b>bancada</b>, boas práticas padrão. <b>Sem</b> equipamentos ou medidas de contenção especiais; treinamento pelo responsável"]]))+
+    it("Nível 2","",dl([["Usado com","Grupo 2 (e 1): risco moderado por injeção, ingestão, absorção cutânea e inalação"],["Medidas","Como o nível 1, mais <b>treinamento do pessoal</b> e <b>capelas</b> e outros dispositivos de segurança"]]))},
+  {t:"Livelli 3 e 4", h:
+    it("Nível 3","",dl([["Usado com","Grupo 3 (e 2, 1): hospitais, laboratórios de pesquisa e diagnóstico, universidades, CNR, indústrias"],["Medidas","<b>Cappa di sicurezza biologica obrigatória</b>; atenção maior à contenção e à instrumentação; laboratório <b>isolado</b> das áreas de livre circulação; acesso por <b>duas séries de portas</b>"]]))+
+    it("Nível 4","",dl([["Usado com","Agentes extremamente perigosos para a saúde e a vida (Ebola, Marburg)"],["Medidas","Laboratório de <b>máxima segurança</b>, sob estreito controle das autoridades sanitárias nacionais"]]))},
+  {t:"DPI no nível 1", h:
+    P("<b>Barriere primarie</b>, nível 1:")+
+    ul(["Jalecos e aventais são <b>tirados antes de ir a outras áreas</b> (escritórios, bibliotecas, refeitório) e não ficam nos mesmos armários da roupa comum.","<b>Luvas</b> se as mãos tiverem feridas ou lesões.","<b>Óculos ou protetor facial</b> se houver previsão de respingos de material infectado."])},
+  {t:"DPI no nível 2: cabines", h:
+    ul(["<b>Cappe ou cabine de segurança biológica</b> (preferível <b>Classe II</b>) sempre que puder haver <b>aerossol ou respingos</b> (centrifugação, homogeneização, mistura ou agitação vigorosa, sonicadores, coleta de tecidos e líquidos de animais e ovos infectados, inoculação intranasal, abertura de recipientes com pressão interna diferente) ou quando se usam <b>grandes volumes</b>.","Centrifugação em laboratório aberto só com rotores e recipientes de fechamento <b>hermético</b>; manipulação de líquidos sempre dentro da cappa."])},
+  {t:"DPI no nível 2: proteção pessoal", h:
+    ul(["<b>Proteção do rosto</b> (óculos, máscaras, viseiras) ao trabalhar fora da cappa com risco de respingos ou aerossol.","Roupas protetoras sempre (jaleco, tuta, uniforme). Ficam no laboratório e <b>não vão para casa para lavar</b>.","<b>Dois pares de luvas</b> se necessário. Luvas potencialmente infectadas não saem do laboratório; luvas descartáveis <b>não se reutilizam nem se lavam</b>."])}
+ ],
+ qs:[
+  Q("Qual medida é obrigatória em um laboratório de nível de biossegurança 3?","Cappa di sicurezza biologica e acesso por duas séries de portas, com laboratório isolado das áreas de livre circulação",["Nenhuma medida especial, apenas trabalho na bancada","Somente o treinamento do pessoal","Laboratório aberto, com livre circulação de pessoas"],"No nível 3 a cappa de segurança biológica é obrigatória e o laboratório é isolado, com acesso por duas séries de portas."),
+  Q("Qual nível exige laboratório de máxima segurança, sob controle das autoridades sanitárias nacionais?","Nível 4",["Nível 1","Nível 2","Nível 3"],"O nível 4 é para agentes extremamente perigosos, como Ebola e Marburg."),
+  Q("No nível 2, qual classe de cabine de segurança biológica é preferível?","Classe II",["Classe I apenas","Classe IV","Nenhuma, basta a bancada"],"No nível 2 usam-se cappe ou cabines de segurança biológica, preferivelmente de Classe II."),
+  Q("O que deve acontecer com luvas descartáveis usadas?","Não se reutilizam nem se lavam",["Podem ser lavadas e reaproveitadas","Podem ser levadas para casa","Ficam no bolso do jaleco"],"Luvas descartáveis não se reutilizam nem se lavam, e luvas potencialmente infectadas não saem do laboratório."),
+  Q("No nível 1, em que situação se usam luvas?","Se as mãos tiverem feridas ou lesões",["Nunca","Somente com agentes do grupo 4","Apenas ao lavar a vidraria"],"No nível 1 as luvas são indicadas quando as mãos têm feridas ou lesões."),
+  Q("O que as attrezzature de contenção NÃO fazem?","Substituir a boa técnica e o preparo dos operadores",["Ajudar na proteção","Proteger o operatore","Proteger o ambiente"],"As attrezzature ajudam, mas não substituem a boa técnica e o preparo dos operadores.")
+ ]},
+
+/* 8 */
+{ s:"p", t:"Regolamento del laboratorio di microbiologia", tag:"Níveis 1 e 2: acesso, proteção e procedimentos",
+ steps:[
+  {t:"Accesso", h:
+    ul(["Na porta do laboratório onde se trabalha com agentes do grupo 2 ou superior fica o <b>símbolo de risco biológico</b>.","Alunos só entram com o <b>professor de microbiologia</b> ou pessoal autorizado.","As portas ficam <b>sempre fechadas</b>."])},
+  {t:"O que é proibido", h:
+    ul(["<b>Proibido</b> calçado aberto.","<b>Proibido</b> comer, beber, fumar, tirar ou colocar lentes de contato e aplicar cosméticos nas áreas de trabalho; proibido guardar comida e bebida em qualquer zona do laboratório.","Proibido usar amostras biológicas (sangue, urina, fezes).","Podem-se manipular amostras alimentares ou ambientais com agentes dos grupos 1 e 2; as fases de maior risco são feitas <b>sob cappa de fluxo laminar</b>."])},
+  {t:"Antes e depois do experimento", h:
+    ul(["Antes do experimento, o professor indica os riscos, as condutas, os <b>DPI</b> (jalecos, máscaras, luvas, óculos) e os procedimentos adequados.","<b>Desinfetar a bancada antes e depois</b> de cada experimento. Ao final, desinfetar as superfícies e <b>lavar as mãos</b>, também depois de tirar as luvas.","Jalecos guardados <b>individualmente</b> em sacos etiquetados com o nome do aluno, em armário dentro do laboratório.","O laboratório fica ordenado, limpo e sem material desnecessário."])},
+  {t:"Boas práticas na bancada", h:
+    ul(["<b>Não pipetar com a boca</b>: usar pró-pipetas. Nenhum material vai à boca.","Limitar agulhas e seringas; <b>não recolocar a tampa</b> da agulha; descartar em recipientes rígidos.","Manipular líquidos reduzindo respingos e aerossol. Não usar celular, maçanetas, canetas e livros com as luvas de trabalho.","Freezer: recipiente cheio no <b>máximo 3/4</b>. Culturas e material contaminado vão ao <b>refrigerador próprio</b>, diferente do de meios estéreis e reagentes."])},
+  {t:"Resíduos e derramamentos", h:
+    ul(["Material descartável contaminado: sacos para <b>autoclave</b> (ou outros recipientes), descontaminado por esterilização antes de ser eliminado. <b>Nunca</b> no lixo comum nem na pia. Perfurocortantes em recipientes rígidos.","Material reutilizável (pipetas, tubos de vidro) é descontaminado <b>antes de lavar</b>. Usar recipientes de <b>rifiuti speciali</b> (sólidos e líquidos).","<b>Derramamento</b> de líquidos contaminados ou exposição: avisar <b>imediatamente</b> o professor. Deve existir procedimento escrito para derramamentos acidentais."])}
+ ],
+ qs:[
+  Q("Em que situação os alunos podem entrar no laboratório de microbiologia?","Somente na presença do professor de microbiologia ou de pessoal autorizado",["A qualquer momento, desde que usem jaleco","Quando a porta estiver aberta","Apenas com amostras biológicas próprias, como sangue"],"O acesso dos alunos é permitido só na presença do docente de microbiologia ou de pessoal autorizado, com as portas mantidas fechadas."),
+  Q("Qual símbolo fica na porta de laboratórios que trabalham com agentes do grupo 2 ou superior?","O símbolo de risco biológico",["O símbolo de radiação laser","O símbolo de alta tensão","Nenhum símbolo é exigido"],"A porta leva o símbolo de risco biológico, e permanece sempre fechada."),
+  Q("O que fazer com a tampa da agulha depois de usar?","Não recolocar a tampa; descartar em recipiente rígido",["Recolocar a tampa com cuidado","Jogar no lixo comum","Guardar no bolso"],"Agulhas e seringas devem ser limitadas, sem recolocar a tampa, e descartadas em recipientes rígidos."),
+  Q("Até quanto o recipiente do freezer pode ser preenchido?","No máximo 3/4",["Até a borda","Metade exata","Somente 1/4"],"O recipiente do freezer fica cheio no máximo 3/4."),
+  Q("Como deve ser descartado o material descartável contaminado?","Em sacos para autoclave, descontaminado por esterilização antes de ser eliminado",["No lixo comum","Na pia","Em qualquer caixa fechada"],"Nunca no lixo comum nem na pia: autoclave primeiro, depois descarte."),
+  Q("O que fazer se houver um derramamento de líquido contaminado?","Avisar imediatamente o professor",["Limpar sozinho em silêncio","Esperar o fim da aula","Cobrir com papel e sair"],"O derramamento ou a exposição deve ser comunicado imediatamente ao professor."),
+  Q("Qual tipo de amostra é proibido usar no laboratório de microbiologia escolar?","Amostras biológicas, como sangue, urina e fezes",["Amostras alimentares","Amostras ambientais","Amostras com agentes dos grupos 1 e 2 em cappa"],"Amostras alimentares ou ambientais dos grupos 1 e 2 podem ser manipuladas, mas sangue, urina e fezes são proibidos.")
+ ]},
+
+/* 9 */
+{ s:"s", t:"Prevenzione dei rischi", tag:"Locais, instalações, materiais e DPI",
+ steps:[
+  {t:"Laboratório e depósito", h:
+    it("Laboratório","",ul(["Materiais incombustíveis","<b>Pelo menos 2 saídas</b> (uma direto ao exterior)","Portas corta-fogo que abrem <b>para fora</b>, com maçaneta antipânico"]))+
+    it("Depósito (magazzino)","",ul(["Seco, arejado, fresco, iluminação <b>antideflagrante</b>","Produtos incompatíveis separados","Venenos como os <b>cianuretos sob chave</b>","Inflamáveis, comburentes e explosivos em local separado"]))},
+  {t:"Móveis e bancadas", h:
+    it("Arredi","",ul(["Não inflamáveis, inatacáveis por ácidos","Armários com grades de ventilação para reagentes","Armários aspirados ou refrigerados, de metal, para solventes e inflamáveis"]))+
+    it("Postazione di lavoro","",ul(["Revestida de <b>gres cerâmico esmaltado</b> ou tampos monobloco (microbiologia), fáceis de limpar e desinfetar","Dimensões <b>1,20 m × 80 cm</b>","<b>Corredores entre bancadas ≥ 1,20 m</b>"]))},
+  {t:"Instalações e aspiração", h:
+    P("Energia elétrica, gás e água: construídos conforme a lei.")+
+    it("Aspiração","",ul(["A ventilação natural (janelas) <b>não basta</b>.","A aspiração <b>forçada</b> central <b>não</b> serve à microbiologia, porque causa poluição das culturas.","Capelas aspirantes de velocidade variável para ácidos e bases concentrados, substâncias voláteis, inflamáveis e tóxicas.","Capelas de <b>fluxo laminar</b>."]))},
+  {t:"Segurança e pronto intervento", h:
+    ul(["Detector de vazamento de gás e fumaça","Extintores portáteis e sobre rodas; hidrantes","<b>Botão de desligamento</b> da energia elétrica e <b>válvula geral</b> de fechamento do gás","Cartazes e <b>schede di sicurezza</b>","Chuveiro de emergência e <b>lava-olhos</b>","Caixa de primeiros socorros","<b>Coperta ininfiammabile</b> (manta antichamas)"])},
+  {t:"Vidraria, cilindros e equipamentos", h:
+    it("Vidraria","",P("Robusta e íntegra, em estoque suficiente, ordenada e limpa."))+
+    it("Bombole gas","",ul(["Depósito isolado; movimentação segura com carrinhos","Dados de fabricante, fabricação, conteúdo, pressão máxima e teste","<b>Faixas coloridas</b> para identificar o gás","<b>Roscas diferentes</b> nas conexões para evitar troca de gases incompatíveis"]))+
+    it("Equipamentos","",P("Conformes e bem instalados; <b>autoclaves acima de 25 L</b> em local reservado."))},
+  {t:"DPI: mãos, rosto e corpo", h:
+    it("Mãos","",P("Luvas químicas, anticalor, criogênicas, antiácido, descartáveis de látex; pinças; creme; bandeja para fragmentos de vidro."))+
+    it("Rosto","",P("Óculos, máscaras faciais, protetores contra explosão ou implosão, <i>mascherina</i>."))+
+    it("Inoculação","",P("Recipientes para agulhas e seringas; proteção para os dedos."))+
+    it("Corpo","",P("Macacões de vedação química e/ou biológica, jalecos antiácido, aventais criogênicos e descartáveis, folhas de bancada absorventes."))},
+  {t:"DPI: ingestão, infecções e aerossóis", h:
+    it("Ingestão","",P("Dispositivos de aspiração para pipetas (propipette, macroaspiradores, manuais e automáticos)."))+
+    it("Infecções","",P("Purificadores de ar, fumigantes antimofo, esterilizadores de ozônio, desinfetantes, neutralizadores de derramamentos, cabines de segurança."))+
+    it("Aerossóis biológicos","",P("Cabines, incineradores de bancada, alças descartáveis, máscaras, tubos de centrífuga com tampa."))}
+ ],
+ qs:[
+  Q("Por que a aspiração forçada central não é indicada para laboratórios de microbiologia?","Porque causa poluição das culturas",["Porque é mais cara que as janelas","Porque não funciona com ácidos","Porque só é permitida no nível de biossegurança 4"],"Na microbiologia a aspiração forçada central contamina as culturas. A ventilação natural também não basta, por isso se usam cappe de fluxo laminar."),
+  Q("Quantas saídas, no mínimo, deve ter o laboratório?","2, sendo uma direto ao exterior",["1","3, todas internas","Nenhuma, se houver janela"],"O laboratório deve ter pelo menos 2 saídas, uma delas direto ao exterior."),
+  Q("Qual deve ser a largura mínima dos corredores entre as bancadas?","1,20 m",["60 cm","80 cm","2,50 m"],"Os corredores entre bancadas devem ter pelo menos 1,20 m."),
+  Q("Como devem abrir as portas corta-fogo do laboratório?","Para fora, com maçaneta antipânico",["Para dentro, com chave","Só deslizando","Sempre trancadas"],"As portas corta-fogo abrem para fora e têm maçaneta antipânico."),
+  Q("Acima de qual capacidade as autoclaves ficam em local reservado?","25 L",["5 L","10 L","100 L"],"Autoclaves acima de 25 L devem ficar em local reservado."),
+  Q("Como se evita trocar cilindros de gases incompatíveis?","Com roscas diferentes nas conexões e faixas coloridas",["Com etiquetas escritas à mão","Misturando os gases","Guardando todos juntos"],"Faixas coloridas identificam o gás e roscas diferentes impedem a troca de conexões."),
+  Q("Onde devem ficar venenos como os cianuretos no depósito?","Sob chave",["Em qualquer prateleira","Junto dos inflamáveis","Na bancada de trabalho"],"Venenos como cianuretos ficam sob chave, e inflamáveis, comburentes e explosivos ficam em local separado.")
+ ]},
+
+/* 10 */
+{ s:"m", t:"Aerosol e norme comportamentali", tag:"A causa mais frequente de contaminação e as regras do aluno",
+ steps:[
+  {t:"O que é aerosol", h:
+    P("São minúsculas gotículas nas quais podem estar dispersos, e portanto transportados, microrganismos que provocam doenças ou que podem alterar os resultados das análises.")+
+    P("É produzido falando, espirrando, tossindo, e em operações de laboratório.")},
+  {t:"O tamanho faz diferença", h:
+    it("≤ 150 µm","",dl([["Destino","Evaporam e sobra um <b>núcleo seco em suspensão</b>, que pode ser inalado e chegar aos <b>alvéolos</b>"],["Exemplo","<i>Mycobacterium tuberculosis</i> (alta sobrevivência)"]]))+
+    it("> 150 µm","",dl([["Destino","Depositam-se e podem ser levantadas com a poeira: infecções das mucosas e disseminação"],["Exemplo","Vírus respiratório sincicial"]]))},
+  {t:"Operações que geram aerosol (1/2)", h:
+    it("Operação e prevenção","",dl([["Centrifugação","Tubos inquebráveis com tampa de rosca"],["Homogeneização","<i>Stomacher</i> com sacos porta-amostra"],["Pipetagem","Micropipetas com ponteiras descartáveis e aspiradores a vácuo"],["Flambagem","Alças descartáveis ou esterilizar em incinerador"],["Abertura de frascos e tubos","Tampas com escudos protetores"]]))},
+  {t:"Operações que geram aerosol (2/2)", h:
+    it("Operação e prevenção","",dl([["Autoclavagem","Autoclaves com coleta do ar emitido"],["Quebra de recipientes","Sistemas de transporte herméticos"],["Agitação em vórtex","Tampas de rosca"],["Transferência com seringas","Proteger as superfícies, não soprar"],["Eliminação de material infectado","Transferir para a autoclave em recipientes fechados"]]))},
+  {t:"Transferência e resíduos", h:
+    it("Transferência de amostras","",P("Recipientes de <b>dupla vedação estanque</b>, sacos apropriados."))+
+    it("Eliminação de resíduos","",P("Bandejas para esterilização, recipientes herméticos descartáveis ou reutilizáveis, sacos autoclaváveis, <b>indicadores químicos e biológicos</b> de esterilização para estufas e autoclaves."))},
+  {t:"Regras do aluno: higiene e preparo", h:
+    ul(["<b>Igiene personale:</b> lavar bem as mãos com sabão desinfetante após cada manipulação e ao final do experimento.","<b>Pulizia della postazione:</b> limpar e, se necessário, desinfetar com <i>candeggina</i> (água sanitária) antes e depois.","Não entrar no laboratório <b>sem o professor</b>. Ler as instruções e as <b>schede di sicurezza</b>, avaliando os riscos.","Usar vestuário adequado (<b>jaleco, touca</b>) e qualquer outro DPI para evitar contato, inalação ou ingestão."])},
+  {t:"Regras do aluno: durante o experimento", h:
+    ul(["Evitar movimentos bruscos e comportamentos perigosos; <b>não se distrair</b>; não deixar livres passagens e saídas; não deixar um experimento <b>sem vigilância</b>.","Não comer, beber nem fumar; não pipetar com a boca; <b>não provar nem cheirar</b> reagentes.","Seguir os procedimentos padrão; usar com atenção a corrente elétrica e a chama do <b>bunsen</b> (deve ser <b>amarela</b> quando não está em uso).","Não abandonar material na bancada. No fim, <b>organizar tudo</b>, recolher os resíduos nos recipientes certos e <b>fechar</b> tomadas de água, corrente, gás e eletricidade."])}
+ ],
+ qs:[
+  Q("O que acontece com gotículas de aerosol de tamanho igual ou inferior a 150 µm?","Evaporam e deixam um núcleo seco em suspensão, que pode ser inalado e chegar aos alvéolos",["Depositam-se rapidamente e são levantadas com a poeira","São sempre retidas pelas luvas","Ficam apenas na bancada e não oferecem risco"],"Gotículas ≤ 150 µm evaporam e o núcleo seco fica em suspensão, podendo alcançar os alvéolos (ex.: M. tuberculosis). As maiores que 150 µm se depositam."),
+  Q("Como prevenir aerosol na centrifugação?","Usando tubos inquebráveis com tampa de rosca",["Abrindo os tubos durante a rotação","Soprando a amostra","Usando tubos sem tampa"],"Na centrifugação, a prevenção é usar tubos inquebráveis com tampa de rosca."),
+  Q("Como deve estar a chama do bunsen quando ele não está em uso?","Amarela",["Azul","Apagada com água","Vermelha intensa"],"Quando o bunsen não está em uso, a chama deve ficar amarela."),
+  Q("Qual produto pode ser usado para desinfetar a postazione?","Candeggina (água sanitária)",["Álcool de limpeza doméstico sem diluição","Água morna apenas","Detergente de louça seco"],"A bancada é limpa e, se necessário, desinfetada com candeggina antes e depois do experimento."),
+  Q("Qual é a prevenção indicada na homogeneização?","Stomacher com sacos porta-amostra",["Abrir os frascos no ar","Flambar a boca do tubo","Agitar com a tampa solta"],"Na homogeneização usa-se o stomacher com sacos porta-amostra para evitar aerosol."),
+  Q("O que acontece com gotículas maiores que 150 µm?","Depositam-se e podem ser levantadas com a poeira",["Evaporam completamente","Atravessam as luvas","Nunca causam infecção"],"As maiores que 150 µm se depositam e podem ser levantadas com a poeira, causando infecções das mucosas."),
+  Q("Como devem ser transferidas as amostras entre locais?","Em recipientes de dupla vedação estanque",["Em copos abertos","No bolso do jaleco","Em sacos de papel comuns"],"Na transferência de amostras usam-se recipientes de dupla vedação estanque e sacos apropriados.")
+ ]}
+];
+
+
+/* Perguntas adicionais elaboradas a partir das leituras de cada módulo */
+var EXTRA_QS = [
+[
+ Q("Quais agentes podem estar envolvidos em um risco de laboratório?","Agentes químicos, físicos e microbiológicos",["Apenas agentes químicos","Somente ruído e vibrações","Apenas equipamentos elétricos"],"A leitura define risco como agente químico, físico, microbiológico ou situação que possa causar dano."),
+ Q("O que pode acontecer com a vidraria submetida a esforço mecânico impróprio?","Pode quebrar e formar fragmentos cortantes",["Fica esterilizada automaticamente","Produz apenas ruído","Reduz o risco de implosão"],"A leitura recomenda não submeter o vidro a esforço mecânico impróprio."),
+ Q("Qual é um risco de equipamentos elétricos usados de forma inadequada?","Elettrocuzione, com queimaduras ou fulguração",["Apenas aerosol","Somente vibrações lombares","Deposição de gotículas"],"O uso impróprio de equipamentos elétricos pode causar queimaduras e fulguração.")
+],
+[
+ Q("Que efeitos as vibrações podem causar além de náusea e suor frio?","Vertigem, irritabilidade, distúrbios visuais e alterações musculoesqueléticas",["Somente queimaduras térmicas","Apenas implosão de recipientes","Somente intoxicação por ingestão"],"A leitura menciona reações neuropsíquicas, distúrbios visuais e alterações na coluna, falanges e ombro."),
+ Q("Quais partes do corpo podem ser prejudicadas por radiações ópticas e laser?","Visão, pele e órgãos internos",["Apenas unhas","Somente audição","Apenas tornozelos"],"Radiações UV, visíveis, infravermelhas e laser podem prejudicar o aparelho visual, a pele e órgãos internos."),
+ Q("O que é o inquinamento acustico?","Poluição sonora relacionada ao ruído",["Poluição das culturas por aspiração","Contaminação por aerosol","Uma forma de vibração lombar"],"A leitura associa o ruído ao inquinamento acustico e à legge 447 del 26/10/95.")
+],
+[
+ Q("Em quais formas físicas um agente químico pode aparecer?","Líquida, sólida ou aeriforme",["Somente líquida","Apenas em pó","Somente como microrganismo vivo"],"A leitura descreve agentes químicos líquidos, sólidos ou aeriformes."),
+ Q("Quais órgãos podem ser atingidos por substâncias químicas?","Bexiga, pulmões, sangue e fígado, entre outros",["Somente cabelo e unhas","Apenas ouvido externo","Somente ossos dos pés"],"A absorção, metabolização e eliminação podem envolver órgãos como bexiga, pulmões, sangue e fígado."),
+ Q("O que fazer diante dos efeitos agudos descritos na leitura?","Afastar-se imediatamente da área de risco",["Continuar o experimento sem avisar","Aumentar o tempo de exposição","Cheirar o reagente para identificá-lo"],"A leitura diz que os efeitos agudos exigem afastamento imediato da área de risco.")
+],
+[
+ Q("Qual é uma via de entrada de agentes químicos pelo sistema digestivo?","Ingestão pela boca",["Somente audição","Apenas vibração","Somente iluminação"],"A leitura define ingestão como entrada pela boca."),
+ Q("Qual fator ambiental pode condicionar a resposta a um agente?","Concentração da substância",["Cor da bancada","Número do módulo estudado","Marca do caderno"],"Entre os fatores ambientais estão concentração, microclima e presença de outros poluentes."),
+ Q("Que propriedades físico-químicas podem influenciar a resposta?","Estado físico, solubilidade e ação corrosiva ou irritante",["Somente a cor do recipiente","Apenas o nome comercial","Somente o horário da aula"],"A leitura lista estado físico, solubilidade e ação corrosiva/irritante como propriedades relevantes.")
+],
+[
+ Q("O que diferencia a exposição involuntária à exposição deliberada?","A involuntária é potencial e ligada a fontes incontroláveis; a deliberada é voluntária",["A involuntária só ocorre com ruído","A deliberada nunca envolve microrganismos","Não há diferença entre elas"],"A leitura distingue uso deliberado voluntário de exposição involuntária potencial a fontes incontroláveis."),
+ Q("Quais exemplos são citados como fontes de risco biológico?","Sangue, tecidos, excreções, culturas celulares e microrganismos",["Somente cabos elétricos","Apenas lâmpadas e ruído","Somente vidro intacto"],"A leitura inclui tecidos, sangue, excreções, culturas e microrganismos entre fontes potenciais."),
+ Q("O risco biológico pode afetar além dos seres humanos?","Sim, também animais, plantas e o ambiente",["Não, apenas seres humanos","Somente equipamentos","Apenas a qualidade da iluminação"],"A definição inclui saúde humana, animais, plantas e danos indiretos ao ambiente.")
+],
+[
+ Q("Quantos fatores de risco são considerados na avaliação apresentada no módulo?","11 fatores",["4 fatores","7 fatores","25 fatores"],"O módulo resume a avaliação em 11 fatores e apresenta quatro grupos de agentes biológicos."),
+ Q("Quantos grupos de risco de agentes biológicos são apresentados?","Quatro grupos",["Dois grupos","Três grupos","Onze grupos"],"A leitura organiza os agentes biológicos em quatro grupos de risco."),
+ Q("Por que avaliar o risco antes da atividade?","Para identificar perigos e considerar as condições que influenciam a exposição",["Para dispensar os procedimentos de segurança","Para eliminar a necessidade de instruções","Apenas para contar equipamentos"],"A avaliação organiza os fatores relevantes para reconhecer e controlar os riscos antes da atividade.")
+],
+[
+ Q("O que indicam os níveis de biossegurança?","O nível de contenção e as medidas de proteção adequadas ao risco",["A nota escolar do aluno","A temperatura do laboratório","A quantidade de perguntas do quiz"],"O módulo apresenta níveis de biossegurança de 1 a 4 e barreiras primárias."),
+ Q("Qual é a função dos DPI?","Reduzir a exposição do trabalhador a riscos",["Substituir todos os procedimentos de segurança","Eliminar a necessidade de treinamento","Aumentar a concentração de agentes"],"Os DPI são barreiras de proteção e incluem equipamentos adequados ao risco."),
+ Q("Qual faixa de níveis de biossegurança é estudada no módulo?","Níveis 1 a 4",["Níveis 1 a 2 apenas","Níveis 5 a 8","Níveis 10 a 14"],"A leitura aborda os níveis de biossegurança 1, 2, 3 e 4.")
+],
+[
+ Q("Quem deve autorizar ou acompanhar a entrada do aluno no laboratório?","O professor; não se deve entrar sem ele",["Qualquer visitante sem orientação","Ninguém precisa acompanhar","Somente outro aluno"],"As regras do laboratório exigem não entrar sem o professor."),
+ Q("O que deve ser consultado antes de realizar o experimento?","Instruções e schede di sicurezza, avaliando os riscos",["Apenas o título do experimento","Somente a lista de notas","Nenhuma informação prévia"],"A leitura exige ler as instruções e as fichas de segurança e avaliar os riscos."),
+ Q("Qual comportamento é proibido no laboratório de microbiologia?","Comer, beber, fumar ou pipetar com a boca",["Usar os procedimentos padrão","Recolher resíduos nos recipientes corretos","Lavar as mãos ao final"],"A leitura proíbe comer, beber, fumar e pipetar com a boca.")
+],
+[
+ Q("Por que os armários de reagentes podem precisar de ventilação?","Para armazenar reagentes de forma adequada, com armários ventilados ou aspirados conforme o material",["Para manter todos os reagentes misturados","Para dispensar etiquetas de segurança","Para substituir os equipamentos de emergência"],"O módulo prevê armários ventilados para reagentes e aspirados/refrigerados para solventes e inflamáveis."),
+ Q("Qual é uma medida de emergência prevista para o laboratório?","Chuveiro de emergência e lava-olhos",["Ventilador doméstico como único recurso","Porta trancada sem saída","Armazenar todos os resíduos na bancada"],"A lista de segurança inclui chuveiro de emergência, lava-olhos e caixa de primeiros socorros."),
+ Q("Como devem ser mantidos os cilindros de gás?","Em depósito isolado, com movimentação segura e identificação do gás",["Juntos sem identificação","Transportados manualmente de qualquer forma","Com conexões intercambiáveis sem distinção"],"A leitura recomenda depósito isolado, carrinhos, identificação por faixas coloridas e roscas diferentes.")
+],
+[
+ Q("Como devem ser transferidas amostras potencialmente contaminadas?","Em recipientes de dupla vedação estanque e sacos apropriados",["Em recipientes abertos","Em bolsos do jaleco","Em copos sem tampa"],"A leitura recomenda recipientes de dupla vedação estanque e sacos apropriados."),
+ Q("Qual é a forma indicada para pipetar?","Usar micropipetas com ponteiras descartáveis e aspiradores",["Pipetar com a boca","Soprar diretamente na amostra","Usar recipientes sem tampa em qualquer situação"],"A prevenção de aerosol na pipetagem usa micropipetas com ponteiras descartáveis e aspiradores a vácuo."),
+ Q("O que deve ser feito com resíduos ao terminar o experimento?","Colocá-los nos recipientes corretos, organizar a bancada e fechar água, gás e eletricidade",["Deixá-los na bancada","Levá-los em recipientes abertos","Misturar todos os resíduos"],"As regras finais pedem organizar o material, recolher resíduos corretamente e fechar as utilidades.")
+]
+];
+M.forEach(function(m, i){ m.qs = m.qs.concat(EXTRA_QS[i] || []); });
+
+/* ---------- Estado e armazenamento ---------- */
+var KEY = "sicurezza-lab-progress-v2";
+var st = {unlocked:0, cur:0, xp:0, view:"home", step:0, qi:0, order:[], sel:null, tries:0, gained:0, first:false, pool:{}, last:{}, confirmReset:false};
+try {
+  var s0 = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (s0 && typeof s0.unlocked === "number") {
+    st.unlocked = Math.max(0, Math.min(s0.unlocked, M.length));
+    st.cur = Math.max(0, Math.min(Number(s0.cur) || 0, M.length - 1));
+    st.xp = typeof s0.xp === "number" ? s0.xp : 0;
+    st.step = Math.max(0, Math.min(Number(s0.step) || 0, M[st.cur].steps.length - 1));
+    st.view = ["home","lesson","quiz","done","all"].indexOf(s0.view) >= 0 ? s0.view : "home";
+    if (st.view === "lesson" && st.step >= M[st.cur].steps.length) st.step = 0;
+    st.qi = Math.max(0, Math.min(Number(s0.qi) || 0, M[st.cur].qs.length - 1));
+    st.order = Array.isArray(s0.order) ? s0.order.filter(function(x){return Number.isInteger(x) && x >= 0 && x < M[st.cur].qs[st.qi].o.length;}) : [];
+    st.sel = Number.isInteger(s0.sel) ? s0.sel : null;
+    st.tries = Math.max(0, Number(s0.tries) || 0);
+    st.gained = Math.max(0, Number(s0.gained) || 0);
+    st.first = !!s0.first;
+    st.pool = s0.pool && typeof s0.pool === "object" ? s0.pool : {};
+    st.last = s0.last && typeof s0.last === "object" ? s0.last : {};
+  }
+} catch (e) { st.view = "home"; }
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify({unlocked:st.unlocked,cur:st.cur,xp:st.xp,view:st.view,step:st.step,qi:st.qi,order:st.order,sel:st.sel,tries:st.tries,gained:st.gained,first:st.first,pool:st.pool,last:st.last})); }
+  catch (e) { console.warn("Não foi possível salvar o progresso neste navegador.", e); }
+}
+
+var app = document.getElementById("app");
+
+/* ---------- Ícones e sinais ---------- */
+var ICON = {
+  x:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/></svg>',
+  star:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg>',
+  check:'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 018 0v2.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>'
+};
+var SIGNS = {
+  w:'<polygon points="24,5 45,41 3,41" fill="var(--s-yellow)" stroke="#1b2631" stroke-width="3" stroke-linejoin="round"/><rect x="22.2" y="17" width="3.6" height="13" rx="1.6" fill="#1b2631"/><circle cx="24" cy="35" r="2.3" fill="#1b2631"/>',
+  m:'<circle cx="24" cy="24" r="21" fill="var(--s-blue)"/><path d="M14 25l7 7 13-15" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>',
+  p:'<circle cx="24" cy="24" r="18" fill="none" stroke="var(--s-red)" stroke-width="6"/><line x1="11.5" y1="11.5" x2="36.5" y2="36.5" stroke="var(--s-red)" stroke-width="6" stroke-linecap="round"/>',
+  s:'<rect x="4" y="4" width="40" height="40" rx="7" fill="var(--s-green)"/><path d="M24 12v24M12 24h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/>'
+};
+function sign(t){ return '<svg class="sign" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + SIGNS[t] + '</svg>'; }
+function kindPill(m){ return '<span class="kind k-' + m.s + '">' + KIND[m.s] + '</span>'; }
+
+/* ---------- Utilidades ---------- */
+function shuffle(a){ for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function range(n){ var r = []; for (var i = 0; i < n; i++) r.push(i); return r; }
+function go(view){ st.view = view; save(); render(); window.scrollTo(0, 0); }
+function $(sel){ return app.querySelector(sel); }
+
+/* Banco de perguntas: cada tentativa mostra uma pergunta diferente da anterior */
+function pickQuestion(mi){
+  var n = M[mi].qs.length;
+  var p = st.pool[mi];
+  if (!p || !p.length) {
+    p = shuffle(range(n));
+    if (n > 1 && p[p.length - 1] === st.last[mi]) { var t = p[0]; p[0] = p[p.length - 1]; p[p.length - 1] = t; }
+    st.pool[mi] = p;
+  }
+  var k = p.pop();
+  st.last[mi] = k;
+  return k;
+}
+
+function startModule(i){
+  st.cur = i; st.step = 0; st.tries = 0; st.pool[i] = null;
+  save(); go("lesson");
+}
+function openQuiz(){
+  var m = M[st.cur];
+  st.qi = pickQuestion(st.cur);
+  st.order = shuffle(range(m.qs[st.qi].o.length));
+  st.sel = null;
+  go("quiz");
+}
+
+/* ---------- Telas ---------- */
+function topbar(m, idx){
+  var total = m.steps.length + 1, segs = "";
+  for (var i = 0; i < total; i++) segs += '<i class="' + (i < idx ? "on" : i === idx ? "now" : "") + '"></i>';
+  return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="Sair para a trilha">' + ICON.x + '</button><div class="segs" role="progressbar" aria-valuemin="1" aria-valuemax="' + total + '" aria-valuenow="' + (idx + 1) + '" aria-label="Etapa ' + (idx + 1) + ' de ' + total + '">' + segs + '</div></div></div>';
+}
+
+function renderHome(){
+  var all = st.unlocked >= M.length;
+  var n = Math.min(st.unlocked, M.length);
+  var pct = Math.round(n / M.length * 100);
+  var nxt = Math.min(st.unlocked, M.length - 1);
+  var cards = M.map(function(m, i){
+    var locked = i > st.unlocked, done = i < st.unlocked, cur = i === st.unlocked && !all;
+    var badge = done ? '<span class="badge">' + ICON.check + '</span>' : locked ? '<span class="badge lock">' + ICON.lock + '</span>' : "";
+    var status = done ? "Revisar" : cur ? "Continuar" : "";
+    var label = "Módulo " + (i + 1) + ": " + m.t + (locked ? " (bloqueado)" : done ? " (concluído)" : "");
+    return '<button type="button" class="mod' + (done ? " done" : "") + (cur ? " cur" : "") + (locked ? " locked" : "") + '" data-i="' + i + '"' + (locked ? " disabled" : "") + ' aria-label="' + label + '">' +
+      '<span class="node">' + sign(m.s) + badge + '</span>' +
+      '<span class="mt">' + kindPill(m) + '<strong>' + m.t + '</strong><span class="meta">' + m.tag + '</span></span>' +
+      '<span class="st">' + status + '</span></button>';
+  }).join("");
+  var ctaLabel = all ? "Revisar do início" : st.unlocked === 0 ? "Começar" : "Continuar: módulo " + (nxt + 1);
+  app.innerHTML =
+    '<div class="wrap hero">' +
+      '<p class="kicker">Material de estudo de Scienze</p>' +
+      '<h1>Sicurezza nei laboratori scolastici</h1>' +
+      '<p class="sub">Aprenda em etapas curtas. Acerte a pergunta de cada módulo para abrir o próximo. Os termos em italiano ficam como na prova.</p>' +
+      '<div class="stats"><span class="pill">' + ICON.star + st.xp + ' XP</span><span class="pill">' + n + ' de ' + M.length + ' módulos</span></div>' +
+      '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-label="Progresso geral"><i style="width:' + pct + '%"></i></div>' +
+    '</div>' +
+    '<div class="wrap path">' + cards + '</div>' +
+    ((st.unlocked > 0 || st.xp > 0) ? '<div class="wrap foot"><button type="button" class="btn ghost" id="reset">' + (st.confirmReset ? "Toque de novo para confirmar" : "Zerar progresso") + '</button></div>' : "") +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="cta">' + ctaLabel + '</button></div></div>';
+  app.querySelectorAll(".mod").forEach(function(b){
+    b.onclick = function(){ startModule(parseInt(b.getAttribute("data-i"), 10)); };
+  });
+  $("#cta").onclick = function(){ startModule(all ? 0 : nxt); };
+  var rs = $("#reset");
+  if (rs) rs.onclick = function(){
+    if (!st.confirmReset) { st.confirmReset = true; renderHome(); return; }
+    st.confirmReset = false; st.unlocked = 0; st.cur = 0; st.xp = 0; st.pool = {}; st.last = {}; st.view = "home"; st.step = 0; st.tries = 0; st.sel = null; save(); renderHome();
+  };
+}
+
+function renderLesson(){
+  var m = M[st.cur], step = m.steps[st.step];
+  var lastStep = st.step === m.steps.length - 1;
+  app.innerHTML =
+    topbar(m, st.step) +
+    '<div class="wrap body">' +
+      '<p class="crumb">' + kindPill(m) + '<span>Módulo ' + (st.cur + 1) + ': ' + m.t + '</span></p>' +
+      '<h2>' + step.t + '</h2>' +
+      '<div class="stack">' + step.h + '</div>' +
+    '</div>' +
+    '<div class="bar"><div class="wrap">' +
+      (st.step > 0 ? '<button type="button" class="btn" id="back">Voltar</button>' : "") +
+      '<button type="button" class="btn primary wide" id="next">' + (lastStep ? "Ir para a pergunta" : "Continuar") + '</button>' +
+    '</div></div>';
+  $("#exit").onclick = function(){ go("home"); };
+  var bk = $("#back");
+  if (bk) bk.onclick = function(){ st.step--; save(); render(); window.scrollTo(0, 0); };
+  $("#next").onclick = function(){
+    if (lastStep) openQuiz(); else { st.step++; save(); render(); window.scrollTo(0, 0); }
+  };
+}
+
+function renderQuiz(){
+  var m = M[st.cur], q = m.qs[st.qi];
+  var opts = st.order.map(function(oi, pos){
+    return '<button type="button" class="opt" data-pos="' + pos + '"><span class="l">' + "ABCD".charAt(pos) + '</span><span>' + q.o[oi] + '</span></button>';
+  }).join("");
+  app.innerHTML =
+    topbar(m, m.steps.length) +
+    '<div class="wrap body">' +
+      '<p class="crumb">' + kindPill(m) + '<span>Pergunta do módulo ' + (st.cur + 1) + '</span></p>' +
+      '<h2 class="q">' + q.p + '</h2>' +
+      '<div class="opts" role="group" aria-label="Alternativas">' + opts + '</div>' +
+    '</div>' +
+    '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>Verificar</button></div></div>';
+  $("#exit").onclick = function(){ go("home"); };
+  var btns = app.querySelectorAll(".opt");
+  if (st.sel !== null && st.sel < btns.length) { btns[st.sel].classList.add("sel"); btns[st.sel].setAttribute("aria-pressed", "true"); }
+  var verify = $("#verify");
+  verify.disabled = st.sel === null;
+  btns.forEach(function(b){
+    b.onclick = function(){
+      st.sel = parseInt(b.getAttribute("data-pos"), 10); save();
+      btns.forEach(function(x){ x.classList.remove("sel"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("sel"); b.setAttribute("aria-pressed", "true");
+      verify.disabled = false;
+    };
+  });
+  verify.onclick = function(){
+    if (st.sel === null) return;
+    var okPos = st.order.indexOf(q.c);
+    var ok = st.sel === okPos;
+    btns.forEach(function(x, i){
+      x.disabled = true; x.classList.remove("sel");
+      if (i === okPos) x.classList.add("right");
+      else if (i === st.sel) x.classList.add("wrong");
+    });
+    var bar = $("#bar");
+    if (ok) {
+      st.first = st.cur >= st.unlocked;
+      st.gained = 0;
+      if (st.first) { st.unlocked = st.cur + 1; st.gained = st.tries === 0 ? 20 : 10; st.xp += st.gained; }
+      save();
+      bar.className = "bar sheet ok";
+      bar.setAttribute("role", "status");
+      bar.innerHTML = '<div class="wrap"><div><strong>Correto!</strong><p>' + q.e + '</p></div><div class="row"><button type="button" class="btn good wide" id="go">Continuar</button></div></div>';
+      $("#go").onclick = function(){
+        if (st.cur === M.length - 1 && st.first) go("all"); else go("done");
+      };
+      $("#go").focus();
+    } else {
+      st.tries++; save();
+      bar.className = "bar sheet no";
+      bar.setAttribute("role", "status");
+      bar.innerHTML = '<div class="wrap"><div><strong>Não foi dessa vez.</strong><p><b>Resposta certa:</b> ' + q.o[q.c] + '. ' + q.e + '</p></div><div class="row"><button type="button" class="btn bad wide" id="again">Tentar outra pergunta</button><button type="button" class="btn" id="reread">Reler o módulo</button></div></div>';
+      $("#again").onclick = function(){ openQuiz(); };
+      $("#reread").onclick = function(){ st.step = 0; go("lesson"); };
+      $("#again").focus();
+    }
+  };
+}
+
+function renderDone(){
+  var m = M[st.cur];
+  var last = st.cur >= M.length - 1;
+  app.innerHTML =
+    '<div class="wrap body center">' +
+      sign(m.s) +
+      '<h2>' + (st.first ? "Módulo concluído!" : "Revisão concluída!") + '</h2>' +
+      (st.first ? '<span class="xp">' + ICON.star + '+' + st.gained + ' XP</span>' : "") +
+      '<p class="lead">' + (st.first ? (st.tries === 0 ? "Acertou de primeira. O próximo módulo está liberado." : "O próximo módulo está liberado.") : "Bom trabalho revisando " + m.t + ".") + '</p>' +
+    '</div>' +
+    '<div class="bar"><div class="wrap">' +
+      '<button type="button" class="btn" id="home">Trilha</button>' +
+      (!last ? '<button type="button" class="btn primary wide" id="nx">Próximo módulo</button>' : '<button type="button" class="btn primary wide" id="nx">Ver resumo final</button>') +
+    '</div></div>';
+  $("#home").onclick = function(){ go("home"); };
+  $("#nx").onclick = function(){ if (last) go("all"); else if (st.cur + 1 <= st.unlocked) startModule(st.cur + 1); else go("home"); };
+}
+
+function renderAll(){
+  app.innerHTML =
+    '<div class="wrap body center">' +
+      sign("s") +
+      '<h2>Você concluiu os 10 módulos</h2>' +
+      '<p class="lead">Antes da prova, releia os pontos marcados como Decorar e estes números:</p>' +
+      '<div class="recap">' +
+        '<div><b>70 m²</b>superfície ar-sangue nos pulmões</div>' +
+        '<div><b>150 µm</b>limite de tamanho do aerosol</div>' +
+        '<div><b>1,20 m</b>corredor entre bancadas</div>' +
+        '<div><b>3/4</b>máximo de enchimento do freezer</div>' +
+        '<div><b>25 L</b>autoclaves em local reservado</div>' +
+        '<div><b>Legge 447/95</b>inquinamento acustico</div>' +
+        '<div><b>Allegati XI e XII</b>D.Lgs. 626/94</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="bar"><div class="wrap">' +
+      '<button type="button" class="btn" id="home">Trilha</button>' +
+      '<button type="button" class="btn primary wide" id="rev">Revisar do início</button>' +
+    '</div></div>';
+  $("#home").onclick = function(){ go("home"); };
+  $("#rev").onclick = function(){ startModule(0); };
+}
+
+function render(){
+  if (st.view === "lesson") renderLesson();
+  else if (st.view === "quiz") renderQuiz();
+  else if (st.view === "done") renderDone();
+  else if (st.view === "all") renderAll();
+  else { st.confirmReset = false; renderHome(); }
+}
+
+/* ---------- Assistente de IA ---------- */
+// Depois de publicar o backend (por exemplo, no Render), coloque aqui a URL pública dele.
+// Exemplo: https://meu-projeto-api.onrender.com (sem barra no final).
+var AI_API_BASE = "https://SUA-API-NO-RENDER.onrender.com";
+(function initAIAssistant(){
+  var root = document.getElementById("ai-assistant-root");
+  if (!root) return;
+  root.innerHTML = '<button class="ai-launch" id="ai-launch" type="button" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a7 7 0 00-7 7v3a3 3 0 003 3h1v-6H8a4 4 0 018 0h-1v6h1a3 3 0 003-3v-3a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.8"/><path d="M9 20h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Assistente IA</button>' +
+    '<section class="ai-panel" id="ai-panel" aria-label="Assistente de segurança em laboratório" aria-hidden="true">' +
+      '<header class="ai-head"><div class="ai-avatar">✦</div><div class="ai-head-copy"><strong>Assistente de laboratório</strong><small>Respostas baseadas nas leituras</small></div><button class="ai-close" id="ai-close" aria-label="Fechar assistente" type="button">×</button></header>' +
+      '<div class="ai-controls"><select id="ai-module" aria-label="Módulo de referência"><option value="-1">Todos os módulos</option>' + M.map(function(m,i){return '<option value="'+i+'">Módulo '+(i+1)+' — '+m.t+'</option>';}).join('') + '</select></div>' +
+      '<div class="ai-messages" id="ai-messages" aria-live="polite"><div class="ai-msg bot">Olá! Posso explicar os conceitos das leituras, comparar definições ou ajudar você a revisar para a prova. Escolha um módulo e faça sua pergunta.</div></div>' +
+      '<form class="ai-compose" id="ai-form"><textarea id="ai-question" rows="1" maxlength="1200" placeholder="Pergunte sobre o conteúdo..." required></textarea><button class="ai-send" id="ai-send" type="submit" aria-label="Enviar pergunta">➤</button></form>' +
+      '<div class="ai-note">A IA pode errar. Confira as informações no material e siga sempre as orientações do professor.</div>' +
+    '</section>';
+  var launch=root.querySelector('#ai-launch'), panel=root.querySelector('#ai-panel'), close=root.querySelector('#ai-close'), form=root.querySelector('#ai-form'), input=root.querySelector('#ai-question'), messages=root.querySelector('#ai-messages'), select=root.querySelector('#ai-module'), send=root.querySelector('#ai-send');
+  function toggle(open){panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launch.setAttribute('aria-expanded',String(open));if(open) input.focus();}
+  launch.addEventListener('click',function(){toggle(!panel.classList.contains('open'));});
+  close.addEventListener('click',function(){toggle(false);launch.focus();});
+  function addMessage(text,who,extra){var d=document.createElement('div');d.className='ai-msg '+who+(extra?' '+extra:'');d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight;return d;}
+  function readingText(module){
+    var chosen=module<0?M:[M[module]];
+    return chosen.map(function(m,i){return 'MÓDULO '+(module<0?i+1:module+1)+': '+m.t+'\n'+m.steps.map(function(s){var tmp=document.createElement('div');tmp.innerHTML=s.h;return s.t+'\n'+tmp.textContent.replace(/\s+/g,' ').trim();}).join('\n');}).join('\n\n');
+  }
+  form.addEventListener('submit',async function(ev){
+    ev.preventDefault(); var question=input.value.trim(); if(!question)return;
+    var mod=parseInt(select.value,10); addMessage(question,'user'); input.value=''; send.disabled=true;
+    var pending=addMessage('Pensando na leitura...','bot');
+    try{
+      var response=await fetch(AI_API_BASE.replace(/\/$/,'')+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question,module:mod,context:readingText(mod)})});
+      var data=await response.json();
+      if(!response.ok) throw new Error(data.error||'Não foi possível consultar a assistente.');
+      pending.textContent=data.answer||'Não recebi uma resposta. Tente novamente.';
+    }catch(err){pending.classList.add('error');pending.textContent='Não consegui conectar à IA. '+(AI_API_BASE.includes('SUA-API-NO-RENDER')?'Configure a URL do backend no início do código da assistente. ':'')+(err.message||'Verifique o servidor e a configuração da GROQ_API_KEY.');}
+    finally{send.disabled=false;messages.scrollTop=messages.scrollHeight;input.focus();}
+  });
+})();
+
+render();
+</script>
+</body>
+</html>
