@@ -6,20 +6,15 @@ const path = require('node:path');
 const PORT = Number(process.env.PORT || 3000);
 const API_KEY = process.env.GROQ_API_KEY;
 
-// Origem do site que o navegador está acessando.
 const ALLOWED_ORIGIN = (
   process.env.ALLOWED_ORIGIN ||
   'https://estudar-kp6f.onrender.com'
 ).replace(/\/+$/, '');
 
-// Endereço do backend.
-const AI_API_BASE = 'https://estudar-kp6f.onrender.com';
-
-const HTML = path.join(__dirname, 'index.html');
-const MAX_BODY = 24 * 1024;
-
-// Modelo padrão da Groq.
 const MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
+const HTML = path.join(__dirname, 'index.html');
+
+const MAX_BODY = 24 * 1024;
 
 let windowStart = Date.now();
 let requestCount = 0;
@@ -46,14 +41,8 @@ function send(
 function cors(req, res) {
   const origin = (req.headers.origin || '').replace(/\/+$/, '');
 
-  // Permite requisições sem Origin, como alguns acessos diretos.
   if (!origin) return true;
-
-  if (origin !== ALLOWED_ORIGIN) {
-    console.warn('Origem bloqueada:', origin);
-    console.warn('Origem permitida:', ALLOWED_ORIGIN);
-    return false;
-  }
+  if (origin !== ALLOWED_ORIGIN) return false;
 
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
   res.setHeader('Vary', 'Origin');
@@ -101,7 +90,7 @@ const server = http.createServer(async (req, res) => {
     'http://' + (req.headers.host || 'localhost')
   );
 
-  // Preflight do navegador para CORS.
+  // Permite as requisições CORS do navegador.
   if (url.pathname === '/api/chat' && req.method === 'OPTIONS') {
     if (!cors(req, res)) {
       return send(res, 403, {
@@ -113,7 +102,7 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
-  // Página inicial.
+  // Página principal.
   if (
     req.method === 'GET' &&
     (url.pathname === '/' || url.pathname === '/index.html')
@@ -125,8 +114,8 @@ const server = http.createServer(async (req, res) => {
         fs.readFileSync(HTML, 'utf8'),
         'text/html; charset=utf-8'
       );
-    } catch (error) {
-      console.error('Erro ao abrir index.html:', error.message);
+    } catch (e) {
+      console.error('Erro ao abrir index.html:', e.message);
 
       return send(res, 500, {
         error: 'Não foi possível abrir index.html.'
@@ -134,7 +123,7 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // Verificação do backend.
+  // Verificação do servidor.
   if (req.method === 'GET' && url.pathname === '/health') {
     return send(res, 200, {
       status: 'ok',
@@ -144,7 +133,7 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
-  // Endpoint de chat com a IA.
+  // Assistente de inteligência artificial.
   if (req.method === 'POST' && url.pathname === '/api/chat') {
     if (!cors(req, res)) {
       return send(res, 403, {
@@ -158,7 +147,7 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // Limite de 25 perguntas por minuto.
+    // Limite de 25 requisições por minuto.
     if (Date.now() - windowStart > 60000) {
       windowStart = Date.now();
       requestCount = 0;
@@ -174,9 +163,9 @@ const server = http.createServer(async (req, res) => {
 
     try {
       body = await readBody(req);
-    } catch (error) {
+    } catch (e) {
       return send(res, 400, {
-        error: error.message || 'Pedido inválido.'
+        error: e.message || 'Pedido inválido.'
       });
     }
 
@@ -186,6 +175,8 @@ const server = http.createServer(async (req, res) => {
 
     const context = String(body.context || '')
       .slice(0, 16000);
+
+    const mode = body.mode === 'hint' ? 'hint' : 'study';
 
     if (!question) {
       return send(res, 400, {
@@ -199,35 +190,64 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
+    // Prompt para dúvidas gerais sobre a matéria.
+    const studyPrompt =
+      'Você é uma assistente didática de segurança em laboratórios escolares. ' +
+      'Responda em português claro e objetivo. ' +
+      'Baseie-se prioritariamente no texto de leitura, não invente fatos ' +
+      'e diga quando o material não trouxer a resposta. ' +
+      'Em temas de segurança, respeite os procedimentos, o professor ' +
+      'e os equipamentos de proteção.';
+
+    // Prompt para dar dicas sem entregar a resposta do quiz.
+    const hintPrompt =
+      'Você é uma tutora que ajuda o estudante a entender uma questão ' +
+      'de múltipla escolha sem revelar a resposta. O estudante está em um quiz. ' +
+      'NUNCA diga a alternativa correta, não copie a resposta correta do material, ' +
+      'não identifique letras/opções, não elimine explicitamente todas as ' +
+      'alternativas erradas e não resolva a questão por ele. ' +
+      'Primeiro reexplique a pergunta em linguagem mais simples; ' +
+      'depois explique no máximo 1 ou 2 conceitos relevantes; ' +
+      'termine com uma pista gradual ou uma pergunta orientadora ' +
+      'que faça o aluno pensar. ' +
+      'Se o estudante insistir em pedir a resposta, recuse gentilmente ' +
+      'e ofereça outra pista. Use apenas o texto de leitura e não invente conteúdo.';
+
     try {
       const response = await fetch(
         'https://api.groq.com/openai/v1/chat/completions',
         {
           method: 'POST',
+
           headers: {
             Authorization: 'Bearer ' + API_KEY,
             'Content-Type': 'application/json'
           },
+
           body: JSON.stringify({
             model: MODEL,
-            temperature: 0.25,
-            max_tokens: 700,
+
+            temperature: mode === 'hint' ? 0.35 : 0.25,
+
+            max_tokens: mode === 'hint' ? 350 : 700,
+
             messages: [
               {
                 role: 'system',
-                content:
-                  'Você é uma assistente didática de segurança em laboratórios escolares. ' +
-                  'Responda em português claro e objetivo. Baseie as respostas prioritariamente ' +
-                  'no texto de leitura. Não invente fatos. Se o material não contiver a resposta, ' +
-                  'diga isso explicitamente. Em temas de segurança, respeite os procedimentos, ' +
-                  'o professor e os equipamentos de proteção.'
+                content: mode === 'hint' ? hintPrompt : studyPrompt
               },
               {
                 role: 'user',
+
                 content:
                   'TEXTO DE LEITURA:\n' +
                   context +
-                  '\n\nPERGUNTA DO ESTUDANTE:\n' +
+                  '\n\n' +
+                  (
+                    mode === 'hint'
+                      ? 'DÚVIDA SOBRE A QUESTÃO (não revele a resposta):\n'
+                      : 'PERGUNTA DO ESTUDANTE:\n'
+                  ) +
                   question
               }
             ]
@@ -248,9 +268,11 @@ const server = http.createServer(async (req, res) => {
           message
         );
 
-        return send(res, response.status === 429 ? 429 : 502, {
-          error: message
-        });
+        return send(
+          res,
+          response.status === 429 ? 429 : 502,
+          { error: message }
+        );
       }
 
       const answer = data.choices?.[0]?.message?.content;
@@ -262,11 +284,16 @@ const server = http.createServer(async (req, res) => {
       }
 
       return send(res, 200, {
-        answer: String(answer).slice(0, 9000),
-        model: MODEL
+        answer: String(answer).slice(
+          0,
+          mode === 'hint' ? 3000 : 9000
+        ),
+        model: MODEL,
+        mode
       });
-    } catch (error) {
-      console.error('Erro ao acessar a Groq:', error.message);
+
+    } catch (e) {
+      console.error('Erro ao acessar a Groq:', e.message);
 
       return send(res, 502, {
         error: 'Falha ao acessar a Groq. Confira a conexão e a chave.'
@@ -274,6 +301,7 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // Qualquer rota não reconhecida.
   return send(res, 404, {
     error: 'Rota não encontrada.'
   });
@@ -282,6 +310,5 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log('Backend iniciado na porta ' + PORT);
   console.log('Origem autorizada: ' + ALLOWED_ORIGIN);
-  console.log('Backend configurado: ' + AI_API_BASE);
   console.log('Modelo configurado: ' + MODEL);
 });
