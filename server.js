@@ -1,7 +1,5 @@
-```javascript
 // Backend Groq para implantação no Render.
-// Configure GROQ_API_KEY nas variáveis de ambiente.
-// O frontend autorizado é definido por ALLOWED_ORIGIN.
+// Configure GROQ_API_KEY e ALLOWED_ORIGIN nas variáveis de ambiente.
 
 const http = require('node:http');
 const fs = require('node:fs');
@@ -36,12 +34,13 @@ function send(res, status, obj, type = 'application/json; charset=utf-8') {
   );
 }
 
-// CORS: permite somente a origem configurada.
+// Configuração de CORS.
 function cors(req, res) {
   const origin = (req.headers.origin || '').replace(/\/+$/, '');
 
-  // Requisições sem Origin não são requisições CORS de navegador.
-  if (!origin) return true;
+  if (!origin) {
+    return true;
+  }
 
   if (origin !== ALLOWED_ORIGIN) {
     return false;
@@ -56,6 +55,7 @@ function cors(req, res) {
   return true;
 }
 
+// Lê e valida o corpo da requisição.
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let data = '';
@@ -88,13 +88,14 @@ function readBody(req) {
 }
 
 const server = http.createServer(async (req, res) => {
+  // URL construída sem template literal para evitar erro de cópia.
   const url = new URL(
     req.url,
-    `http://${req.headers.host || 'localhost'}`
+    'http://' + (req.headers.host || 'localhost')
   );
 
-  // Responder à verificação CORS do navegador.
-  if (url.pathname === '/api/chat' && req.method === 'OPTIONS') {
+  // Preflight CORS do navegador.
+  if (req.method === 'OPTIONS' && url.pathname === '/api/chat') {
     if (!cors(req, res)) {
       return send(res, 403, {
         error: 'Origem não autorizada.'
@@ -124,7 +125,7 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // API do assistente.
+  // Endpoint do assistente de IA.
   if (req.method === 'POST' && url.pathname === '/api/chat') {
     if (!cors(req, res)) {
       return send(res, 403, {
@@ -138,12 +139,15 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
+    // Limite simples de 25 perguntas por minuto.
     if (Date.now() - windowStart > 60_000) {
       windowStart = Date.now();
       requestCount = 0;
     }
 
-    if (++requestCount > 25) {
+    requestCount++;
+
+    if (requestCount > 25) {
       return send(res, 429, {
         error: 'Limite de 25 perguntas por minuto atingido. Aguarde um pouco.'
       });
@@ -180,7 +184,7 @@ const server = http.createServer(async (req, res) => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${API_KEY}`,
+            Authorization: 'Bearer ' + API_KEY,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -195,7 +199,11 @@ const server = http.createServer(async (req, res) => {
               },
               {
                 role: 'user',
-                content: `TEXTO DE LEITURA:\n${context}\n\nPERGUNTA DO ESTUDANTE:\n${question}`
+                content:
+                  'TEXTO DE LEITURA:\n' +
+                  context +
+                  '\n\nPERGUNTA DO ESTUDANTE:\n' +
+                  question
               }
             ]
           })
@@ -207,7 +215,7 @@ const server = http.createServer(async (req, res) => {
       if (!response.ok) {
         const message =
           (data.error && data.error.message) ||
-          `A Groq retornou HTTP ${response.status}.`;
+          'A Groq retornou HTTP ' + response.status + '.';
 
         return send(
           res,
@@ -232,6 +240,7 @@ const server = http.createServer(async (req, res) => {
         answer: String(answer).slice(0, 9000),
         model: MODEL
       });
+
     } catch (e) {
       console.error('Erro ao acessar a Groq:', e.message);
 
@@ -247,7 +256,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Backend Groq iniciado na porta ${PORT}`);
-  console.log(`Origem autorizada: ${ALLOWED_ORIGIN}`);
+  console.log('Backend Groq iniciado na porta ' + PORT);
+  console.log('Origem autorizada: ' + ALLOWED_ORIGIN);
 });
-```
