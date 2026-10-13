@@ -149,6 +149,7 @@ h2{margin:0;font-weight:900;font-size:clamp(26px,6vw,32px);line-height:1.15;text
 /* Perguntas */
 .q{font-size:clamp(22px,5vw,26px);line-height:1.3;font-weight:800}
 .opts{display:flex;flex-direction:column;gap:12px}
+.difficulty-list{gap:14px}.diff{min-height:76px;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left}.diff small{font-size:13px;font-weight:600;color:var(--muted)}
 .opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;font-weight:700;font-size:17px;line-height:1.4;color:var(--ink);background:var(--surface);border:2px solid var(--line);box-shadow:0 3px 0 var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
 .opt .l{width:30px;height:30px;border-radius:50%;border:2px solid var(--line-dark);display:grid;place-items:center;flex:none;font-size:14px;font-weight:800;color:var(--muted)}
 .opt span:last-child{min-width:0}
@@ -694,7 +695,7 @@ M.forEach(function(m, i){ m.qs = m.qs.concat(EXTRA_QS[i] || []); });
 
 /* ---------- Estado e armazenamento ---------- */
 var KEY = "sicurezza-lab-progress-v2";
-var st = {unlocked:0, cur:0, xp:0, view:"home", step:0, qi:0, order:[], sel:null, tries:0, gained:0, first:false, pool:{}, last:{}, confirmReset:false};
+var st = {unlocked:0, cur:0, xp:0, view:"home", step:0, qi:0, order:[], sel:null, tries:0, gained:0, first:false, pool:{}, last:{}, confirmReset:false, difficulty:"easy", quizCount:0, correctCount:0};
 try {
   var s0 = JSON.parse(localStorage.getItem(KEY) || "null");
   if (s0 && typeof s0.unlocked === "number") {
@@ -702,7 +703,10 @@ try {
     st.cur = Math.max(0, Math.min(Number(s0.cur) || 0, M.length - 1));
     st.xp = typeof s0.xp === "number" ? s0.xp : 0;
     st.step = Math.max(0, Math.min(Number(s0.step) || 0, M[st.cur].steps.length - 1));
-    st.view = ["home","lesson","quiz","done","all"].indexOf(s0.view) >= 0 ? s0.view : "home";
+    st.view = ["home","lesson","difficulty","quiz","done","all"].indexOf(s0.view) >= 0 ? s0.view : "home";
+    st.difficulty = ["easy","medium","hard"].indexOf(s0.difficulty) >= 0 ? s0.difficulty : "easy";
+    st.quizCount = Math.max(0, Number(s0.quizCount) || 0);
+    st.correctCount = Math.max(0, Number(s0.correctCount) || 0);
     if (st.view === "lesson" && st.step >= M[st.cur].steps.length) st.step = 0;
     st.qi = Math.max(0, Math.min(Number(s0.qi) || 0, M[st.cur].qs.length - 1));
     st.order = Array.isArray(s0.order) ? s0.order.filter(function(x){return Number.isInteger(x) && x >= 0 && x < M[st.cur].qs[st.qi].o.length;}) : [];
@@ -715,7 +719,7 @@ try {
   }
 } catch (e) { st.view = "home"; }
 function save(){
-  try { localStorage.setItem(KEY, JSON.stringify({unlocked:st.unlocked,cur:st.cur,xp:st.xp,view:st.view,step:st.step,qi:st.qi,order:st.order,sel:st.sel,tries:st.tries,gained:st.gained,first:st.first,pool:st.pool,last:st.last})); }
+  try { localStorage.setItem(KEY, JSON.stringify({unlocked:st.unlocked,cur:st.cur,xp:st.xp,view:st.view,step:st.step,qi:st.qi,order:st.order,sel:st.sel,tries:st.tries,gained:st.gained,first:st.first,pool:st.pool,last:st.last,difficulty:st.difficulty,quizCount:st.quizCount,correctCount:st.correctCount})); }
   catch (e) { console.warn("Não foi possível salvar o progresso neste navegador.", e); }
 }
 
@@ -743,30 +747,34 @@ function range(n){ var r = []; for (var i = 0; i < n; i++) r.push(i); return r; 
 function go(view){ st.view = view; save(); render(); window.scrollTo(0, 0); }
 function $(sel){ return app.querySelector(sel); }
 
-/* Banco de perguntas: cada tentativa mostra uma pergunta diferente da anterior */
+/* Banco por dificuldade. As perguntas base vêm diretamente das leituras; as versões média/difícil pedem aplicação e análise do mesmo conceito. */
+function questionsFor(mi, level){
+  var base = M[mi].qs;
+  if (level === "easy") return base;
+  return base.map(function(q, idx){
+    var prefix = level === "medium"
+      ? "Situação prática: considerando as regras estudadas, "
+      : "Análise de caso: escolha a opção tecnicamente correta e mais coerente com a leitura — ";
+    return {p:prefix + q.p.charAt(0).toLowerCase() + q.p.slice(1), o:q.o.slice(), c:q.c, e:q.e, sourceIndex:idx};
+  });
+}
 function pickQuestion(mi){
-  var n = M[mi].qs.length;
-  var p = st.pool[mi];
+  var qs = questionsFor(mi, st.difficulty), key = mi + "-" + st.difficulty;
+  var p = st.pool[key];
   if (!p || !p.length) {
-    p = shuffle(range(n));
-    if (n > 1 && p[p.length - 1] === st.last[mi]) { var t = p[0]; p[0] = p[p.length - 1]; p[p.length - 1] = t; }
-    st.pool[mi] = p;
+    p = shuffle(range(qs.length));
+    if (qs.length > 1 && p[p.length - 1] === st.last[key]) { var t = p[0]; p[0] = p[p.length - 1]; p[p.length - 1] = t; }
+    st.pool[key] = p;
   }
-  var k = p.pop();
-  st.last[mi] = k;
-  return k;
+  var k = p.pop(); st.last[key] = k; return k;
 }
-
-function startModule(i){
-  st.cur = i; st.step = 0; st.tries = 0; st.pool[i] = null;
-  save(); go("lesson");
-}
+function startModule(i){ st.cur = i; st.step = 0; st.tries = 0; st.quizCount = 0; st.correctCount = 0; save(); go("lesson"); }
+function chooseDifficulty(){ st.view = "difficulty"; save(); render(); window.scrollTo(0,0); }
 function openQuiz(){
-  var m = M[st.cur];
+  var qs = questionsFor(st.cur, st.difficulty);
   st.qi = pickQuestion(st.cur);
-  st.order = shuffle(range(m.qs[st.qi].o.length));
-  st.sel = null;
-  go("quiz");
+  st.order = shuffle(range(qs[st.qi].o.length)); st.sel = null;
+  st.quizCount++; go("quiz");
 }
 
 /* ---------- Telas ---------- */
@@ -832,24 +840,40 @@ function renderLesson(){
   var bk = $("#back");
   if (bk) bk.onclick = function(){ st.step--; save(); render(); window.scrollTo(0, 0); };
   $("#next").onclick = function(){
-    if (lastStep) openQuiz(); else { st.step++; save(); render(); window.scrollTo(0, 0); }
+    if (lastStep) chooseDifficulty(); else { st.step++; save(); render(); window.scrollTo(0, 0); }
   };
 }
 
+function renderDifficulty(){
+  var m = M[st.cur];
+  app.innerHTML = topbar(m, m.steps.length) +
+    '<div class="wrap body"><p class="crumb">Módulo ' + (st.cur+1) + ': ' + m.t + '</p>' +
+    '<h2>Escolha a dificuldade</h2><p class="lead">Você pode trocar de nível quando quiser. Responda 5 perguntas corretamente para concluir o treino. As perguntas são sorteadas do banco do módulo.</p>' +
+    '<div class="stack difficulty-list">' +
+    '<button class="btn wide diff" data-level="easy">🟢 Fácil <small>Conceitos e definições diretas</small></button>' +
+    '<button class="btn wide diff" data-level="medium">🟡 Médio <small>Compreensão e aplicação em situações</small></button>' +
+    '<button class="btn wide diff" data-level="hard">🔴 Difícil <small>Análise de casos e distinção entre conceitos</small></button>' +
+    '</div></div><div class="bar"><div class="wrap"><button class="btn" id="backLesson">Voltar à leitura</button></div></div>';
+  $('#exit').onclick = function(){go('home');};
+  app.querySelectorAll('[data-level]').forEach(function(b){ b.onclick=function(){ st.difficulty=b.getAttribute('data-level'); st.tries=0; st.quizCount=0; st.correctCount=0; save(); openQuiz(); }; });
+  $('#backLesson').onclick=function(){st.step=0;go('lesson');};
+}
 function renderQuiz(){
-  var m = M[st.cur], q = m.qs[st.qi];
+  var m = M[st.cur], q = questionsFor(st.cur, st.difficulty)[st.qi];
   var opts = st.order.map(function(oi, pos){
     return '<button type="button" class="opt" data-pos="' + pos + '"><span class="l">' + "ABCD".charAt(pos) + '</span><span>' + q.o[oi] + '</span></button>';
   }).join("");
   app.innerHTML =
     topbar(m, m.steps.length) +
     '<div class="wrap body">' +
-      '<p class="crumb">' + kindPill(m) + '<span>Pergunta do módulo ' + (st.cur + 1) + '</span></p>' +
+      '<p class="crumb">' + kindPill(m) + '<span>Módulo ' + (st.cur + 1) + ' · ' + ({easy:'Fácil',medium:'Médio',hard:'Difícil'}[st.difficulty]) + ' · Pergunta ' + st.quizCount + '</span></p>' +
       '<h2 class="q">' + q.p + '</h2>' +
+      '<p><button type="button" class="btn ghost" id="hintAI">Não entendi — me dê uma dica da IA</button></p>' +
       '<div class="opts" role="group" aria-label="Alternativas">' + opts + '</div>' +
     '</div>' +
     '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>Verificar</button></div></div>';
   $("#exit").onclick = function(){ go("home"); };
+  var hintBtn = $("#hintAI"); if (hintBtn) hintBtn.onclick = function(){ window.dispatchEvent(new CustomEvent('quiz-hint-request', {detail:{question:q.p, module:st.cur, difficulty:st.difficulty}})); };
   var btns = app.querySelectorAll(".opt");
   if (st.sel !== null && st.sel < btns.length) { btns[st.sel].classList.add("sel"); btns[st.sel].setAttribute("aria-pressed", "true"); }
   var verify = $("#verify");
@@ -873,14 +897,20 @@ function renderQuiz(){
     });
     var bar = $("#bar");
     if (ok) {
-      st.first = st.cur >= st.unlocked;
+      st.correctCount++;
       st.gained = 0;
-      if (st.first) { st.unlocked = st.cur + 1; st.gained = st.tries === 0 ? 20 : 10; st.xp += st.gained; }
+      var target = 5;
+      var completedSet = st.correctCount >= target;
+      if (completedSet) {
+        st.first = st.cur >= st.unlocked;
+        if (st.first) { st.unlocked = st.cur + 1; st.gained = st.tries === 0 ? 20 : 10; st.xp += st.gained; }
+      }
       save();
       bar.className = "bar sheet ok";
       bar.setAttribute("role", "status");
-      bar.innerHTML = '<div class="wrap"><div><strong>Correto!</strong><p>' + q.e + '</p></div><div class="row"><button type="button" class="btn good wide" id="go">Continuar</button></div></div>';
+      bar.innerHTML = '<div class="wrap"><div><strong>Correto!</strong><p>' + q.e + '</p><p>Progresso deste treino: ' + st.correctCount + ' de ' + target + ' respostas corretas.</p></div><div class="row"><button type="button" class="btn good wide" id="go">' + (completedSet ? 'Concluir treino' : 'Próxima pergunta') + '</button></div></div>';
       $("#go").onclick = function(){
+        if (!completedSet) { openQuiz(); return; }
         if (st.cur === M.length - 1 && st.first) go("all"); else go("done");
       };
       $("#go").focus();
@@ -940,6 +970,7 @@ function renderAll(){
 
 function render(){
   if (st.view === "lesson") renderLesson();
+  else if (st.view === "difficulty") renderDifficulty();
   else if (st.view === "quiz") renderQuiz();
   else if (st.view === "done") renderDone();
   else if (st.view === "all") renderAll();
@@ -962,6 +993,8 @@ var AI_API_BASE = "https://estudar-kp6f.onrender.com";
       '<div class="ai-note">A IA pode errar. Confira as informações no material e siga sempre as orientações do professor.</div>' +
     '</section>';
   var launch=root.querySelector('#ai-launch'), panel=root.querySelector('#ai-panel'), close=root.querySelector('#ai-close'), form=root.querySelector('#ai-form'), input=root.querySelector('#ai-question'), messages=root.querySelector('#ai-messages'), select=root.querySelector('#ai-module'), send=root.querySelector('#ai-send');
+  var hintMode = false;
+  window.addEventListener('quiz-hint-request', function(ev){ hintMode=true; select.value=String(ev.detail.module); input.value='Estou fazendo uma questão de '+({easy:'nível fácil',medium:'nível médio',hard:'nível difícil'}[ev.detail.difficulty])+': “'+ev.detail.question+'”. Explique os termos e me dê uma pista gradual sem revelar a alternativa correta.'; toggle(true); input.focus(); });
   function toggle(open){panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launch.setAttribute('aria-expanded',String(open));if(open) input.focus();}
   launch.addEventListener('click',function(){toggle(!panel.classList.contains('open'));});
   close.addEventListener('click',function(){toggle(false);launch.focus();});
@@ -975,7 +1008,8 @@ var AI_API_BASE = "https://estudar-kp6f.onrender.com";
     var mod=parseInt(select.value,10); addMessage(question,'user'); input.value=''; send.disabled=true;
     var pending=addMessage('Pensando na leitura...','bot');
     try{
-      var response=await fetch(AI_API_BASE.replace(/\/$/,'')+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question,module:mod,context:readingText(mod)})});
+      var currentHint = hintMode; hintMode = false;
+      var response=await fetch(AI_API_BASE.replace(/\/$/,'')+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question,module:mod,mode:currentHint?'hint':'study',context:readingText(mod)})});
       var data=await response.json();
       if(!response.ok) throw new Error(data.error||'Não foi possível consultar a assistente.');
       pending.textContent=data.answer||'Não recebi uma resposta. Tente novamente.';
