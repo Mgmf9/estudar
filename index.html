@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sicurezza nei laboratori scolastici</title>
+<title>Caderno de estudos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Caveat:wght@600;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* Estilo de aprendizado em etapas curtas: uma tela por vez, botão grande embaixo, trilha de módulos.
    Cores vêm das placas de segurança: amarelo (ação), azul (seleção), verde (acerto/progresso), vermelho (erro). */
@@ -149,7 +149,6 @@ h2{margin:0;font-weight:900;font-size:clamp(26px,6vw,32px);line-height:1.15;text
 /* Perguntas */
 .q{font-size:clamp(22px,5vw,26px);line-height:1.3;font-weight:800}
 .opts{display:flex;flex-direction:column;gap:12px}
-.difficulty-list{gap:14px}.diff{min-height:76px;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left}.diff small{font-size:13px;font-weight:600;color:var(--muted)}
 .opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;font-weight:700;font-size:17px;line-height:1.4;color:var(--ink);background:var(--surface);border:2px solid var(--line);box-shadow:0 3px 0 var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
 .opt .l{width:30px;height:30px;border-radius:50%;border:2px solid var(--line-dark);display:grid;place-items:center;flex:none;font-size:14px;font-weight:800;color:var(--muted)}
 .opt span:last-child{min-width:0}
@@ -345,6 +344,317 @@ h2 { letter-spacing: -.025em; }
 .ai-note{padding:0 13px 9px;color:var(--muted);font-size:11px;background:var(--surface)}
 @media(max-width:520px){.ai-launch{right:14px;bottom:14px;padding:13px 15px}.ai-panel{right:8px;bottom:72px;width:calc(100vw - 16px);height:min(72dvh,620px)}}
 
+
+/* ===== Caderno de estudos ===== */
+.seg{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:4px;gap:2px;max-width:100%}
+.seg button{border:0;background:transparent;color:var(--muted);font:800 13px var(--f);padding:8px 13px;border-radius:10px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 8px rgba(25,45,75,.14)}
+.seg button:focus-visible,.plus:focus-visible,.back:focus-visible,.nb:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.plus{flex:none;width:48px;height:48px;border-radius:50%;border:0;background:linear-gradient(135deg,#ffdc65,#ffd447);color:var(--on-accent);cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 0 var(--accent-edge);transition:transform .1s,box-shadow .1s}
+.plus:active{transform:translateY(4px);box-shadow:none}
+.back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:800 14px var(--f);padding:8px 14px 8px 10px;border-radius:99px;cursor:pointer;min-height:40px}
+.back:hover{background:var(--soft)}
+.libhead{padding-block:34px 4px;display:flex;flex-direction:column;gap:14px}
+.libhead .row2{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.banner{background:var(--blue-bg);border:1px solid color-mix(in srgb,var(--blue) 35%,transparent);border-radius:14px;padding:10px 14px;font-weight:600;font-size:14px;line-height:1.45}
+.banner.warn{background:color-mix(in srgb,var(--accent) 22%,var(--surface));border-color:color-mix(in srgb,var(--accent-edge) 60%,transparent)}
+
+/* Estante */
+.shelf{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding-block:20px 48px}
+@media(min-width:600px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.nb{position:relative;display:flex;align-items:stretch;width:100%;min-height:128px;text-align:left;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 93%,var(--c)));color:var(--ink);border:1px solid var(--line);border-radius:8px 22px 22px 8px;overflow:hidden;cursor:pointer;padding:0;font-family:var(--f);box-shadow:0 6px 18px rgba(29,49,78,.07);transition:transform .16s ease,box-shadow .16s ease}
+.nb:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(29,49,78,.12)}
+.nb:active{transform:translateY(1px)}
+.nb .spine{flex:none;width:44px;background:var(--c);position:relative}
+.nb .spine::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--surface) 0 5px,transparent 5.6px) 50% 10px/100% 30px repeat-y;opacity:.92}
+.nb .cover{flex:1;min-width:0;padding:16px 18px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.nb strong{font-size:19px;font-weight:900;line-height:1.2;letter-spacing:-.015em;overflow-wrap:anywhere}
+.nb .meta{font-size:13px;font-weight:700;color:var(--muted)}
+.nb .mb{display:block;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.nb .mb i{display:block;height:100%;background:var(--c);border-radius:99px}
+.nb.add{border:2px dashed var(--line-dark);background:transparent;box-shadow:none;align-items:center;justify-content:center;gap:12px;color:var(--blue);font-weight:900;font-size:17px;border-radius:22px;min-height:96px}
+.nb.add:hover{background:var(--blue-bg);transform:none;box-shadow:none}
+.nb.add svg{flex:none}
+
+/* Formulário */
+.fld{display:flex;flex-direction:column;gap:7px;font-weight:800;font-size:14px;color:var(--muted)}
+.fld input,.fld select,.fld textarea{font:600 16px/1.5 var(--f);color:var(--ink);background:var(--surface);border:1.5px solid var(--line-dark);border-radius:14px;padding:12px 14px;width:100%;min-width:0}
+.fld textarea{min-height:240px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:3px solid color-mix(in srgb,var(--blue) 45%,transparent);border-color:var(--blue)}
+.cnt{font-size:13px;font-weight:700;color:var(--muted)}
+.msg{margin:0;font-weight:700;font-size:15px}
+.msg.err{color:var(--bad)}
+.lead.left{text-align:left;max-width:60ch}
+.top .tt{font-size:20px;line-height:1.2}
+
+/* Carregamento e geração */
+.spin{width:46px;height:46px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--blue);animation:sp .85s linear infinite;flex:none}
+.spin.sm{width:18px;height:18px;border-width:3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.body.center .pbar{width:min(320px,100%)}
+.glist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.gi{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-weight:700;min-width:0}
+.gi .gtxt{min-width:0;display:flex;flex-direction:column;overflow-wrap:anywhere}
+.gi .gtxt small{font-weight:600;color:var(--muted);font-size:12.5px}
+.gdot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--soft);font-weight:900;color:var(--muted);font-size:14px}
+.gi.ok .gdot{background:var(--ok);color:#fff}
+.gi.err{border-color:var(--bad)}
+.gi.err .gdot{background:var(--bad);color:#fff}
+.gi.run{border-color:var(--accent-edge);box-shadow:0 0 0 3px rgba(255,212,71,.2)}
+.bar .wrap{flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:3s}.nb,.plus{transition:none}.nb:hover{transform:none}}
+
+/* Assistente acima da barra inferior, para não cobrir o botão Continuar */
+.ai-launch{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+.ai-panel{bottom:calc(160px + env(safe-area-inset-bottom,0px));height:min(560px,calc(100dvh - 190px))}
+@media(max-width:520px){
+  .ai-launch{right:14px;bottom:calc(100px + env(safe-area-inset-bottom,0px));padding:12px 14px}
+  .ai-panel{right:8px;bottom:calc(160px + env(safe-area-inset-bottom,0px));width:calc(100vw - 16px);height:min(66dvh,540px)}
+}
+
+/* =====================================================================
+   SKIN "Folha quadriculada": papel, tinta azul-marinho, marca-texto, post-it
+   ===================================================================== */
+:root{
+  --paper:#fbf8f0; --bg:#fbf8f0; --surface:#ffffff; --soft:#f3eee1;
+  --ink:#14213d; --muted:#5b6682; --line:#e4dccb; --line-dark:#cfc5ad;
+  --edge:#14213d; --shadow-c:#14213d; --grid:rgba(43,80,216,.075);
+  --accent:#ffd23f; --accent-edge:#14213d; --on-accent:#14213d;
+  --blue:#2b50d8; --blue-bg:#e8edff;
+  --ok:#0f8f68; --ok-edge:#14213d; --ok-bg:#d9f4e8;
+  --bad:#d93b55; --bad-edge:#14213d; --bad-bg:#ffe3e7;
+  --f:"Figtree","Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --fd:"Bricolage Grotesque","Figtree",system-ui,sans-serif;
+  --fh:"Caveat","Bradley Hand","Segoe Print",cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0e1424; --bg:#0e1424; --surface:#161e35; --soft:#1c2642; --ink:#f1f3fa; --muted:#a3accb;
+    --line:#26325a; --line-dark:#37467a; --edge:#6b7bb3; --shadow-c:#050812; --grid:rgba(150,170,255,.07);
+    --accent:#ffd23f; --accent-edge:#050812; --on-accent:#14213d;
+    --blue:#8ba5ff; --blue-bg:#1b2750; --ok:#3fd49e; --ok-bg:#0f3025; --bad:#ff7088; --bad-bg:#40202b;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0e1424; --bg:#0e1424; --surface:#161e35; --soft:#1c2642; --ink:#f1f3fa; --muted:#a3accb;
+  --line:#26325a; --line-dark:#37467a; --edge:#6b7bb3; --shadow-c:#050812; --grid:rgba(150,170,255,.07);
+  --accent:#ffd23f; --accent-edge:#050812; --on-accent:#14213d;
+  --blue:#8ba5ff; --blue-bg:#1b2750; --ok:#3fd49e; --ok-bg:#0f3025; --bad:#ff7088; --bad-bg:#40202b;
+}
+body{
+  font-family:var(--f);font-size:17px;letter-spacing:0;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px;
+  background-position:-1px -1px;
+}
+h1,h2,.q,.nb strong,.mt strong,.item h4,.sheet strong,.recap b,.xp{font-family:var(--fd)}
+.wrap{max-width:700px}
+
+/* Cabeçalhos */
+.kicker{font-family:var(--fh);font-weight:700;font-size:25px;line-height:1;text-transform:none;letter-spacing:0;color:var(--blue);transform:rotate(-1.5deg);transform-origin:left;display:inline-block}
+h1{font-family:var(--fd);font-weight:800;font-size:clamp(34px,9vw,52px);line-height:1;letter-spacing:-.04em;position:relative;padding-bottom:16px;font-variation-settings:"opsz" 96}
+h1::after{content:"";position:absolute;left:0;bottom:0;width:92px;height:10px;background:var(--accent);border-radius:3px;transform:rotate(-1.2deg);box-shadow:2px 2px 0 var(--shadow-c)}
+h2{font-family:var(--fd);font-weight:800;letter-spacing:-.03em;line-height:1.08}
+.sub{font-size:17px;line-height:1.55;color:var(--muted);font-weight:500;max-width:44ch}
+.crumb{font-family:var(--fh);font-size:22px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--blue)}
+.libhead{padding-block:34px 6px}
+.hero{padding-block:30px 10px}
+
+/* Botões: carimbo com sombra dura */
+.btn{font-family:var(--f);font-weight:800;font-size:16px;letter-spacing:.01em;border:2px solid var(--edge);border-radius:14px;background:var(--surface);color:var(--ink);box-shadow:3px 3px 0 var(--shadow-c);min-height:54px;padding:14px 22px;transition:transform .1s,box-shadow .1s}
+.btn:hover:not([disabled]){filter:none;transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow-c)}
+.btn:active:not([disabled]){transform:translate(3px,3px);box-shadow:0 0 0 var(--shadow-c)}
+.btn.primary{background:var(--accent);border-color:var(--edge);color:var(--on-accent);box-shadow:3px 3px 0 var(--shadow-c)}
+.btn.good{background:var(--ok);border-color:var(--edge);color:#fff;box-shadow:3px 3px 0 var(--shadow-c)}
+.btn.bad{background:var(--bad);border-color:var(--edge);color:#fff;box-shadow:3px 3px 0 var(--shadow-c)}
+.btn.ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--blue);min-height:44px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.btn.ghost:hover:not([disabled]){transform:none;box-shadow:none}
+.btn[disabled]{background:var(--soft);border:2px dashed var(--line-dark);color:var(--muted);box-shadow:none;opacity:1}
+.btn:focus-visible,.opt:focus-visible,.mod:focus-visible,.x:focus-visible,.nb:focus-visible,.plus:focus-visible,.back:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+/* Seletor de idioma */
+.seg{background:var(--surface);border:2px solid var(--edge);border-radius:12px;padding:3px;gap:2px;box-shadow:2px 2px 0 var(--shadow-c)}
+.seg button{font-family:var(--f);font-weight:800;font-size:13.5px;border-radius:8px;padding:7px 14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);box-shadow:none}
+.back{border:2px solid var(--edge);background:var(--surface);border-radius:12px;box-shadow:2px 2px 0 var(--shadow-c);font-weight:800;padding:7px 14px 7px 9px}
+.back:hover{background:var(--soft)}
+.plus{width:52px;height:52px;border-radius:14px;background:var(--accent);border:2px solid var(--edge);box-shadow:3px 3px 0 var(--shadow-c);color:var(--on-accent);transition:transform .1s,box-shadow .1s}
+.plus:hover{transform:translate(-1px,-1px) rotate(-4deg);box-shadow:4px 4px 0 var(--shadow-c)}
+.plus:active{transform:translate(3px,3px);box-shadow:none}
+.banner{border:2px dashed var(--line-dark);background:var(--surface);border-radius:12px;font-weight:600}
+.banner.warn{background:#fff6cf;border-color:#c9a21c;color:#3c3200}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .banner.warn{background:#3a3213;color:#ffeaa0;border-color:#a68a20}}
+:root[data-theme="dark"] .banner.warn{background:#3a3213;color:#ffeaa0;border-color:#a68a20}
+
+/* Pílulas e progresso */
+.pill{border:2px solid var(--edge);border-radius:10px;background:var(--surface);box-shadow:2px 2px 0 var(--shadow-c);padding:6px 12px;font-weight:800;font-size:14px}
+.pill svg{color:#e0a800}
+.pbar{height:16px;border:2px solid var(--edge);border-radius:99px;background:var(--surface);margin-top:12px;padding:0}
+.pbar i{background:repeating-linear-gradient(135deg,var(--ok) 0 8px,color-mix(in srgb,var(--ok) 78%,#fff) 8px 16px);border-radius:99px;min-width:0}
+
+/* Estante de cadernos */
+.shelf{gap:22px;padding-block:26px 56px}
+@media(min-width:600px){.shelf{gap:26px}}
+.nb{border:2px solid var(--edge);border-radius:6px 18px 18px 6px;background:color-mix(in srgb,var(--c) 14%,var(--surface));box-shadow:5px 5px 0 var(--shadow-c);min-height:150px;overflow:visible;transition:transform .12s,box-shadow .12s}
+.nb:hover{transform:translate(-2px,-2px) rotate(-.4deg);box-shadow:7px 7px 0 var(--shadow-c)}
+.nb:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--shadow-c)}
+.nb .spine{width:46px;border-right:2px solid var(--edge);border-radius:4px 0 0 4px}
+.nb .spine::after{background:radial-gradient(circle at 50% 50%,var(--paper) 0 6px,var(--edge) 6px 7.5px,transparent 8px) 50% 12px/100% 32px repeat-y;opacity:1}
+.nb .cover{padding:18px 18px 16px 18px;position:relative}
+.nb .cover::before{content:"";position:absolute;right:16px;top:-9px;width:54px;height:20px;background:rgba(255,210,63,.85);border:1.5px solid var(--edge);transform:rotate(4deg);opacity:.95}
+.nb strong{font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1.08;font-variation-settings:"opsz" 48}
+.nb .meta{font-size:13.5px;font-weight:700;color:var(--ink);opacity:.72}
+.nb .mb{height:12px;border:2px solid var(--edge);background:var(--surface);border-radius:99px}
+.nb .mb i{background:var(--c);border-radius:0 99px 99px 0}
+.nb.add{border:2px dashed var(--edge);background:transparent;box-shadow:none;color:var(--ink);font-family:var(--fh);font-size:27px;font-weight:700;min-height:110px;border-radius:18px;gap:12px}
+.nb.add:hover{background:var(--surface);box-shadow:none;transform:rotate(-.6deg)}
+.nb.add .cover::before{display:none}
+.nb.add svg{color:var(--blue)}
+
+/* Trilha de módulos */
+.path{gap:16px;padding-block:24px 32px}
+.mod{border:2px solid var(--edge);border-radius:16px;background:var(--surface);box-shadow:4px 4px 0 var(--shadow-c);padding:14px 16px;transition:transform .12s,box-shadow .12s;gap:14px}
+.mod:hover:not([disabled]){transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--shadow-c)}
+.mod:active:not([disabled]){transform:translate(4px,4px);box-shadow:0 0 0 var(--shadow-c)}
+.mod.cur{background:color-mix(in srgb,var(--accent) 30%,var(--surface));box-shadow:4px 4px 0 var(--shadow-c)}
+.mod.cur::before{content:"▶";position:absolute;left:-13px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--ink);background:var(--accent);border:2px solid var(--edge);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;padding-left:2px;font-size:10px}
+.mod{position:relative}
+.mod.done{background:color-mix(in srgb,var(--ok) 11%,var(--surface))}
+.mod.locked{opacity:1;border-style:dashed;border-color:var(--line-dark);background:transparent;box-shadow:none;color:var(--muted)}
+.mod.locked .mt strong{color:var(--muted)}
+.node{width:60px;height:60px;border-radius:14px;background:var(--paper);border:2px solid var(--edge);box-shadow:2px 2px 0 var(--shadow-c)}
+.mod.locked .node{box-shadow:none;border-style:dashed;border-color:var(--line-dark);background:transparent}
+.badge{right:-9px;bottom:-9px;width:26px;height:26px;border:2px solid var(--edge)}
+.badge.lock{background:var(--surface);color:var(--muted)}
+.mt strong{font-size:18.5px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.meta{font-size:14px;color:var(--muted);font-weight:500;line-height:1.35}
+.st{font-family:var(--fh);font-size:21px;font-weight:700;color:var(--blue)}
+.kind{font-family:var(--f);font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;border:1.5px solid var(--edge);border-radius:6px;padding:2px 8px;color:#fff}
+.k-w{background:var(--accent);color:var(--on-accent)}
+.k-m{background:#2b50d8}.k-p{background:#d93b55}.k-s{background:#0f8f68}
+
+/* Barra de baixo e topo da lição */
+.bar{background:var(--paper);backdrop-filter:none;border-top:2px solid var(--edge);padding-top:14px}
+.bar.sheet.ok{background:var(--ok-bg);border-top:2px solid var(--edge)}
+.bar.sheet.no{background:var(--bad-bg);border-top:2px solid var(--edge)}
+.bar.sheet{border-top-width:2px}
+.top{background:var(--paper);backdrop-filter:none;border-bottom:2px solid var(--edge);padding-block:12px}
+.x{background:var(--surface);border:2px solid var(--edge);border-radius:12px;box-shadow:2px 2px 0 var(--shadow-c);color:var(--ink)}
+.x:hover{background:var(--soft)}
+.segs{gap:5px}
+.segs i{height:14px;border:2px solid var(--edge);background:var(--surface);border-radius:5px}
+.segs i.on{background:var(--ok)}
+.segs i.now{background:var(--accent)}
+.top .tt{font-family:var(--fd);font-weight:800;letter-spacing:-.02em}
+
+/* Conteúdo da lição */
+.stack{font-size:17.5px;line-height:1.65;gap:16px}
+.stack p{max-width:62ch}
+.item{border:2px solid var(--edge);border-radius:14px;background:var(--surface);box-shadow:4px 4px 0 var(--shadow-c);padding:16px 18px}
+.item h4{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.item dt{font-family:var(--fh);font-size:20px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--blue);margin-top:8px}
+.pts li::before{width:11px;height:11px;border-radius:3px;top:.55em;background:var(--accent);border:2px solid var(--edge);transform:rotate(12deg)}
+.num li::before{border:2px solid var(--edge);background:var(--surface);color:var(--ink);font-family:var(--fd);font-weight:800;box-shadow:2px 2px 0 var(--shadow-c)}
+.key{background:#fff0a6;color:#2a2400;border:0;border-radius:3px 3px 3px 18px;padding:20px 20px 18px;transform:rotate(-.7deg);box-shadow:3px 4px 0 rgba(20,33,61,.22),0 12px 20px -10px rgba(20,33,61,.35);position:relative}
+.key::before{content:"";position:absolute;top:-10px;left:50%;width:68px;height:22px;margin-left:-34px;background:rgba(255,255,255,.55);border:1px solid rgba(20,33,61,.15);transform:rotate(-2deg)}
+.key .lbl{font-family:var(--fh);font-size:25px;font-weight:700;text-transform:none;letter-spacing:0;line-height:1;color:#7a2e00;margin-bottom:4px}
+.key b{color:#14213d}
+:root[data-theme="dark"] .key{background:#ffe27a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .key{background:#ffe27a}}
+
+/* Perguntas */
+.q{font-weight:800;letter-spacing:-.03em;font-size:clamp(23px,5.5vw,29px);line-height:1.2}
+.opts{gap:13px}
+.opt{border:2px solid var(--edge);border-radius:14px;background:var(--surface);box-shadow:3px 3px 0 var(--shadow-c);font-weight:600;font-size:17px;padding:14px 16px;transition:transform .1s,box-shadow .1s,background .1s}
+.opt:hover:not([disabled]){transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow-c);border-color:var(--edge);background:var(--surface)}
+.opt:active:not([disabled]){transform:translate(3px,3px);box-shadow:0 0 0 var(--shadow-c)}
+.opt .l{width:32px;height:32px;border-radius:9px;border:2px solid var(--edge);background:var(--paper);color:var(--ink);font-family:var(--fd);font-weight:800}
+.opt.sel{background:var(--blue-bg);border-color:var(--edge);box-shadow:3px 3px 0 var(--blue)}
+.opt.sel .l{background:var(--blue);border-color:var(--edge);color:#fff}
+.opt.right{background:var(--ok-bg);border-color:var(--edge);box-shadow:3px 3px 0 var(--ok)}
+.opt.right .l{background:var(--ok);border-color:var(--edge);color:#fff}
+.opt.wrong{background:var(--bad-bg);border-color:var(--edge);box-shadow:3px 3px 0 var(--bad)}
+.opt.wrong .l{background:var(--bad);border-color:var(--edge);color:#fff}
+.sheet strong{font-weight:800;font-size:23px;letter-spacing:-.025em}
+.sheet.ok strong{color:var(--ok)}
+.sheet.no strong{color:var(--bad)}
+:root[data-theme="light"] .sheet.ok strong{color:#08674a}
+@media (prefers-color-scheme: light){.sheet.ok strong{color:#08674a}.sheet.no strong{color:#b5213b}}
+
+/* Fim de módulo */
+.xp{border:2px solid var(--edge);background:var(--accent);color:var(--on-accent);border-radius:14px;box-shadow:4px 4px 0 var(--shadow-c);transform:rotate(-1.5deg);font-weight:800;padding:9px 22px}
+.recap div{border:2px solid var(--edge);border-radius:14px;box-shadow:3px 3px 0 var(--shadow-c);background:var(--surface);color:var(--muted)}
+.recap b{color:var(--ink);font-weight:800;letter-spacing:-.03em}
+.center .sign{width:104px;height:104px;padding:16px;background:var(--surface);border:2px solid var(--edge);border-radius:24px;box-shadow:4px 4px 0 var(--shadow-c);box-sizing:content-box}
+.lead{font-size:17px;font-weight:500}
+
+/* Formulário e geração */
+.fld{font-family:var(--fh);font-size:23px;font-weight:700;color:var(--blue);gap:6px}
+.fld input,.fld select,.fld textarea{border:2px solid var(--edge);border-radius:12px;background:var(--surface);font:500 16.5px/1.55 var(--f);box-shadow:3px 3px 0 var(--shadow-c);padding:13px 15px}
+.fld textarea{background-image:repeating-linear-gradient(transparent 0 25px,var(--grid) 25px 26px);background-attachment:local;line-height:26px;padding-block:12px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:3px solid color-mix(in srgb,var(--blue) 55%,transparent);outline-offset:2px;border-color:var(--edge)}
+.cnt{font-weight:600}
+.spin{border:5px solid var(--line);border-top-color:var(--ink);border-right-color:var(--accent)}
+.gi{border:2px solid var(--edge);border-radius:12px;background:var(--surface);box-shadow:3px 3px 0 var(--shadow-c)}
+.gdot{border:2px solid var(--edge);background:var(--paper);color:var(--ink);border-radius:8px}
+.gi.ok .gdot{background:var(--ok);color:#fff}
+.gi.err{border-color:var(--bad)}
+.gi.err .gdot{background:var(--bad);color:#fff}
+.gi.run{box-shadow:3px 3px 0 var(--accent);background:color-mix(in srgb,var(--accent) 18%,var(--surface))}
+.msg.err{color:var(--bad);font-weight:800}
+
+/* Assistente */
+.ai-launch{background:var(--ink);color:var(--paper);border:2px solid var(--edge);border-radius:14px;box-shadow:3px 3px 0 var(--accent);font-family:var(--f);font-weight:800;padding:12px 16px}
+.ai-launch:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--accent)}
+.ai-panel{border:2px solid var(--edge);border-radius:18px;box-shadow:6px 6px 0 var(--shadow-c);background:var(--surface)}
+.ai-head{background:var(--ink);color:var(--paper);border-bottom:2px solid var(--edge)}
+.ai-avatar{background:var(--accent);color:var(--on-accent);border-radius:12px;border:2px solid var(--paper)}
+.ai-close{background:transparent;color:var(--paper);border:2px solid color-mix(in srgb,var(--paper) 45%,transparent);border-radius:10px}
+.ai-controls{border-bottom:2px solid var(--line)}
+.ai-controls select{border:2px solid var(--edge);border-radius:10px}
+.ai-messages{background:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px);background-size:100% 26px}
+.ai-msg{font-weight:500}
+.ai-msg.bot{border:2px solid var(--edge);border-radius:14px 14px 14px 3px;background:var(--surface)}
+.ai-msg.user{background:var(--blue);color:#fff;border:2px solid var(--edge);border-radius:14px 14px 3px 14px}
+:root[data-theme="dark"] .ai-msg.user{color:#0e1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ai-msg.user{color:#0e1424}}
+.ai-compose{border-top:2px solid var(--edge)}
+.ai-compose textarea{border:2px solid var(--edge);border-radius:12px;font-weight:500}
+.ai-send{background:var(--accent);color:var(--on-accent);border:2px solid var(--edge);border-radius:12px;box-shadow:2px 2px 0 var(--shadow-c)}
+
+/* Telas largas: margem vermelha de caderno */
+@media(min-width:900px){
+  body::before{content:"";position:fixed;top:0;bottom:0;left:max(24px,calc(50% - 392px));width:2px;background:rgba(217,59,85,.35);pointer-events:none;z-index:0}
+  #app{position:relative;z-index:1}
+}
+@media(min-width:600px){
+  .path{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  .mod{height:100%}
+  .node{width:56px;height:56px}
+}
+@media(max-width:420px){
+  .wrap{padding-inline:18px}
+  h1{font-size:clamp(32px,10vw,40px)}
+  .mod{padding:12px 12px 12px 14px;gap:12px}
+  .mod.cur::before{left:-12px}
+  .node{width:52px;height:52px}
+  .mt strong{font-size:16.5px}
+  .meta{font-size:13px}
+  .st{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){.btn,.mod,.opt,.nb,.plus,.ai-launch{transition:none}.nb:hover,.plus:hover{transform:none}}
+
+/* Ajustes finos */
+h1{font-size:clamp(32px,8.4vw,46px)}
+.hero .topline{margin-bottom:6px}
+.hero .kicker{margin-top:8px}
+.libhead .row2{margin-top:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mod.cur{background:color-mix(in srgb,var(--accent) 14%,var(--surface))}}
+:root[data-theme="dark"] .mod.cur{background:color-mix(in srgb,var(--accent) 14%,var(--surface))}
 </style>
 </head>
 <body>
@@ -364,7 +674,7 @@ function Q(p,ok,bad,e){return {p:p,o:[ok].concat(bad),c:0,e:e};}
 /* s = tipo de sinal: w risco, m obrigação, p proibição, s prevenção */
 var KIND = {w:"Risco", m:"Obrigação", p:"Proibição", s:"Prevenção"};
 
-var M = [
+var LAB = [
 /* 1 */
 { s:"w", t:"Rischio e rischi infortunistici", tag:"Definições e acidentes de laboratório",
  steps:[
@@ -691,97 +1001,763 @@ var EXTRA_QS = [
  Q("O que deve ser feito com resíduos ao terminar o experimento?","Colocá-los nos recipientes corretos, organizar a bancada e fechar água, gás e eletricidade",["Deixá-los na bancada","Levá-los em recipientes abertos","Misturar todos os resíduos"],"As regras finais pedem organizar o material, recolher resíduos corretamente e fechar as utilidades.")
 ]
 ];
-M.forEach(function(m, i){ m.qs = m.qs.concat(EXTRA_QS[i] || []); });
+LAB.forEach(function(m, i){ m.qs = m.qs.concat(EXTRA_QS[i] || []); });
 
-/* ---------- Estado e armazenamento ---------- */
-var KEY = "sicurezza-lab-progress-v2";
-var st = {unlocked:0, cur:0, xp:0, view:"home", step:0, qi:0, order:[], sel:null, tries:0, gained:0, first:false, pool:{}, last:{}, confirmReset:false, difficulty:"easy", quizCount:0, correctCount:0};
-try {
-  var s0 = JSON.parse(localStorage.getItem(KEY) || "null");
-  if (s0 && typeof s0.unlocked === "number") {
-    st.unlocked = Math.max(0, Math.min(s0.unlocked, M.length));
-    st.cur = Math.max(0, Math.min(Number(s0.cur) || 0, M.length - 1));
-    st.xp = typeof s0.xp === "number" ? s0.xp : 0;
-    st.step = Math.max(0, Math.min(Number(s0.step) || 0, M[st.cur].steps.length - 1));
-    st.view = ["home","lesson","difficulty","quiz","done","all"].indexOf(s0.view) >= 0 ? s0.view : "home";
-    st.difficulty = ["easy","medium","hard"].indexOf(s0.difficulty) >= 0 ? s0.difficulty : "easy";
-    st.quizCount = Math.max(0, Number(s0.quizCount) || 0);
-    st.correctCount = Math.max(0, Number(s0.correctCount) || 0);
-    if (st.view === "lesson" && st.step >= M[st.cur].steps.length) st.step = 0;
-    st.qi = Math.max(0, Math.min(Number(s0.qi) || 0, M[st.cur].qs.length - 1));
-    st.order = Array.isArray(s0.order) ? s0.order.filter(function(x){return Number.isInteger(x) && x >= 0 && x < M[st.cur].qs[st.qi].o.length;}) : [];
-    st.sel = Number.isInteger(s0.sel) ? s0.sel : null;
-    st.tries = Math.max(0, Number(s0.tries) || 0);
-    st.gained = Math.max(0, Number(s0.gained) || 0);
-    st.first = !!s0.first;
-    st.pool = s0.pool && typeof s0.pool === "object" ? s0.pool : {};
-    st.last = s0.last && typeof s0.last === "object" ? s0.last : {};
+/* ---------- Banco de perguntas (nível difícil): alternativas plausíveis e de tamanho parecido ---------- */
+var HARDQS = [
+[ /* 1 Rischio e rischi infortunistici */
+ Q("Dois eventos têm a mesma probabilidade de ocorrer, mas um pode causar lesão leve e o outro, morte. Segundo a entità del rischio, o que diferencia os dois?","A gravidade das lesões ou do dano, que torna o segundo risco maior",["A probabilidade de ocorrência, que passa a ser diferente nos dois","O agente envolvido, que deixa de ser físico ou químico","O local de trabalho, que define sozinho a entità do risco"],"A entità del rischio combina probabilidade de o dano ocorrer e gravidade das lesões; com a mesma probabilidade, a gravidade decide."),
+ Q("Qual descrição corresponde à definição de rischio dada no módulo?","Agente ou situação com probabilidade de causar lesão ou dano à saúde ou ao ambiente",["Somente um agente químico com probabilidade confirmada de causar intoxicação aguda","Qualquer lesão já registrada durante uma atividade prática em laboratório escolar","Apenas a gravidade de um dano potencial, sem considerar sua probabilidade"],"Rischio é qualquer agente (chimico, fisico, microbiologico) ou situação com probabilidade de provocar lesão ou dano à saúde ou ao ambiente."),
+ Q("Autoclaves e cilindros de gás comprimido pertencem a qual categoria, e qual consequência é citada?","Apparecchiature a pressione: explosão, incêndio, feridas e morte",["Apparecchiature sotto vuoto: implosão, queimaduras e feridas","Elettrocuzione: fulguração e queimaduras por uso impróprio","Ustioni termiche: queimaduras por superfície quente ou gelo seco"],"Autoclaves e cilindros de gás comprimido são apparecchiature a pressione: explosão, incêndio, queimaduras, feridas e morte."),
+ Q("Em destiladores, dessecação e filtração sob vácuo, qual perigo específico é citado?","Implosão do vidro, além de queimaduras, feridas e morte",["Explosão por excesso de pressão interna do recipiente","Fulguração por descarga em um aparelho fora da norma","Queimadura por chama livre próxima do destilador"],"Em apparecchiature sotto vuoto o perigo é a implosão, além de queimaduras, feridas e morte; a explosão é típica das apparecchiature a pressione."),
+ Q("Qual conjunto de situações a leitura associa às ustioni termiche?","Superfícies quentes, chamas livres, trabalho com vidro, gelo seco e N₂ líquido",["Superfícies quentes, chamas livres, aparelhos fora da norma e cilindros de gás","Vidro não íntegro, instrumentos cortantes, chamas livres e gelo seco","Autoclaves, destiladores, superfícies quentes e N₂ líquido sem tampa"],"As ustioni termiche vêm de contato com superfícies quentes, chamas livres, vidro, gelo seco e nitrogênio líquido, sobretudo sem DPI."),
+ Q("O que causa elettrocuzione, segundo o módulo?","Uso impróprio de equipamentos elétricos ou aparelhos fora da norma",["Contato com superfícies quentes ou chamas livres no laboratório","Uso de destiladores ou dessecadores sem controle da pressão","Manipulação de vidraria não íntegra com instrumentos cortantes"],"Uso impróprio de equipamentos elétricos, ou aparelhos fora da norma, causa queimaduras e fulguração (elettrocuzione)."),
+ Q("Qual comportamento aparece como da non fare ligado às ferite da taglio?","Submeter o vidro a esforço mecânico impróprio",["Usar o instrumento cortante do jeito correto, sem pressa","Manter a vidraria íntegra, ordenada e em estoque suficiente","Descartar os fragmentos na bandeja apropriada para vidro"],"Para evitar cortes, não se deve submeter o vidro a esforço mecânico impróprio nem usar mal um instrumento cortante.")
+],
+[ /* 2 Rischio fisico */
+ Q("Qual é a referência legal citada para o inquinamento acustico?","Legge 447 del 26/10/95",["Legge 626 del 26/10/94","D.Lgs. 447/95, allegato XI","D.Lgs. 626/94, allegato XII"],"O inquinamento acustico é definido pela legge 447 del 26/10/95."),
+ Q("Qual conjunto reúne efeitos descritos para as vibrações?","Náusea, vertigem, distúrbios visuais e alterações da coluna",["Náusea, asma, perda dos sentidos e alterações na pele dos dedos","Cefaleia, ardência ocular, alergias respiratórias e queimaduras de córnea","Vômito, fadiga visual, fulguração leve e perda progressiva da audição"],"As vibrações causam reações neurovegetativas e neuropsíquicas, distúrbios visuais e alterações da coluna lombar e torácica, falanges e ombro."),
+ Q("Um operador de máquinas sente náusea, suor frio e dificuldade digestiva. Qual agente físico explica o quadro?","Vibrações, com reações neurovegetativas",["Rumore, com sensação desagradável e intolerável de som","Microclima, com distúrbios do aparelho respiratório","Radiazioni, com dano ao aparelho visual e à pele"],"Náusea, suor frio, vômito e dificuldade digestiva são reações neurovegetativas das vibrações."),
+ Q("Quais efeitos a leitura associa a uma iluminação inadequada?","Menor concentração, pior qualidade do trabalho e ardência ocular",["Alergias, asma e perda dos sentidos por falta de ar no ambiente","Lesões na pele e em órgãos internos por radiação óptica intensa","Distúrbios da coluna lombar e dos ombros, com vertigem e náusea"],"A luz inadequada influencia a qualidade do trabalho, diminui a concentração e causa distúrbios oculo-visivos (cansaço, ardência)."),
+ Q("Quais variáveis definem o microclima?","Temperatura, umidade e velocidade do ar",["Temperatura, intensidade luminosa e nível de ruído","Umidade, vibração e concentração de poluentes","Pressão, velocidade do ar e radiação laser"],"Microclima é temperatura, umidade e velocidade do ar em um ambiente não idôneo."),
+ Q("Qual quadro é associado a um microclima não idôneo?","Alergias, asma e cansaço geral",["Vertigem, cefaleia e irritabilidade por oscilações","Lesões da pele por radiações UV e infravermelhas","Sensação de som intolerável durante o trabalho"],"O microclima inadequado causa distúrbios respiratórios (alergias, asma), cansaço geral, perda dos sentidos e patologias musculoesqueléticas."),
+ Q("Que tipos de radiação a leitura inclui em radiazioni?","UV, luz visível, infravermelho e laser",["Raios X, gama, UV e micro-ondas domésticas","Somente luz visível e infravermelho de lâmpadas","Laser, ultrassom, infravermelho e luz natural"],"Radiazioni são radiações ópticas (UV, visíveis, infravermelhas) e laser, que podem prejudicar visão, pele e órgãos internos.")
+],
+[ /* 3 Rischio chimico */
+ Q("Qual é a diferença entre sostanza e miscele?","Sostanza é elemento ou composto; miscele é mistura de substâncias",["Sostanza é um composto sempre líquido; miscele é sempre um gás nocivo","Sostanza só existe após processo industrial; miscele só ocorre na natureza","Sostanza age apenas por inalação; miscele age apenas por ingestão"],"Sostanza: elementos químicos e compostos, naturais ou industriais. Miscele: misturas ou soluções intencionais de duas ou mais substâncias."),
+ Q("Por quais vias um produto químico é nocivo, segundo a definição do módulo?","Inalação, contato e/ou ingestão",["Inalação, injeção e/ou radiação","Contato, vibração e/ou ingestão","Ingestão, aerossol e/ou iluminação"],"O agente químico é nocivo por inalação, contato e/ou ingestão ao interagir com o organismo."),
+ Q("De que depende a resposta do organismo a uma substância química?","Propriedades nocivas, concentração ambiental e tempo de exposição",["Só das propriedades nocivas e da solubilidade da substância","Da concentração ambiental e da idade, sem o tempo de exposição","Do tempo de exposição e do microclima, sem as propriedades"],"A resposta depende das propriedades nocivas da substância, da concentração ambiental e do tempo de exposição."),
+ Q("Qual combinação caracteriza uma exposição aguda?","Breve, a concentração alta, com falta de ar e ardência nos olhos",["Longa, a concentração baixa, com distúrbios leves que pioram","Breve, a concentração baixa, com efeitos ausentes por anos","Longa, a concentração alta, sem necessidade de afastamento"],"Os efeitos agudos vêm de exposição breve a concentração alta (massiça); os crônicos, de exposição longa a concentração baixa."),
+ Q("Qual é a característica da exposição crônica?","Sintomas leves ou ausentes por muito tempo, que pioram aos poucos",["Perda de consciência logo após o primeiro contato com a substância","Náusea e vômito imediatos, que exigem afastamento da área","Efeitos que desaparecem sozinhos quando o trabalho é interrompido"],"Nos efeitos crônicos os distúrbios são leves ou ausentes por muito tempo e pioram progressivamente."),
+ Q("Durante a atividade, um aluno sente falta de ar e ardência nos olhos. Qual conduta a leitura exige?","Afastar-se imediatamente da área de risco",["Terminar a etapa em curso antes de avisar o professor","Permanecer no local usando apenas uma máscara de proteção","Aproximar-se da bancada para identificar o reagente"],"Os efeitos agudos exigem afastamento imediato da área de risco."),
+ Q("Qual conjunto é citado como órgãos ou aparelhos atingidos pelos agentes químicos?","Bexiga, pulmões, sangue, fígado e aparelho tegumentar",["Cérebro, estômago, ossos, baço e aparelho linfático","Coração, rins, cérebro, baço e aparelho locomotor","Tireoide, intestino, pâncreas, ossos e aparelho nervoso"],"Os agentes atingem órgãos (bexiga, pulmões, sangue, fígado) ou aparelhos (respiratório, circulatório, digestivo, tegumentar).")
+],
+[ /* 4 Vie di penetrazione e fattori */
+ Q("Qual é a superfície aproximada de contato ar-sangue nos pulmões?","Cerca de 70 m²",["Cerca de 7 m²","Cerca de 700 m²","Cerca de 20 m²"],"A superfície de contato ar-sangue nos pulmões é de cerca de 70 m²."),
+ Q("Que tipo de substância atravessa a pele íntegra?","As liposolúveis atravessam a pele íntegra",["As hidrossolúveis atravessam a pele íntegra","Só os particulados atravessam a pele íntegra","Só os gases atravessam a pele com abrasões"],"Pela pele íntegra passam substâncias liposolúveis; pequenas feridas, lesões e abrasões abrem outra porta de entrada."),
+ Q("Qual classificação do estado físico aparece na leitura?","Aeriforme (gases e vapores) ou particulado (fumos, poeiras, fibras)",["Aeriforme (fumos e poeiras) ou particulado (gases, vapores e névoas)","Gasoso (gases e vapores) ou líquido (poeiras, névoas e fibras)","Particulado (gases e vapores) ou sólido (fumos, névoas e poeiras)"],"Estado físico: aeriforme (gases e vapores) ou particulado (fumos, névoas, poeiras, fibras)."),
+ Q("Qual item pertence aos fattori ambientali?","Outros poluentes presentes, com efeitos cumulativos",["Idade, sexo e estados patológicos do operador","Solubilidade da substância em água ou em gordura","Hábitos voluntários do próprio trabalhador"],"Fattori ambientali: concentração, condições microclimáticas e presença de outros poluentes (incompatibilidade, efeitos cumulativos)."),
+ Q("Qual item é um fattore individuale/biologico?","Alterações congênitas e estados patológicos",["Condições microclimáticas do ambiente","Ação corrosiva ou irritante da substância","Incompatibilidade entre poluentes presentes"],"Fatores individuais: idade, sexo, raça, alterações congênitas, hábitos voluntários, estados físicos particulares e patológicos."),
+ Q("Qual é a relação entre tempo de exposição e efeitos?","É sempre diretamente proporcional aos efeitos",["É inversamente proporcional na exposição aguda","É proporcional só quando a concentração é baixa","É independente das propriedades da substância"],"O tempo de exposição é sempre diretamente proporcional aos efeitos."),
+ Q("Qual é a diferença entre as vias de inalação e de ingestão?","Inalação vai de nariz/boca aos pulmões; ingestão entra só pela boca",["Inalação ocorre pela pele íntegra; ingestão chega aos pulmões","Inalação entra pela boca e vai ao fígado; ingestão pelo nariz","Inalação passa por feridas; ingestão só por substâncias gasosas"],"Inalazione: pelo nariz e/ou boca até os pulmões. Ingestione: pela boca. Contatto: pela pele íntegra ou lesionada.")
+],
+[ /* 5 Rischio biologico */
+ Q("O que a definição de rischio biologico inclui além de agentes infecciosos?","Plantas e animais venenosos, como víbora e viúva-negra",["Somente vírus transmitidos pelo ar em locais fechados","Equipamentos contaminados por produtos químicos","Resíduos sólidos de qualquer origem laboratorial"],"A definição inclui também plantas e animais venenosos (víbora, viúva-negra)."),
+ Q("Qual descrição corresponde ao rischio biologico generico?","Presente em qualquer ambiente com várias pessoas, de transmissão aérea",["Ligado à manipulação de agentes em atividades de biotecnologia e pesquisa","Associado a laboratórios de análise que recebem material infeccioso","Decorrente de culturas celulares e de microrganismos selecionados"],"Generico: qualquer ambiente com várias pessoas. Specifico: atividade laboral particular ou manipulação de agentes."),
+ Q("Produzir poliovírus ou micobactérias selecionados em biotecnologia é exemplo de quê?","Uso deliberato: exposição voluntária a agentes infecciosos",["Esposizione involontaria: emissão de fontes incontroláveis","Rischio generico: transmissão aérea entre várias pessoas","Rischio specifico sem manipulação de agentes"],"Uso deliberato é a exposição voluntária (biotecnologia, microrganismos selecionados, culturas celulares)."),
+ Q("Um laboratório de análise e diagnóstico recebe material infeccioso e há fontes de emissão incontroláveis. Como se classifica a exposição?","Esposizione involontaria, de caráter potencial",["Uso deliberato, de caráter voluntário","Rischio generico, restrito ao ar de ambientes comuns","Rischio specifico sem exposição potencial"],"Esposizione involontaria: exposição potencial a fontes incontroláveis, como laboratórios de análise e diagnóstico."),
+ Q("Para que a leitura menciona DNA/RNA recombinante?","Uso também em modificação genética de células",["Identificação de agentes em amostras de sangue e tecidos","Esterilização de culturas e tecidos antes do descarte","Medição da concentração de aerossol no ar do laboratório"],"Em genetica, DNA/RNA recombinante é usado também para modificação genética de células ou organismos."),
+ Q("Quais itens são citados como agentes particulares?","OGM, além de transporte e movimentação",["Fungos e bactérias, além de insetos e ácaros","Víbora e viúva-negra, além de artrópodes","Patógenos vegetais, além de DNA recombinante"],"Agentes particulares: OGM, transporte e movimentação. Fungos, bactérias, insetos e ácaros estão em 'outros agentes nocivos ou infestantes'."),
+ Q("Por que se chama atenção para espécies não endêmicas ou autóctones infectadas?","Podem ser levadas para fora da zona de origem",["Têm sempre alta resistência a desinfetantes","Não podem ser classificadas em grupos de risco","Só aparecem em laboratórios de nível 4"],"Há atenção a espécies não endêmicas ou autóctones infectadas levadas para fora da zona de origem.")
+],
+[ /* 6 Valutazione e gruppi di rischio */
+ Q("Qual descrição corresponde ao grupo 3?","Doença grave e risco sério aos trabalhadores; pode se propagar, mas há medidas eficazes",["Doença grave e alto risco de propagação coletiva; não existem medidas eficazes","Pode causar doença, mas é pouco provável que se propague; há profilaxia ou terapia","Poucas probabilidades de causar doença em humanos; risco baixo ou nenhum"],"Grupo 3: risco elevado individual, baixo coletivo; pode se propagar, mas existem medidas eficazes. O grupo 4 não tem medidas eficazes."),
+ Q("Qual agente pertence ao grupo 4?","Lassa",["Brucella","HIV","Salmonella typhi"],"O grupo 4 reúne só vírus (Junin, Lassa, Machupo, Ebola, Marburg, Crimeia/Congo, vaiolo). Brucella, HIV e S. typhi são do grupo 3."),
+ Q("Qual destes agentes é do grupo 3, e não do grupo 2?","Salmonella typhi",["Vibrio cholerae","Legionella","Staphylococcus"],"Salmonella é do grupo 2, exceto S. typhi, que é do grupo 3."),
+ Q("Qual afirmação sobre o grupo 4 está correta?","Reúne apenas vírus, como Ebola e Marburg",["Reúne bactérias e vírus, como Yersinia pestis e Ebola","Reúne fungos e vírus, como Candida e Lassa","Reúne apenas parasitas, como Ascaris e Taenia"],"No grupo 4 há apenas vírus."),
+ Q("Qual fator da avaliação completa se refere a sonicação e centrifugação?","Atividades previstas que geram aerossol",["Persistência do agente no ambiente","Presença de hospedeiros receptivos","Modalidade natural de transmissão do agente"],"A avaliação considera as atividades previstas que geram aerossol (sonicação, centrifugação…)."),
+ Q("Onde estão as listas dos grupos 2, 3 e 4 e as medidas de contenção?","Listas no allegato XI e contenção no allegato XII do D.Lgs. 626/94",["Listas no allegato XII e contenção no allegato XI do D.Lgs. 626/94","Listas e contenção na legge 447 del 26/10/95, allegato XI","Listas no allegato XI e contenção no allegato XIV do D.Lgs. 626/94"],"Lista dos grupos 2, 3 e 4: allegato XI do D.Lgs. 626/94. Medidas e níveis de contenção: allegato XII."),
+ Q("Qual fungo é do grupo 3?","Histoplasma capsulatum",["Aspergillus fumigatus","Candida albicans","Cryptococcus neoformans"],"Aspergillus, Candida e Cryptococcus são do grupo 2; Histoplasma capsulatum, Blastomyces, Coccidioides e Paracoccidioides são do grupo 3.")
+],
+[ /* 7 Livelli di biosicurezza e DPI */
+ Q("Qual medida é obrigatória no nível 3 de biossegurança?","Cappa di sicurezza biologica e acesso por duas séries de portas",["Apenas boas práticas padrão e treinamento pelo responsável","Laboratório de máxima segurança sob controle sanitário nacional","Capelas simples, com acesso livre às áreas comuns"],"No nível 3: cappa biológica obrigatória, laboratório isolado das áreas de livre circulação e acesso por duas séries de portas."),
+ Q("Que agentes justificam o nível 4?","Agentes extremamente perigosos, como Ebola e Marburg",["Agentes do grupo 3 usados em hospitais, universidades e indústrias","Agentes do grupo 2 com risco moderado por injeção ou inalação","Agentes do grupo 1 bem caracterizados, de risco mínimo ou nulo"],"O nível 4 é para agentes extremamente perigosos (Ebola, Marburg), com controle estreito das autoridades sanitárias nacionais."),
+ Q("O que o nível 2 acrescenta ao nível 1?","Treinamento do pessoal, capelas e dispositivos de segurança",["Cappa biológica obrigatória e laboratório isolado das áreas comuns","Duas séries de portas e controle das autoridades sanitárias","Ausência de qualquer medida de contenção, mesmo com treinamento"],"Nível 2: como o nível 1, mais treinamento do pessoal e capelas ou outros dispositivos de segurança."),
+ Q("As medidas de contenção devem garantir a proteção de quais três elementos?","Campione, operatore e ambiente",["Operatore, equipamento e orçamento","Campione, equipamento e instrutor","Ambiente, reagentes e instalações"],"A contenção protege o campione (amostra), o operatore e o ambiente."),
+ Q("Qual é o papel das attrezzature na contenção?","Ajudam, mas não substituem a boa técnica nem o preparo",["Substituem a boa técnica nos laboratórios dos níveis 3 e 4","Dispensam o treinamento dos operadores no nível 2","Eliminam a necessidade de cappa na centrifugação aberta"],"As attrezzature ajudam, mas não substituem a boa técnica e o preparo dos operadores."),
+ Q("Quando se deve usar cappa ou cabine de segurança biológica (preferível Classe II)?","Quando houver aerossol ou respingos, ou grandes volumes",["Somente no nível 4, ao manipular agentes do grupo 4","Sempre que vestir jaleco, mesmo sem manipular amostras infectadas","Apenas ao manipular amostras já esterilizadas em autoclave"],"Usa-se a cappa sempre que puder haver aerossol ou respingos (centrifugação, homogeneização, sonicação…) ou com grandes volumes."),
+ Q("O que vale para as luvas potencialmente infectadas?","Não saem do laboratório; as descartáveis não se reutilizam",["Podem ser lavadas e reutilizadas após desinfecção rápida das mãos","Podem ser levadas para casa dentro de um saco bem fechado","Saem do laboratório se forem trocadas por outro par limpo"],"Luvas potencialmente infectadas não saem do laboratório; luvas descartáveis não se reutilizam nem se lavam.")
+],
+[ /* 8 Regolamento del laboratorio di microbiologia */
+ Q("Quem pode entrar no laboratório de microbiologia?","Alunos só com o professor ou pessoal autorizado",["Alunos sozinhos, desde que usem jaleco, luvas e óculos","Qualquer pessoa, se a porta estiver sinalizada e fechada","Alunos com autorização escrita assinada pelos responsáveis"],"Alunos só entram com o professor de microbiologia ou pessoal autorizado; as portas ficam sempre fechadas."),
+ Q("Qual símbolo fica na porta, e a partir de qual grupo de agentes?","Risco biológico, com agentes do grupo 2 ou superior",["Risco biológico, apenas com agentes do grupo 4","Risco químico, com qualquer agente do grupo 1","Risco biológico, só em laboratórios de nível 3 e 4"],"Na porta do laboratório com agentes do grupo 2 ou superior fica o símbolo de risco biológico."),
+ Q("Quando se desinfeta a bancada?","Antes e depois de cada experimento",["Somente ao final do dia de trabalho","Apenas depois de derramamentos acidentais","Uma vez por semana, junto com os jalecos"],"Desinfetar a bancada antes e depois de cada experimento."),
+ Q("Até quanto um recipiente pode ser enchido no freezer?","No máximo 3/4 da capacidade",["No máximo 1/2 da capacidade","No máximo 4/5 da capacidade","Até a borda, desde que bem vedado"],"No freezer, recipiente cheio no máximo 3/4."),
+ Q("O que fazer com material descartável contaminado?","Pôr em sacos para autoclave e esterilizar antes de eliminar",["Descartar no lixo comum depois de fechar bem o saco","Despejar líquidos na pia depois de diluir bem com água","Guardar no refrigerador de meios estéreis até o fim da semana"],"O descartável contaminado vai em sacos para autoclave e é esterilizado antes de eliminar; nunca no lixo comum nem na pia."),
+ Q("Quais amostras podem ser manipuladas no laboratório?","Amostras alimentares ou ambientais, grupos 1 e 2",["Sangue, urina e fezes, com agentes do grupo 2 apenas","Amostras ambientais com agentes dos grupos 2 e 3 sob cappa","Qualquer amostra, se manipulada com luvas duplas e óculos"],"É proibido usar amostras biológicas (sangue, urina, fezes); permitidas amostras alimentares ou ambientais com agentes dos grupos 1 e 2."),
+ Q("Qual é a conduta diante de um derramamento de líquido contaminado?","Avisar logo o professor; deve existir procedimento escrito",["Limpar sozinho e só avisar o professor ao fim da aula","Cobrir com papel e continuar até terminar o experimento em curso","Lavar na pia e descartar o papel usado no lixo comum"],"Em derramamento ou exposição, avisar imediatamente o professor; deve haver procedimento escrito para derramamentos acidentais."),
+ Q("Qual regra vale para agulhas e seringas?","Limitar o uso, não recolocar a tampa e descartar em recipiente rígido",["Recolocar a tampa com uma só mão e descartar em saco comum de lixo","Descartar em sacos para autoclave, sem usar recipiente rígido algum","Lavar e reutilizar depois de desinfetar bem a bancada de trabalho"],"Limitar agulhas e seringas; não recolocar a tampa da agulha; descartar em recipientes rígidos.")
+],
+[ /* 9 Prevenzione dei rischi */
+ Q("Quantas saídas o laboratório deve ter, e com qual requisito?","Pelo menos 2, uma delas direto ao exterior",["Pelo menos 3, todas para corredores internos","Apenas 1, com porta corta-fogo antipânico","Pelo menos 2, ambas para áreas comuns"],"O laboratório deve ter pelo menos 2 saídas, uma direto ao exterior, e portas corta-fogo que abrem para fora."),
+ Q("Quais dimensões a leitura indica para a postazione e os corredores?","Postazione 1,20 m × 80 cm; corredores ≥ 1,20 m",["Postazione 80 cm × 80 cm; corredores ≥ 1,20 m","Postazione 1,20 m × 80 cm; corredores ≥ 80 cm","Postazione 1,20 m × 1,20 m; corredores ≥ 2 m"],"Postazione 1,20 m × 80 cm; corredores entre bancadas ≥ 1,20 m."),
+ Q("Por que a aspiração forçada central não serve à microbiologia?","Causa poluição das culturas",["Não remove gases e vapores tóxicos","Gera aerossol ao passar pelas capelas","Impede o uso de capelas de fluxo laminar"],"A aspiração forçada central causa poluição das culturas; a ventilação natural também não basta."),
+ Q("Qual equipamento a leitura indica para ácidos e bases concentrados e substâncias voláteis, inflamáveis e tóxicas?","Capela aspirante de velocidade variável",["Capela de fluxo laminar, com ar filtrado","Janelas com ventilação natural cruzada","Cabine de segurança biológica classe II"],"Capelas aspirantes de velocidade variável servem a ácidos e bases concentrados, voláteis, inflamáveis e tóxicas; as de fluxo laminar são outro tipo."),
+ Q("Como devem ser armazenadas as substâncias no depósito?","Incompatíveis separados e venenos, como cianuretos, sob chave",["Inflamáveis, comburentes e explosivos juntos em um armário comum","Ácidos e bases na mesma prateleira, em armário bem ventilado","Cianuretos na bancada de apoio, com etiqueta de perigo visível"],"Produtos incompatíveis ficam separados; venenos como cianuretos, sob chave; inflamáveis, comburentes e explosivos em local separado."),
+ Q("Como se identificam e se evitam trocas de gases nas bombole?","Por faixas coloridas e roscas diferentes nas conexões",["Só pelo rótulo do fabricante, com roscas iguais","Apenas pelo carrinho usado no transporte de cada gás","Por cartazes na parede, com conexões intercambiáveis"],"As bombole têm faixas coloridas para identificar o gás e roscas diferentes nas conexões para evitar troca de gases incompatíveis."),
+ Q("Qual dispositivo previne a ingestão ao pipetar?","Propipette e macroaspiradores, manuais ou automáticos",["Cabines de segurança e incineradores de bancada","Luvas químicas e protetores contra implosão","Esterilizadores de ozônio e fumigantes antimofo"],"Contra a ingestão: dispositivos de aspiração para pipetas (propipette, macroaspiradores manuais e automáticos)."),
+ Q("Onde devem ficar as autoclaves acima de 25 L?","Em local reservado",["Na bancada comum, se estiverem bem instaladas","No depósito de inflamáveis, longe das capelas","Junto das capelas de fluxo laminar"],"Equipamentos conformes e bem instalados; autoclaves acima de 25 L em local reservado.")
+],
+[ /* 10 Aerosol e norme comportamentali */
+ Q("O que acontece com as gotículas de até 150 µm?","Evaporam e deixam núcleo seco em suspensão, inalável até os alvéolos",["Depositam-se nas superfícies e são levantadas de novo com a poeira","Evaporam e deixam um núcleo que cai logo nas superfícies do local","Permanecem líquidas e infectam apenas as mucosas por contato direto"],"Gotículas ≤ 150 µm evaporam e sobra núcleo seco em suspensão, inalável; as > 150 µm se depositam e podem ser levantadas com a poeira."),
+ Q("Qual exemplo a leitura dá para gotículas de até 150 µm?","Mycobacterium tuberculosis",["Vírus respiratório sincicial","Salmonella typhi, de longa persistência","Legionella, de deposição nas bancadas"],"Mycobacterium tuberculosis (≤ 150 µm, alta sobrevivência); vírus respiratório sincicial é o exemplo das > 150 µm."),
+ Q("Qual prevenção a leitura indica para a centrifugação?","Tubos inquebráveis com tampa de rosca",["Stomacher com sacos porta-amostra","Tampas com escudos protetores","Alças descartáveis ou incinerador"],"Centrifugação: tubos inquebráveis com tampa de rosca. Stomacher é para homogeneização; escudos para abertura de frascos."),
+ Q("Qual prevenção corresponde à agitação em vórtex?","Tampas de rosca",["Tampas com escudos protetores","Sistemas de transporte herméticos","Micropipetas com ponteiras descartáveis"],"Agitação em vórtex: tampas de rosca."),
+ Q("Qual medida previne aerossol na pipetagem?","Micropipetas com ponteiras descartáveis e aspiradores a vácuo",["Tubos inquebráveis com tampa de rosca e aspiradores manuais","Stomacher com micropipetas de ponteira reutilizável","Alças descartáveis e escudos protetores nas tampas"],"Pipetagem: micropipetas com ponteiras descartáveis e aspiradores a vácuo."),
+ Q("Como deve estar a chama do bunsen quando não está em uso?","Amarela",["Azul","Totalmente apagada","Mínima, quase invisível"],"A chama do bunsen deve ser amarela quando não está em uso."),
+ Q("Qual produto a leitura cita para limpar e desinfetar a bancada?","Candeggina (água sanitária)",["Álcool etílico a 70%","Água oxigenada a 10 volumes","Ácido peracético diluído"],"Pulizia della postazione: limpar e, se necessário, desinfetar com candeggina (água sanitária) antes e depois."),
+ Q("O que deve ser feito ao final do experimento?","Organizar tudo, recolher resíduos nos recipientes certos e fechar água e gás",["Deixar o material usado sobre a bancada para o próximo grupo usar","Misturar todos os resíduos em um só recipiente devidamente identificado","Manter a corrente elétrica e o gás ligados para o dia seguinte"],"No fim, organizar tudo, recolher resíduos nos recipientes certos e fechar tomadas de água, corrente, gás e eletricidade.")
+]
+];
+LAB.forEach(function(m, i){ m.qs = HARDQS[i] || m.qs; });
+
+/* ====================================================================
+   Caderno de estudos: biblioteca, idiomas, geração por IA e Firebase
+   ==================================================================== */
+
+/* ---------- Configuração (edite só estas duas linhas) ---------- */
+var CFG = {
+  // URL do backend no Render, sem barra no final.
+  API: "https://estudar-kp6f.onrender.com",
+  // URL do Firebase Realtime Database, para os assuntos aparecerem em todos os aparelhos.
+  // Exemplo: "https://meu-caderno-default-rtdb.firebaseio.com". Vazio = assuntos só neste aparelho.
+  DB: ""
+};
+var MAXMOD = 12, MAXCHARS = 30000, MINCHARS = 250;
+var PALETTE = ["#316ee8", "#159765", "#d9a400", "#dc4c55", "#7a5af8"];
+var RECAP_LAB = [
+  {b: "70 m²", t: "superfície ar-sangue nos pulmões"},
+  {b: "150 µm", t: "limite de tamanho do aerosol"},
+  {b: "1,20 m", t: "corredor entre bancadas"},
+  {b: "3/4", t: "máximo de enchimento do freezer"},
+  {b: "25 L", t: "autoclaves em local reservado"},
+  {b: "Legge 447/95", t: "inquinamento acustico"},
+  {b: "Allegati XI e XII", t: "D.Lgs. 626/94"}
+];
+
+/* ---------- Textos da interface ---------- */
+var T = {
+  pt: {
+    app: "Caderno de estudos", libKicker: "Seus assuntos",
+    libSub: "Escolha um assunto para estudar ou crie um novo a partir de um resumo.",
+    newSub: "Novo assunto", langLbl: "Idioma", orig: "Original", ptn: "Português", itn: "Italiano",
+    modsN: "{n} módulos", pctDone: "{p}% concluído", toLib: "Caderno",
+    offline: "Sem conexão com o caderno compartilhado. Mostrando o que está salvo neste aparelho.",
+    noDb: "Os assuntos novos ficam só neste aparelho. Configure o Firebase (veja o LEIA-ME) para eles aparecerem nos outros aparelhos.",
+    kickLab: "Material de estudo de Scienze", kickGen: "Caderno · {n} módulos",
+    subLab: "Aprenda em etapas curtas. Acerte a pergunta de cada módulo para abrir o próximo. Os termos em italiano ficam como na prova.",
+    subGen: "Aprenda em etapas curtas. Acerte a pergunta de cada módulo para abrir o próximo.",
+    xp: "{n} XP", modsDone: "{n} de {m} módulos", start: "Começar", contN: "Continuar: módulo {n}",
+    reviewAll: "Revisar do início", review: "Revisar", cont: "Continuar",
+    reset: "Zerar progresso", confirm: "Toque de novo para confirmar",
+    delSub: "Excluir este assunto", delConfirm: "Toque de novo para excluir",
+    lockedL: "(bloqueado)", doneL: "(concluído)", modL: "Módulo {n}: {t}",
+    exit: "Sair para a trilha", goQ: "Ir para a pergunta", next: "Continuar", back: "Voltar",
+    qOf: "Pergunta do módulo {n}", verify: "Verificar", right: "Correto!", wrong: "Não foi dessa vez.",
+    rightAns: "Resposta certa:", again: "Tentar outra pergunta", reread: "Reler o módulo", alts: "Alternativas",
+    modDone: "Módulo concluído!", revDone: "Revisão concluída!",
+    first0: "Acertou de primeira. O próximo módulo está liberado.", firstN: "O próximo módulo está liberado.",
+    goodRev: "Bom trabalho revisando {t}.", path: "Trilha", nextMod: "Próximo módulo", finalSum: "Ver resumo final",
+    allTitle: "Você concluiu os {n} módulos",
+    allLeadLab: "Antes da prova, releia os pontos marcados como Decorar e estes números:",
+    allLeadGen: "Releia os pontos marcados como Decorar e refaça os módulos em que ainda tiver dúvida.",
+    memo: "Decorar",
+    newHelp: "Cole o resumo ou o texto que você quer estudar. A IA monta módulos e perguntas usando só esse texto, sem inventar conteúdo.",
+    fTitle: "Nome do assunto", fTitlePh: "Ex.: Revolução Francesa", fLang: "Idioma do material gerado",
+    fText: "Texto do resumo", fTextPh: "Cole aqui o resumo ou o texto do assunto...",
+    cnt: "{c} caracteres · cerca de {m} módulos",
+    errTitle: "Dê um nome ao assunto.",
+    errShort: "Cole um texto maior (pelo menos {min} caracteres) para a IA ter o que resumir.",
+    errBig: "O texto passou do limite de {max} caracteres. Divida em dois assuntos.",
+    make: "Gerar assunto", cancel: "Cancelar",
+    genKick: "Criando assunto", genSub: "A IA está lendo o texto e montando cada módulo. Pode levar alguns minutos; mantenha esta tela aberta.",
+    modN: "Módulo {n}", waiting: "Limite da IA atingido. Nova tentativa em cerca de {s}s…",
+    wake: "Na primeira vez o servidor pode levar até 1 minuto para acordar.",
+    retry: "Tentar de novo", saving: "Salvando o assunto…", errSave: "Não consegui salvar o assunto.", saveAgain: "Salvar de novo",
+    opening: "Abrindo o assunto…", translating: "Traduzindo para você…",
+    translatingSub: "Na primeira vez demora um pouco; depois fica salvo.",
+    errOpen: "Não foi possível abrir o assunto.", errTr: "A tradução falhou.", viewOrig: "Ver no original",
+    errNet: "Não consegui falar com o servidor. Ele pode estar acordando; tente de novo em instantes.",
+    aiBtn: "Assistente IA", aiTitle: "Assistente de estudos", aiSmall: "Respostas baseadas no material",
+    aiAll: "Todos os módulos", aiMod: "Módulo {n} — {t}",
+    aiHello: "Olá! Posso explicar os conceitos do material, comparar definições ou ajudar a revisar. Escolha um módulo e faça sua pergunta.",
+    aiPh: "Pergunte sobre o conteúdo...", aiThink: "Pensando na leitura...",
+    aiNote: "A IA pode errar. Confira as informações no material.", aiErr: "Não consegui conectar à IA.",
+    aiSend: "Enviar pergunta", aiClose: "Fechar assistente", aiRef: "Módulo de referência"
+  },
+  it: {
+    app: "Quaderno di studio", libKicker: "I tuoi argomenti",
+    libSub: "Scegli un argomento da studiare o creane uno nuovo partendo da un riassunto.",
+    newSub: "Nuovo argomento", langLbl: "Lingua", orig: "Originale", ptn: "Português", itn: "Italiano",
+    modsN: "{n} moduli", pctDone: "{p}% completato", toLib: "Quaderno",
+    offline: "Nessun collegamento al quaderno condiviso. Mostro ciò che è salvato su questo dispositivo.",
+    noDb: "I nuovi argomenti restano solo su questo dispositivo. Configura Firebase (vedi il LEGGIMI) per vederli sugli altri dispositivi.",
+    kickLab: "Materiale di studio di Scienze", kickGen: "Quaderno · {n} moduli",
+    subLab: "Impara a piccoli passi. Rispondi bene alla domanda di ogni modulo per aprire il successivo.",
+    subGen: "Impara a piccoli passi. Rispondi bene alla domanda di ogni modulo per aprire il successivo.",
+    xp: "{n} XP", modsDone: "{n} di {m} moduli", start: "Inizia", contN: "Continua: modulo {n}",
+    reviewAll: "Ripassa dall'inizio", review: "Ripassa", cont: "Continua",
+    reset: "Azzera i progressi", confirm: "Tocca di nuovo per confermare",
+    delSub: "Elimina questo argomento", delConfirm: "Tocca di nuovo per eliminare",
+    lockedL: "(bloccato)", doneL: "(completato)", modL: "Modulo {n}: {t}",
+    exit: "Torna al percorso", goQ: "Vai alla domanda", next: "Continua", back: "Indietro",
+    qOf: "Domanda del modulo {n}", verify: "Verifica", right: "Corretto!", wrong: "Non questa volta.",
+    rightAns: "Risposta corretta:", again: "Prova un'altra domanda", reread: "Rileggi il modulo", alts: "Alternative",
+    modDone: "Modulo completato!", revDone: "Ripasso completato!",
+    first0: "Risposta esatta al primo tentativo. Il modulo successivo è sbloccato.", firstN: "Il modulo successivo è sbloccato.",
+    goodRev: "Ottimo lavoro nel ripasso di {t}.", path: "Percorso", nextMod: "Modulo successivo", finalSum: "Vedi il riepilogo finale",
+    allTitle: "Hai completato tutti i {n} moduli",
+    allLeadLab: "Prima della verifica, rileggi i punti segnati come Da ricordare e questi numeri:",
+    allLeadGen: "Rileggi i punti segnati come Da ricordare e ripeti i moduli di cui hai ancora dubbi.",
+    memo: "Da ricordare",
+    newHelp: "Incolla il riassunto o il testo che vuoi studiare. L'IA crea moduli e domande usando solo questo testo, senza inventare contenuti.",
+    fTitle: "Nome dell'argomento", fTitlePh: "Es.: Rivoluzione francese", fLang: "Lingua del materiale generato",
+    fText: "Testo del riassunto", fTextPh: "Incolla qui il riassunto o il testo dell'argomento...",
+    cnt: "{c} caratteri · circa {m} moduli",
+    errTitle: "Dai un nome all'argomento.",
+    errShort: "Incolla un testo più lungo (almeno {min} caratteri) perché l'IA abbia qualcosa da riassumere.",
+    errBig: "Il testo supera il limite di {max} caratteri. Dividilo in due argomenti.",
+    make: "Genera argomento", cancel: "Annulla",
+    genKick: "Creazione argomento", genSub: "L'IA sta leggendo il testo e creando ogni modulo. Può richiedere qualche minuto; tieni aperta questa schermata.",
+    modN: "Modulo {n}", waiting: "Limite dell'IA raggiunto. Nuovo tentativo tra circa {s}s…",
+    wake: "La prima volta il server può impiegare fino a 1 minuto per svegliarsi.",
+    retry: "Riprova", saving: "Salvataggio dell'argomento…", errSave: "Non sono riuscita a salvare l'argomento.", saveAgain: "Salva di nuovo",
+    opening: "Apertura dell'argomento…", translating: "Sto traducendo per te…",
+    translatingSub: "La prima volta ci vuole un po'; poi resta salvato.",
+    errOpen: "Impossibile aprire l'argomento.", errTr: "La traduzione non è riuscita.", viewOrig: "Vedi l'originale",
+    errNet: "Non riesco a contattare il server. Potrebbe essere in fase di avvio; riprova tra poco.",
+    aiBtn: "Assistente IA", aiTitle: "Assistente di studio", aiSmall: "Risposte basate sul materiale",
+    aiAll: "Tutti i moduli", aiMod: "Modulo {n} — {t}",
+    aiHello: "Ciao! Posso spiegare i concetti del materiale, confrontare definizioni o aiutarti a ripassare. Scegli un modulo e fai la tua domanda.",
+    aiPh: "Chiedi sul contenuto...", aiThink: "Sto pensando al testo...",
+    aiNote: "L'IA può sbagliare. Controlla le informazioni nel materiale.", aiErr: "Non riesco a collegarmi all'IA.",
+    aiSend: "Invia domanda", aiClose: "Chiudi assistente", aiRef: "Modulo di riferimento"
   }
-} catch (e) { st.view = "home"; }
-function save(){
-  try { localStorage.setItem(KEY, JSON.stringify({unlocked:st.unlocked,cur:st.cur,xp:st.xp,view:st.view,step:st.step,qi:st.qi,order:st.order,sel:st.sel,tries:st.tries,gained:st.gained,first:st.first,pool:st.pool,last:st.last,difficulty:st.difficulty,quizCount:st.quizCount,correctCount:st.correctCount})); }
-  catch (e) { console.warn("Não foi possível salvar o progresso neste navegador.", e); }
+};
+var KL = {
+  lab: {pt: {w: "Risco", m: "Obrigação", p: "Proibição", s: "Prevenção"}, it: {w: "Rischio", m: "Obbligo", p: "Divieto", s: "Prevenzione"}},
+  gen: {pt: {w: "Atenção", m: "Conceito", p: "Evite", s: "Prática"}, it: {w: "Attenzione", m: "Concetto", p: "Da evitare", s: "Pratica"}}
+};
+
+/* ---------- Utilidades ---------- */
+var LS = {
+  get: function(k){ try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set: function(k, v){ try { localStorage.setItem(k, v); return true; } catch (e) { return false; } },
+  del: function(k){ try { localStorage.removeItem(k); } catch (e) {} }
+};
+function jget(k, d){ var v = LS.get(k); if (!v) return d; try { return JSON.parse(v); } catch (e) { return d; } }
+function jset(k, v){ return LS.set(k, JSON.stringify(v)); }
+function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+function rid(){ return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function plain(h){ var d = document.createElement("div"); d.innerHTML = h || ""; return d.textContent.replace(/\s+/g, " ").trim(); }
+function inl(s){ return esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*(.+?)\*/g, "<i>$1</i>"); }
+function objVals(v, byIndex){
+  if (v == null) return [];
+  if (Array.isArray(v)) return v.filter(function(x){ return x != null; });
+  var ks = Object.keys(v);
+  if (byIndex) ks.sort(function(a, b){ return Number(a) - Number(b); });
+  return ks.map(function(k){ return v[k]; });
 }
+
+var LANG = jget("cad-lang", "orig");
+if (["orig", "pt", "it"].indexOf(LANG) < 0) LANG = "orig";
+function uiLang(){ return LANG === "it" ? "it" : "pt"; }
+function L(k, a){
+  var s = T[uiLang()][k];
+  if (s == null) s = T.pt[k];
+  if (s == null) return k;
+  if (a) Object.keys(a).forEach(function(x){ s = s.split("{" + x + "}").join(a[x]); });
+  return s;
+}
+
+/* ---------- Limpeza de HTML vindo da IA, do banco ou de traduções ---------- */
+var OK_TAGS = {P:1, B:1, I:1, STRONG:1, EM:1, DIV:1, SPAN:1, H4:1, SMALL:1, DL:1, DT:1, DD:1, UL:1, OL:1, LI:1, BR:1};
+var OK_CLASS = /^(item|key|lbl|pts|num|it)$/;
+function clean(html){
+  var doc = new DOMParser().parseFromString("<body>" + String(html == null ? "" : html) + "</body>", "text/html");
+  (function walk(node){
+    Array.prototype.slice.call(node.childNodes).forEach(function(ch){
+      if (ch.nodeType === 3) return;
+      if (ch.nodeType !== 1) { node.removeChild(ch); return; }
+      if (!OK_TAGS[ch.tagName]) { node.replaceChild(doc.createTextNode(ch.textContent), ch); return; }
+      Array.prototype.slice.call(ch.attributes).forEach(function(a){
+        var n = a.name.toLowerCase();
+        if (n === "class" && a.value.split(/\s+/).every(function(c){ return OK_CLASS.test(c); })) return;
+        if (n === "style" && ch.tagName === "OL" && /^counter-reset:\s*n\s+\d+;?$/.test(a.value)) return;
+        ch.removeAttribute(a.name);
+      });
+      walk(ch);
+    });
+  })(doc.body);
+  return doc.body.innerHTML;
+}
+function normMod(m){
+  return {
+    s: ["w", "m", "p", "s"].indexOf(m.s) >= 0 ? m.s : "m", t: clean(m.t), tag: clean(m.tag),
+    steps: (m.steps || []).map(function(x){ return {t: clean(x.t), h: clean(x.h)}; }),
+    qs: (m.qs || []).map(function(q){ return {p: clean(q.p), o: (q.o || []).map(clean), c: Number(q.c) || 0, e: clean(q.e)}; })
+  };
+}
+
+/* ---------- Do JSON da IA para o formato dos módulos ---------- */
+function blocksHtml(blocks){
+  return blocks.map(function(b){
+    if (b.type === "p") return P(inl(b.text));
+    if (b.type === "list") return ul(b.items.map(inl));
+    if (b.type === "steps") return ol(b.items.map(inl));
+    if (b.type === "key") return key(inl(b.label || L("memo")), inl(b.text));
+    if (b.type === "card") return it(inl(b.title), b.sub ? inl(b.sub) : "", dl(b.rows.map(function(r){ return [inl(r[0]), inl(r[1])]; })));
+    return "";
+  }).join("");
+}
+function buildModule(raw){
+  return normMod({
+    s: raw.kind, t: inl(raw.title), tag: inl(raw.tag),
+    steps: raw.steps.map(function(s){ return {t: inl(s.title), h: blocksHtml(s.blocks)}; }),
+    qs: raw.questions.map(function(q){ return {p: inl(q.q), o: [inl(q.correct)].concat(q.wrong.map(inl)), c: 0, e: inl(q.why)}; })
+  });
+}
+
+/* ---------- Divisão do texto em módulos ---------- */
+function chunkText(raw){
+  var text = String(raw || "").replace(/\r/g, "").trim();
+  if (!text) return [];
+  var paras = text.split(/\n[ \t]*\n+/).map(function(p){ return p.trim(); }).filter(Boolean);
+  if (paras.length < 4) {
+    var byLine = text.split(/\n+/).map(function(p){ return p.trim(); }).filter(Boolean);
+    if (byLine.length > paras.length) paras = byLine;
+  }
+  var parts = [];
+  paras.forEach(function(p){
+    if (p.length <= 1800) { parts.push(p); return; }
+    var sents = p.match(/[^.!?…]+[.!?…]+["')\]]*\s*|[^.!?…]+$/g) || [p];
+    var cur = "";
+    sents.forEach(function(s){
+      if ((cur + s).length > 1500 && cur) { parts.push(cur.trim()); cur = s; } else cur += s;
+    });
+    if (cur.trim()) parts.push(cur.trim());
+  });
+  function isHead(p){ return p.length < 90 && !/[.!?;,]$/.test(p) && p.split(/\s+/).length <= 12; }
+  function pack(target){
+    var out = [], cur = "";
+    parts.forEach(function(p){
+      var big = cur.length >= target * 0.45;
+      if (cur && ((cur.length + p.length + 2 > target && cur.length >= 700) || (isHead(p) && big))) { out.push(cur); cur = ""; }
+      cur += (cur ? "\n\n" : "") + p;
+    });
+    if (cur) out.push(cur);
+    if (out.length > 1 && out[out.length - 1].length < 450) { var last = out.pop(); out[out.length - 1] += "\n\n" + last; }
+    return out;
+  }
+  var target = 2600, out = pack(target);
+  while (out.length > MAXMOD && target < 20000) { target = Math.round(target * 1.3); out = pack(target); }
+  return out;
+}
+
+/* ---------- Backend (IA) ---------- */
+var WAITCB = null;
+async function api(path, body){
+  var tries = 0;
+  for (;;) {
+    var r, data;
+    try {
+      r = await fetch(CFG.API.replace(/\/$/, "") + path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+      data = await r.json().catch(function(){ return {}; });
+    } catch (e) {
+      if (++tries > 2) throw new Error(L("errNet"));
+      await sleep(3000); continue;
+    }
+    if (r.status === 429 && tries < 6) {
+      tries++;
+      var w = Math.min(Math.max(Number(data.retryAfter) || 15, 5), 60);
+      if (WAITCB) WAITCB(w);
+      await sleep(w * 1000); continue;
+    }
+    if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
+    return data;
+  }
+}
+try { fetch(CFG.API.replace(/\/$/, "") + "/health", {mode: "no-cors"}).catch(function(){}); } catch (e) {}
+
+async function translateBatch(obj, lang){
+  var keys = Object.keys(obj);
+  var data = await api("/api/translate", {lang: lang, items: obj});
+  var got = data.items || {};
+  var missing = keys.filter(function(k){ return typeof got[k] !== "string" || !got[k].trim(); });
+  if (missing.length > keys.length / 2) throw new Error(L("errTr"));
+  if (missing.length) {
+    var sub = {}; missing.forEach(function(k){ sub[k] = obj[k]; });
+    try {
+      var d2 = await api("/api/translate", {lang: lang, items: sub});
+      missing.forEach(function(k){ if (d2.items && typeof d2.items[k] === "string" && d2.items[k].trim()) got[k] = d2.items[k]; });
+    } catch (e) { /* mantém o original nas chaves que faltarem */ }
+  }
+  var res = {};
+  keys.forEach(function(k){ res[k] = (typeof got[k] === "string" && got[k].trim()) ? got[k] : obj[k]; });
+  return res;
+}
+async function translateMap(items, lang, onProg){
+  var keys = Object.keys(items), batches = [], cur = {}, size = 0, out = {};
+  keys.forEach(function(k){
+    var v = String(items[k]);
+    if (size + v.length > 3200 && Object.keys(cur).length) { batches.push(cur); cur = {}; size = 0; }
+    cur[k] = v; size += v.length;
+  });
+  if (Object.keys(cur).length) batches.push(cur);
+  for (var b = 0; b < batches.length; b++) {
+    if (onProg) onProg(b, batches.length);
+    var res = await translateBatch(batches[b], lang);
+    Object.keys(res).forEach(function(k){ out[k] = res[k]; });
+  }
+  if (onProg) onProg(batches.length, batches.length);
+  return out;
+}
+function flatMod(m){
+  var o = {};
+  m.steps.forEach(function(s, i){ o["s" + i + "t"] = s.t; o["s" + i + "h"] = s.h; });
+  m.qs.forEach(function(q, i){
+    o["q" + i + "p"] = q.p;
+    q.o.forEach(function(x, j){ o["q" + i + "o" + j] = x; });
+    o["q" + i + "e"] = q.e;
+  });
+  return o;
+}
+function unflatMod(m, r){
+  return {
+    steps: m.steps.map(function(s, i){ return {t: r["s" + i + "t"], h: r["s" + i + "h"]}; }),
+    qs: m.qs.map(function(q, i){ return {p: r["q" + i + "p"], o: q.o.map(function(x, j){ return r["q" + i + "o" + j]; }), c: q.c, e: r["q" + i + "e"]}; })
+  };
+}
+
+/* ---------- Armazenamento: Firebase (compartilhado) ou este aparelho ---------- */
+function dbOn(){ return !!CFG.DB; }
+async function dbReq(method, p, body){
+  var opt = {method: method};
+  if (body !== undefined) { opt.headers = {"Content-Type": "application/json"}; opt.body = JSON.stringify(body); }
+  var r = await fetch(CFG.DB.replace(/\/+$/, "") + "/" + p + ".json", opt);
+  if (!r.ok) throw new Error("db " + r.status);
+  return method === "GET" ? r.json() : null;
+}
+var TRM = {};
+var Store = {
+  list: async function(){
+    if (dbOn()) {
+      try {
+        var v = await dbReq("GET", "meta"); v = v || {};
+        jset("cad-cache-meta", v);
+        return {items: objVals(v), offline: false};
+      } catch (e) { return {items: objVals(jget("cad-cache-meta", {})), offline: true}; }
+    }
+    return {items: objVals(jget("cad-local-meta", {})), offline: false};
+  },
+  getModules: async function(id){
+    if (dbOn()) {
+      try {
+        var v = await dbReq("GET", "modules/" + id);
+        if (v == null) throw new Error("vazio");
+        var arr = objVals(v, true).map(function(s){ return JSON.parse(s); });
+        jset("cad-cache-mod:" + id, arr);
+        return arr;
+      } catch (e) { var c = jget("cad-cache-mod:" + id, null); if (c) return c; throw e; }
+    }
+    var l = jget("cad-local-mod:" + id, null);
+    if (!l) throw new Error("não encontrado");
+    return l;
+  },
+  save: async function(meta, mods){
+    if (dbOn()) {
+      for (var i = 0; i < mods.length; i++) await dbReq("PUT", "modules/" + meta.id + "/" + i, JSON.stringify(mods[i]));
+      await dbReq("PUT", "meta/" + meta.id, meta);
+      jset("cad-cache-mod:" + meta.id, mods);
+    } else {
+      if (!jset("cad-local-mod:" + meta.id, mods)) throw new Error("sem espaço neste aparelho");
+      var m = jget("cad-local-meta", {}); m[meta.id] = meta; jset("cad-local-meta", m);
+    }
+  },
+  remove: async function(id){
+    if (dbOn()) {
+      await dbReq("DELETE", "meta/" + id);
+      try { await dbReq("DELETE", "modules/" + id); await dbReq("DELETE", "tr/" + id); } catch (e) {}
+    } else {
+      var m = jget("cad-local-meta", {}); delete m[id]; jset("cad-local-meta", m); LS.del("cad-local-mod:" + id);
+    }
+    LS.del("cad-cache-mod:" + id); LS.del(progKey(id));
+  },
+  getTr: async function(sub, lang, k){
+    var kk = (sub.built ? "v1_" : "") + k, mk = sub.id + "|" + lang + "|" + kk;
+    if (TRM[mk]) return TRM[mk];
+    var c = jget("cad-tr:" + mk, null);
+    if (c) { TRM[mk] = c; return c; }
+    if (dbOn()) {
+      try {
+        var v = await dbReq("GET", "tr/" + sub.id + "/" + lang + "/" + kk);
+        if (v) { var o = JSON.parse(v); TRM[mk] = o; jset("cad-tr:" + mk, o); return o; }
+      } catch (e) {}
+    }
+    return null;
+  },
+  putTr: async function(sub, lang, k, obj){
+    var kk = (sub.built ? "v1_" : "") + k, mk = sub.id + "|" + lang + "|" + kk;
+    TRM[mk] = obj; jset("cad-tr:" + mk, obj);
+    if (dbOn()) { try { await dbReq("PUT", "tr/" + sub.id + "/" + lang + "/" + kk, JSON.stringify(obj)); } catch (e) {} }
+  }
+};
+
+/* ---------- Estado ---------- */
+var S = null;        // assunto aberto
+var M = [];          // módulos exibidos, no idioma escolhido
+var ORIG = [];       // módulos originais
+var LIB = [], LIBOFF = false;
+var G = null;        // geração em andamento
+var NAV = 0;
+var TT = {}, TBUSY = false;
+var st = {view: "lib", unlocked: 0, cur: 0, xp: 0, step: 0, qi: 0, order: [], sel: null, tries: 0, gained: 0, first: false, pool: {}, last: {}, confirmReset: false, confirmDel: false, form: null};
+
+function progKey(id){ return id === "lab" ? "sicurezza-lab-progress-v2" : "cad-prog-" + id; }
+function readProg(id){ return jget(progKey(id), {}) || {}; }
+function loadProg(){
+  var p = readProg(S.id);
+  st.unlocked = Math.max(0, Math.min(Number(p.unlocked) || 0, M.length));
+  st.xp = Number(p.xp) || 0;
+  st.cur = 0; st.step = 0; st.qi = 0; st.order = []; st.sel = null; st.tries = 0; st.gained = 0; st.first = false;
+  st.pool = {}; st.last = {}; st.confirmReset = false; st.confirmDel = false;
+}
+function save(){ if (S) jset(progKey(S.id), {unlocked: st.unlocked, xp: st.xp}); }
 
 var app = document.getElementById("app");
 
 /* ---------- Ícones e sinais ---------- */
 var ICON = {
-  x:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/></svg>',
-  star:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg>',
-  check:'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  lock:'<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 018 0v2.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>'
+  x: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/></svg>',
+  star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg>',
+  check: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 018 0v2.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>',
+  back: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'
 };
 var SIGNS = {
-  w:'<polygon points="24,5 45,41 3,41" fill="var(--s-yellow)" stroke="#1b2631" stroke-width="3" stroke-linejoin="round"/><rect x="22.2" y="17" width="3.6" height="13" rx="1.6" fill="#1b2631"/><circle cx="24" cy="35" r="2.3" fill="#1b2631"/>',
-  m:'<circle cx="24" cy="24" r="21" fill="var(--s-blue)"/><path d="M14 25l7 7 13-15" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>',
-  p:'<circle cx="24" cy="24" r="18" fill="none" stroke="var(--s-red)" stroke-width="6"/><line x1="11.5" y1="11.5" x2="36.5" y2="36.5" stroke="var(--s-red)" stroke-width="6" stroke-linecap="round"/>',
-  s:'<rect x="4" y="4" width="40" height="40" rx="7" fill="var(--s-green)"/><path d="M24 12v24M12 24h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/>'
+  w: '<polygon points="24,5 45,41 3,41" fill="var(--s-yellow)" stroke="#1b2631" stroke-width="3" stroke-linejoin="round"/><rect x="22.2" y="17" width="3.6" height="13" rx="1.6" fill="#1b2631"/><circle cx="24" cy="35" r="2.3" fill="#1b2631"/>',
+  m: '<circle cx="24" cy="24" r="21" fill="var(--s-blue)"/><path d="M14 25l7 7 13-15" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>',
+  p: '<circle cx="24" cy="24" r="18" fill="none" stroke="var(--s-red)" stroke-width="6"/><line x1="11.5" y1="11.5" x2="36.5" y2="36.5" stroke="var(--s-red)" stroke-width="6" stroke-linecap="round"/>',
+  s: '<rect x="4" y="4" width="40" height="40" rx="7" fill="var(--s-green)"/><path d="M24 12v24M12 24h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/>'
 };
-function sign(t){ return '<svg class="sign" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + SIGNS[t] + '</svg>'; }
-function kindPill(m){ return '<span class="kind k-' + m.s + '">' + KIND[m.s] + '</span>'; }
+function sign(t){ return '<svg class="sign" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + (SIGNS[t] || SIGNS.m) + '</svg>'; }
+function kindPill(m){ return '<span class="kind k-' + m.s + '">' + esc(KL[S && S.built ? "lab" : "gen"][uiLang()][m.s] || "") + '</span>'; }
 
-/* ---------- Utilidades ---------- */
+/* ---------- Utilidades de tela ---------- */
 function shuffle(a){ for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 function range(n){ var r = []; for (var i = 0; i < n; i++) r.push(i); return r; }
 function go(view){ st.view = view; save(); render(); window.scrollTo(0, 0); }
 function $(sel){ return app.querySelector(sel); }
+function effLang(){ return (LANG === "orig" || (S && S.origin === LANG)) ? null : LANG; }
 
-/* Banco por dificuldade. As perguntas base vêm diretamente das leituras; as versões média/difícil pedem aplicação e análise do mesmo conceito. */
-function questionsFor(mi, level){
-  var base = M[mi].qs;
-  if (level === "easy") return base;
-  return base.map(function(q, idx){
-    var prefix = level === "medium"
-      ? "Situação prática: considerando as regras estudadas, "
-      : "Análise de caso: escolha a opção tecnicamente correta e mais coerente com a leitura — ";
-    return {p:prefix + q.p.charAt(0).toLowerCase() + q.p.slice(1), o:q.o.slice(), c:q.c, e:q.e, sourceIndex:idx};
+function langBar(){
+  return '<div class="seg" role="group" aria-label="' + esc(L("langLbl")) + '">' +
+    [["orig", L("orig")], ["pt", L("ptn")], ["it", L("itn")]].map(function(x){
+      return '<button type="button" data-l="' + x[0] + '" aria-pressed="' + (LANG === x[0]) + '">' + esc(x[1]) + '</button>';
+    }).join("") + '</div>';
+}
+function bindLang(){
+  app.querySelectorAll(".seg button").forEach(function(b){ b.onclick = function(){ setLang(b.getAttribute("data-l")); }; });
+}
+function setLang(l){
+  if (l === LANG) return;
+  LANG = l; jset("cad-lang", l);
+  if (st.view === "lib") { renderLib(); ensureTitleTr(); }
+  else if (S && st.view === "home") openSubject(S.id);
+}
+
+function renderLoading(title, sub, back){
+  st.view = "loading"; showAI(false);
+  app.innerHTML = '<div class="wrap body center"><div class="spin" aria-hidden="true"></div><h2>' + esc(title) + '</h2>' +
+    '<p class="lead" id="lsub">' + esc(sub || "") + '</p>' +
+    '<div class="pbar" id="lbar" hidden><i style="width:0%"></i></div></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn wide" id="lback">' + esc(L("cancel")) + '</button></div></div>';
+  WAITCB = function(w){ var e = document.getElementById("lsub"); if (e) e.textContent = L("waiting", {s: w}); };
+  $("#lback").onclick = function(){ NAV++; (back || toLib)(); };
+}
+function setLoadProg(done, total){
+  var b = document.getElementById("lbar");
+  if (!b) return;
+  b.hidden = total < 2;
+  b.firstChild.style.width = Math.round(done / Math.max(total, 1) * 100) + "%";
+}
+function showError(title, detail, actions){
+  st.view = "err"; showAI(false); WAITCB = null;
+  app.innerHTML = '<div class="wrap body center"><h2>' + esc(title) + '</h2><p class="lead">' + esc(detail || "") + '</p></div>' +
+    '<div class="bar"><div class="wrap">' + actions.map(function(a, i){
+      return '<button type="button" class="btn' + (a.primary ? ' primary wide' : '') + '" data-a="' + i + '">' + esc(a.label) + '</button>';
+    }).join("") + '</div></div>';
+  app.querySelectorAll("[data-a]").forEach(function(b){ b.onclick = function(){ actions[Number(b.getAttribute("data-a"))].fn(); }; });
+}
+
+/* ---------- Biblioteca ---------- */
+function builtMeta(){ return {id: "lab", title: "Sicurezza nei laboratori scolastici", origin: "mix", n: LAB.length, color: 0, built: true, createdAt: 0}; }
+function hasTT(m){ return !!((m.tt && m.tt[LANG]) || TT[m.id + "|" + LANG]); }
+function titleFor(m){
+  if (LANG === "orig" || m.origin === LANG) return m.title;
+  return (m.tt && m.tt[LANG]) || TT[m.id + "|" + LANG] || m.title;
+}
+async function refreshLib(silent){
+  var res = await Store.list();
+  var items = res.items.filter(function(x){ return x && x.id && x.title; }).sort(function(a, b){ return (a.createdAt || 0) - (b.createdAt || 0); });
+  LIB = [builtMeta()].concat(items);
+  LIBOFF = res.offline;
+  if (st.view === "lib") renderLib();
+  ensureTitleTr();
+}
+async function ensureTitleTr(){
+  if (LANG === "orig" || TBUSY) return;
+  var lang = LANG;
+  LIB.forEach(function(m){
+    if (m.origin !== lang && !hasTT(m)) { var c = LS.get("cad-tt:" + m.id + ":" + lang); if (c) TT[m.id + "|" + lang] = c; }
   });
+  var need = LIB.filter(function(m){ return m.origin !== lang && !hasTT(m); });
+  if (st.view === "lib") renderLib();
+  if (!need.length) return;
+  TBUSY = true;
+  try {
+    var items = {}; need.forEach(function(m){ items[m.id] = m.title; });
+    var res = await translateMap(items, lang);
+    need.forEach(function(m){
+      TT[m.id + "|" + lang] = res[m.id];
+      LS.set("cad-tt:" + m.id + ":" + lang, res[m.id]);
+      if (dbOn() && !m.built) dbReq("PUT", "meta/" + m.id + "/tt/" + lang, res[m.id]).catch(function(){});
+    });
+  } catch (e) { /* mantém os títulos originais */ }
+  TBUSY = false;
+  if (st.view === "lib") renderLib();
 }
-function pickQuestion(mi){
-  var qs = questionsFor(mi, st.difficulty), key = mi + "-" + st.difficulty;
-  var p = st.pool[key];
-  if (!p || !p.length) {
-    p = shuffle(range(qs.length));
-    if (qs.length > 1 && p[p.length - 1] === st.last[key]) { var t = p[0]; p[0] = p[p.length - 1]; p[p.length - 1] = t; }
-    st.pool[key] = p;
-  }
-  var k = p.pop(); st.last[key] = k; return k;
+function toLib(){
+  S = null; M = []; ORIG = []; st.view = "lib"; showAI(false); WAITCB = null;
+  renderLib(); window.scrollTo(0, 0); refreshLib(true);
 }
-function startModule(i){ st.cur = i; st.step = 0; st.tries = 0; st.quizCount = 0; st.correctCount = 0; save(); go("lesson"); }
-function chooseDifficulty(){ st.view = "difficulty"; save(); render(); window.scrollTo(0,0); }
-function openQuiz(){
-  var qs = questionsFor(st.cur, st.difficulty);
-  st.qi = pickQuestion(st.cur);
-  st.order = shuffle(range(qs[st.qi].o.length)); st.sel = null;
-  st.quizCount++; go("quiz");
+function renderLib(){
+  var cards = LIB.map(function(m){
+    var p = readProg(m.id), n = m.n || 0, u = Math.min(Number(p.unlocked) || 0, n), pct = n ? Math.round(u / n * 100) : 0;
+    var title = titleFor(m), col = PALETTE[(m.color || 0) % PALETTE.length];
+    return '<button type="button" class="nb" data-id="' + esc(m.id) + '" style="--c:' + col + '" aria-label="' + esc(title) + '">' +
+      '<span class="spine" aria-hidden="true"></span>' +
+      '<span class="cover"><strong>' + esc(title) + '</strong>' +
+      '<span class="meta">' + esc(L("modsN", {n: n})) + ' · ' + esc(L("pctDone", {p: pct})) + '</span>' +
+      '<span class="mb" aria-hidden="true"><i style="width:' + pct + '%"></i></span></span></button>';
+  }).join("");
+  app.innerHTML =
+    '<div class="wrap libhead">' +
+      '<div class="topline"><p class="kicker">' + esc(L("libKicker")) + '</p>' +
+      '<button type="button" class="plus" id="newtop" aria-label="' + esc(L("newSub")) + '">' + ICON.plus + '</button></div>' +
+      '<h1>' + esc(L("app")) + '</h1>' +
+      '<p class="sub">' + esc(L("libSub")) + '</p>' +
+      '<div class="row2">' + langBar() + '</div>' +
+      (!dbOn() ? '<div class="banner warn">' + esc(L("noDb")) + '</div>' : "") +
+      (LIBOFF ? '<div class="banner warn">' + esc(L("offline")) + '</div>' : "") +
+    '</div>' +
+    '<div class="wrap shelf">' + cards +
+      '<button type="button" class="nb add" id="newcard">' + ICON.plus + '<span>' + esc(L("newSub")) + '</span></button></div>';
+  bindLang();
+  app.querySelectorAll(".nb[data-id]").forEach(function(b){ b.onclick = function(){ openSubject(b.getAttribute("data-id")); }; });
+  $("#newtop").onclick = $("#newcard").onclick = function(){ st.form = st.form || {title: "", text: "", lang: LANG === "it" ? "it" : "pt"}; go("new"); };
 }
 
-/* ---------- Telas ---------- */
+/* ---------- Abrir assunto e idioma ---------- */
+async function applyLang(my){
+  var el = effLang();
+  if (!el) {
+    M = S.built ? ORIG : ORIG.map(normMod);
+    S.titleShown = S.title; S.recap = S.built ? RECAP_LAB : null;
+    return;
+  }
+  var idx = await Store.getTr(S, el, "index");
+  if (!idx) {
+    var sub = document.getElementById("lsub"); if (sub) sub.textContent = L("translatingSub");
+    var items = {title: S.title};
+    ORIG.forEach(function(m, i){ items["m" + i + "t"] = m.t; items["m" + i + "a"] = m.tag; });
+    if (S.built) RECAP_LAB.forEach(function(r, i){ items["r" + i + "b"] = r.b; items["r" + i + "t"] = r.t; });
+    var res = await translateMap(items, el, setLoadProg);
+    if (my !== NAV) return;
+    idx = {
+      title: res.title,
+      mods: ORIG.map(function(m, i){ return {t: res["m" + i + "t"], tag: res["m" + i + "a"]}; }),
+      recap: S.built ? RECAP_LAB.map(function(r, i){ return {b: res["r" + i + "b"], t: res["r" + i + "t"]}; }) : null
+    };
+    await Store.putTr(S, el, "index", idx);
+  }
+  M = ORIG.map(function(m, i){ return {s: m.s, t: clean(idx.mods[i].t), tag: clean(idx.mods[i].tag), steps: null, qs: null}; });
+  S.titleShown = clean(idx.title);
+  S.recap = idx.recap ? idx.recap.map(function(r){ return {b: clean(r.b), t: clean(r.t)}; }) : null;
+}
+async function openSubject(id){
+  var my = ++NAV;
+  var meta = LIB.filter(function(x){ return x.id === id; })[0];
+  if (!meta) return;
+  renderLoading(L("opening"), titleFor(meta));
+  try {
+    var mods = meta.built ? LAB : await Store.getModules(id);
+    if (my !== NAV) return;
+    S = {id: id, title: meta.title, origin: meta.origin, built: !!meta.built, n: mods.length};
+    ORIG = mods;
+    if (effLang()) renderLoading(L("translating"), L("translatingSub"));
+    await applyLang(my);
+    if (my !== NAV) return;
+    loadProg();
+    WAITCB = null; st.view = "home"; render(); updateAI(); window.scrollTo(0, 0);
+  } catch (e) {
+    if (my !== NAV) return;
+    showError(L("errOpen"), e.message, [
+      {label: L("retry"), fn: function(){ openSubject(id); }, primary: true},
+      {label: L("viewOrig"), fn: function(){ LANG = "orig"; jset("cad-lang", "orig"); openSubject(id); }},
+      {label: L("toLib"), fn: toLib}
+    ]);
+  }
+}
+async function ensureModule(i, my){
+  if (M[i].steps) return;
+  var el = effLang();
+  var cached = await Store.getTr(S, el, "m" + i);
+  if (!cached) {
+    var res = await translateMap(flatMod(ORIG[i]), el, setLoadProg);
+    if (my !== NAV) return;
+    cached = unflatMod(ORIG[i], res);
+    await Store.putTr(S, el, "m" + i, cached);
+  }
+  if (my !== NAV) return;
+  M[i].steps = cached.steps.map(function(s){ return {t: clean(s.t), h: clean(s.h)}; });
+  M[i].qs = cached.qs.map(function(q){ return {p: clean(q.p), o: q.o.map(clean), c: q.c, e: clean(q.e)}; });
+}
+
+/* ---------- Trilha e lição (visual da versão original) ---------- */
+function pickQuestion(mi){
+  var n = M[mi].qs.length;
+  var p = st.pool[mi];
+  if (!p || !p.length) {
+    p = shuffle(range(n));
+    if (n > 1 && p[p.length - 1] === st.last[mi]) { var t = p[0]; p[0] = p[p.length - 1]; p[p.length - 1] = t; }
+    st.pool[mi] = p;
+  }
+  var k = p.pop();
+  st.last[mi] = k;
+  return k;
+}
+async function startModule(i){
+  st.cur = i; st.step = 0; st.tries = 0; st.pool[i] = null;
+  if (!M[i].steps) {
+    var my = ++NAV;
+    renderLoading(L("translating"), L("translatingSub"), function(){ go("home"); });
+    try { await ensureModule(i, my); }
+    catch (e) {
+      if (my !== NAV) return;
+      showError(L("errTr"), e.message, [
+        {label: L("retry"), fn: function(){ startModule(i); }, primary: true},
+        {label: L("path"), fn: function(){ go("home"); }}
+      ]);
+      return;
+    }
+    if (my !== NAV) return;
+  }
+  save(); go("lesson");
+}
+function openQuiz(){
+  var m = M[st.cur];
+  st.qi = pickQuestion(st.cur);
+  st.order = shuffle(range(m.qs[st.qi].o.length));
+  st.sel = null;
+  go("quiz");
+}
 function topbar(m, idx){
   var total = m.steps.length + 1, segs = "";
   for (var i = 0; i < total; i++) segs += '<i class="' + (i < idx ? "on" : i === idx ? "now" : "") + '"></i>';
-  return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="Sair para a trilha">' + ICON.x + '</button><div class="segs" role="progressbar" aria-valuemin="1" aria-valuemax="' + total + '" aria-valuenow="' + (idx + 1) + '" aria-label="Etapa ' + (idx + 1) + ' de ' + total + '">' + segs + '</div></div></div>';
+  return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("exit")) + '">' + ICON.x + '</button><div class="segs" role="progressbar" aria-valuemin="1" aria-valuemax="' + total + '" aria-valuenow="' + (idx + 1) + '">' + segs + '</div></div></div>';
 }
 
 function renderHome(){
@@ -792,33 +1768,46 @@ function renderHome(){
   var cards = M.map(function(m, i){
     var locked = i > st.unlocked, done = i < st.unlocked, cur = i === st.unlocked && !all;
     var badge = done ? '<span class="badge">' + ICON.check + '</span>' : locked ? '<span class="badge lock">' + ICON.lock + '</span>' : "";
-    var status = done ? "Revisar" : cur ? "Continuar" : "";
-    var label = "Módulo " + (i + 1) + ": " + m.t + (locked ? " (bloqueado)" : done ? " (concluído)" : "");
-    return '<button type="button" class="mod' + (done ? " done" : "") + (cur ? " cur" : "") + (locked ? " locked" : "") + '" data-i="' + i + '"' + (locked ? " disabled" : "") + ' aria-label="' + label + '">' +
+    var status = done ? L("review") : cur ? L("cont") : "";
+    var label = L("modL", {n: i + 1, t: plain(m.t)}) + (locked ? " " + L("lockedL") : done ? " " + L("doneL") : "");
+    return '<button type="button" class="mod' + (done ? " done" : "") + (cur ? " cur" : "") + (locked ? " locked" : "") + '" data-i="' + i + '"' + (locked ? " disabled" : "") + ' aria-label="' + esc(label) + '">' +
       '<span class="node">' + sign(m.s) + badge + '</span>' +
       '<span class="mt">' + kindPill(m) + '<strong>' + m.t + '</strong><span class="meta">' + m.tag + '</span></span>' +
-      '<span class="st">' + status + '</span></button>';
+      '<span class="st">' + esc(status) + '</span></button>';
   }).join("");
-  var ctaLabel = all ? "Revisar do início" : st.unlocked === 0 ? "Começar" : "Continuar: módulo " + (nxt + 1);
+  var ctaLabel = all ? L("reviewAll") : st.unlocked === 0 ? L("start") : L("contN", {n: nxt + 1});
+  var kick = S.built ? L("kickLab") : L("kickGen", {n: M.length});
+  var sub = (S.built && LANG === "orig") ? L("subLab") : L("subGen");
   app.innerHTML =
     '<div class="wrap hero">' +
-      '<p class="kicker">Material de estudo de Scienze</p>' +
-      '<h1>Sicurezza nei laboratori scolastici</h1>' +
-      '<p class="sub">Aprenda em etapas curtas. Acerte a pergunta de cada módulo para abrir o próximo. Os termos em italiano ficam como na prova.</p>' +
-      '<div class="stats"><span class="pill">' + ICON.star + st.xp + ' XP</span><span class="pill">' + n + ' de ' + M.length + ' módulos</span></div>' +
-      '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-label="Progresso geral"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="topline"><button type="button" class="back" id="tolib">' + ICON.back + '<span>' + esc(L("toLib")) + '</span></button>' + langBar() + '</div>' +
+      '<p class="kicker">' + esc(kick) + '</p>' +
+      '<h1>' + S.titleShown + '</h1>' +
+      '<p class="sub">' + esc(sub) + '</p>' +
+      '<div class="stats"><span class="pill">' + ICON.star + esc(L("xp", {n: st.xp})) + '</span><span class="pill">' + esc(L("modsDone", {n: n, m: M.length})) + '</span></div>' +
+      '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>' +
     '</div>' +
     '<div class="wrap path">' + cards + '</div>' +
-    ((st.unlocked > 0 || st.xp > 0) ? '<div class="wrap foot"><button type="button" class="btn ghost" id="reset">' + (st.confirmReset ? "Toque de novo para confirmar" : "Zerar progresso") + '</button></div>' : "") +
-    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="cta">' + ctaLabel + '</button></div></div>';
-  app.querySelectorAll(".mod").forEach(function(b){
-    b.onclick = function(){ startModule(parseInt(b.getAttribute("data-i"), 10)); };
-  });
+    '<div class="wrap foot" style="gap:6px;flex-wrap:wrap">' +
+      ((st.unlocked > 0 || st.xp > 0) ? '<button type="button" class="btn ghost" id="reset">' + esc(st.confirmReset ? L("confirm") : L("reset")) + '</button>' : "") +
+      (!S.built ? '<button type="button" class="btn ghost" id="del" style="color:var(--bad)">' + esc(st.confirmDel ? L("delConfirm") : L("delSub")) + '</button>' : "") +
+    '</div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="cta">' + esc(ctaLabel) + '</button></div></div>';
+  bindLang();
+  $("#tolib").onclick = toLib;
+  app.querySelectorAll(".mod").forEach(function(b){ b.onclick = function(){ startModule(parseInt(b.getAttribute("data-i"), 10)); }; });
   $("#cta").onclick = function(){ startModule(all ? 0 : nxt); };
   var rs = $("#reset");
   if (rs) rs.onclick = function(){
     if (!st.confirmReset) { st.confirmReset = true; renderHome(); return; }
-    st.confirmReset = false; st.unlocked = 0; st.cur = 0; st.xp = 0; st.pool = {}; st.last = {}; st.view = "home"; st.step = 0; st.tries = 0; st.sel = null; save(); renderHome();
+    st.confirmReset = false; st.unlocked = 0; st.cur = 0; st.xp = 0; st.pool = {}; st.last = {}; st.step = 0; st.tries = 0; st.sel = null; save(); renderHome();
+  };
+  var dl2 = $("#del");
+  if (dl2) dl2.onclick = async function(){
+    if (!st.confirmDel) { st.confirmDel = true; renderHome(); return; }
+    var id = S.id;
+    try { await Store.remove(id); } catch (e) { st.confirmDel = false; renderHome(); return; }
+    toLib();
   };
 }
 
@@ -828,59 +1817,41 @@ function renderLesson(){
   app.innerHTML =
     topbar(m, st.step) +
     '<div class="wrap body">' +
-      '<p class="crumb">' + kindPill(m) + '<span>Módulo ' + (st.cur + 1) + ': ' + m.t + '</span></p>' +
+      '<p class="crumb">' + kindPill(m) + '<span>' + esc(L("modL", {n: st.cur + 1, t: plain(m.t)})) + '</span></p>' +
       '<h2>' + step.t + '</h2>' +
       '<div class="stack">' + step.h + '</div>' +
     '</div>' +
     '<div class="bar"><div class="wrap">' +
-      (st.step > 0 ? '<button type="button" class="btn" id="back">Voltar</button>' : "") +
-      '<button type="button" class="btn primary wide" id="next">' + (lastStep ? "Ir para a pergunta" : "Continuar") + '</button>' +
+      (st.step > 0 ? '<button type="button" class="btn" id="back">' + esc(L("back")) + '</button>' : "") +
+      '<button type="button" class="btn primary wide" id="next">' + esc(lastStep ? L("goQ") : L("next")) + '</button>' +
     '</div></div>';
   $("#exit").onclick = function(){ go("home"); };
   var bk = $("#back");
   if (bk) bk.onclick = function(){ st.step--; save(); render(); window.scrollTo(0, 0); };
   $("#next").onclick = function(){
-    if (lastStep) chooseDifficulty(); else { st.step++; save(); render(); window.scrollTo(0, 0); }
+    if (lastStep) openQuiz(); else { st.step++; save(); render(); window.scrollTo(0, 0); }
   };
 }
 
-function renderDifficulty(){
-  var m = M[st.cur];
-  app.innerHTML = topbar(m, m.steps.length) +
-    '<div class="wrap body"><p class="crumb">Módulo ' + (st.cur+1) + ': ' + m.t + '</p>' +
-    '<h2>Escolha a dificuldade</h2><p class="lead">Você pode trocar de nível quando quiser. Responda 5 perguntas corretamente para concluir o treino. As perguntas são sorteadas do banco do módulo.</p>' +
-    '<div class="stack difficulty-list">' +
-    '<button class="btn wide diff" data-level="easy">🟢 Fácil <small>Conceitos e definições diretas</small></button>' +
-    '<button class="btn wide diff" data-level="medium">🟡 Médio <small>Compreensão e aplicação em situações</small></button>' +
-    '<button class="btn wide diff" data-level="hard">🔴 Difícil <small>Análise de casos e distinção entre conceitos</small></button>' +
-    '</div></div><div class="bar"><div class="wrap"><button class="btn" id="backLesson">Voltar à leitura</button></div></div>';
-  $('#exit').onclick = function(){go('home');};
-  app.querySelectorAll('[data-level]').forEach(function(b){ b.onclick=function(){ st.difficulty=b.getAttribute('data-level'); st.tries=0; st.quizCount=0; st.correctCount=0; save(); openQuiz(); }; });
-  $('#backLesson').onclick=function(){st.step=0;go('lesson');};
-}
 function renderQuiz(){
-  var m = M[st.cur], q = questionsFor(st.cur, st.difficulty)[st.qi];
+  var m = M[st.cur], q = m.qs[st.qi];
   var opts = st.order.map(function(oi, pos){
     return '<button type="button" class="opt" data-pos="' + pos + '"><span class="l">' + "ABCD".charAt(pos) + '</span><span>' + q.o[oi] + '</span></button>';
   }).join("");
   app.innerHTML =
     topbar(m, m.steps.length) +
     '<div class="wrap body">' +
-      '<p class="crumb">' + kindPill(m) + '<span>Módulo ' + (st.cur + 1) + ' · ' + ({easy:'Fácil',medium:'Médio',hard:'Difícil'}[st.difficulty]) + ' · Pergunta ' + st.quizCount + '</span></p>' +
+      '<p class="crumb">' + kindPill(m) + '<span>' + esc(L("qOf", {n: st.cur + 1})) + '</span></p>' +
       '<h2 class="q">' + q.p + '</h2>' +
-      '<p><button type="button" class="btn ghost" id="hintAI">Não entendi — me dê uma dica da IA</button></p>' +
-      '<div class="opts" role="group" aria-label="Alternativas">' + opts + '</div>' +
+      '<div class="opts" role="group" aria-label="' + esc(L("alts")) + '">' + opts + '</div>' +
     '</div>' +
-    '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>Verificar</button></div></div>';
+    '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>' + esc(L("verify")) + '</button></div></div>';
   $("#exit").onclick = function(){ go("home"); };
-  var hintBtn = $("#hintAI"); if (hintBtn) hintBtn.onclick = function(){ window.dispatchEvent(new CustomEvent('quiz-hint-request', {detail:{question:q.p, module:st.cur, difficulty:st.difficulty}})); };
   var btns = app.querySelectorAll(".opt");
-  if (st.sel !== null && st.sel < btns.length) { btns[st.sel].classList.add("sel"); btns[st.sel].setAttribute("aria-pressed", "true"); }
   var verify = $("#verify");
-  verify.disabled = st.sel === null;
   btns.forEach(function(b){
     b.onclick = function(){
-      st.sel = parseInt(b.getAttribute("data-pos"), 10); save();
+      st.sel = parseInt(b.getAttribute("data-pos"), 10);
       btns.forEach(function(x){ x.classList.remove("sel"); x.setAttribute("aria-pressed", "false"); });
       b.classList.add("sel"); b.setAttribute("aria-pressed", "true");
       verify.disabled = false;
@@ -897,20 +1868,14 @@ function renderQuiz(){
     });
     var bar = $("#bar");
     if (ok) {
-      st.correctCount++;
+      st.first = st.cur >= st.unlocked;
       st.gained = 0;
-      var target = 5;
-      var completedSet = st.correctCount >= target;
-      if (completedSet) {
-        st.first = st.cur >= st.unlocked;
-        if (st.first) { st.unlocked = st.cur + 1; st.gained = st.tries === 0 ? 20 : 10; st.xp += st.gained; }
-      }
+      if (st.first) { st.unlocked = st.cur + 1; st.gained = st.tries === 0 ? 20 : 10; st.xp += st.gained; }
       save();
       bar.className = "bar sheet ok";
       bar.setAttribute("role", "status");
-      bar.innerHTML = '<div class="wrap"><div><strong>Correto!</strong><p>' + q.e + '</p><p>Progresso deste treino: ' + st.correctCount + ' de ' + target + ' respostas corretas.</p></div><div class="row"><button type="button" class="btn good wide" id="go">' + (completedSet ? 'Concluir treino' : 'Próxima pergunta') + '</button></div></div>';
+      bar.innerHTML = '<div class="wrap"><div><strong>' + esc(L("right")) + '</strong><p>' + q.e + '</p></div><div class="row"><button type="button" class="btn good wide" id="go">' + esc(L("next")) + '</button></div></div>';
       $("#go").onclick = function(){
-        if (!completedSet) { openQuiz(); return; }
         if (st.cur === M.length - 1 && st.first) go("all"); else go("done");
       };
       $("#go").focus();
@@ -918,7 +1883,7 @@ function renderQuiz(){
       st.tries++; save();
       bar.className = "bar sheet no";
       bar.setAttribute("role", "status");
-      bar.innerHTML = '<div class="wrap"><div><strong>Não foi dessa vez.</strong><p><b>Resposta certa:</b> ' + q.o[q.c] + '. ' + q.e + '</p></div><div class="row"><button type="button" class="btn bad wide" id="again">Tentar outra pergunta</button><button type="button" class="btn" id="reread">Reler o módulo</button></div></div>';
+      bar.innerHTML = '<div class="wrap"><div><strong>' + esc(L("wrong")) + '</strong><p><b>' + esc(L("rightAns")) + '</b> ' + q.o[q.c] + '. ' + q.e + '</p></div><div class="row"><button type="button" class="btn bad wide" id="again">' + esc(L("again")) + '</button><button type="button" class="btn" id="reread">' + esc(L("reread")) + '</button></div></div>';
       $("#again").onclick = function(){ openQuiz(); };
       $("#reread").onclick = function(){ st.step = 0; go("lesson"); };
       $("#again").focus();
@@ -932,93 +1897,254 @@ function renderDone(){
   app.innerHTML =
     '<div class="wrap body center">' +
       sign(m.s) +
-      '<h2>' + (st.first ? "Módulo concluído!" : "Revisão concluída!") + '</h2>' +
+      '<h2>' + esc(st.first ? L("modDone") : L("revDone")) + '</h2>' +
       (st.first ? '<span class="xp">' + ICON.star + '+' + st.gained + ' XP</span>' : "") +
-      '<p class="lead">' + (st.first ? (st.tries === 0 ? "Acertou de primeira. O próximo módulo está liberado." : "O próximo módulo está liberado.") : "Bom trabalho revisando " + m.t + ".") + '</p>' +
+      '<p class="lead">' + (st.first ? esc(st.tries === 0 ? L("first0") : L("firstN")) : esc(L("goodRev", {t: plain(m.t)}))) + '</p>' +
     '</div>' +
     '<div class="bar"><div class="wrap">' +
-      '<button type="button" class="btn" id="home">Trilha</button>' +
-      (!last ? '<button type="button" class="btn primary wide" id="nx">Próximo módulo</button>' : '<button type="button" class="btn primary wide" id="nx">Ver resumo final</button>') +
+      '<button type="button" class="btn" id="home">' + esc(L("path")) + '</button>' +
+      '<button type="button" class="btn primary wide" id="nx">' + esc(!last ? L("nextMod") : L("finalSum")) + '</button>' +
     '</div></div>';
   $("#home").onclick = function(){ go("home"); };
   $("#nx").onclick = function(){ if (last) go("all"); else if (st.cur + 1 <= st.unlocked) startModule(st.cur + 1); else go("home"); };
 }
 
 function renderAll(){
+  var recap;
+  if (S.built && S.recap) recap = S.recap.map(function(r){ return '<div><b>' + r.b + '</b>' + r.t + '</div>'; }).join("");
+  else recap = M.map(function(m, i){ return '<div><b>' + (i + 1) + '</b>' + m.t + '</div>'; }).join("");
   app.innerHTML =
     '<div class="wrap body center">' +
       sign("s") +
-      '<h2>Você concluiu os 10 módulos</h2>' +
-      '<p class="lead">Antes da prova, releia os pontos marcados como Decorar e estes números:</p>' +
-      '<div class="recap">' +
-        '<div><b>70 m²</b>superfície ar-sangue nos pulmões</div>' +
-        '<div><b>150 µm</b>limite de tamanho do aerosol</div>' +
-        '<div><b>1,20 m</b>corredor entre bancadas</div>' +
-        '<div><b>3/4</b>máximo de enchimento do freezer</div>' +
-        '<div><b>25 L</b>autoclaves em local reservado</div>' +
-        '<div><b>Legge 447/95</b>inquinamento acustico</div>' +
-        '<div><b>Allegati XI e XII</b>D.Lgs. 626/94</div>' +
-      '</div>' +
+      '<h2>' + esc(L("allTitle", {n: M.length})) + '</h2>' +
+      '<p class="lead">' + esc(S.built ? L("allLeadLab") : L("allLeadGen")) + '</p>' +
+      '<div class="recap">' + recap + '</div>' +
     '</div>' +
     '<div class="bar"><div class="wrap">' +
-      '<button type="button" class="btn" id="home">Trilha</button>' +
-      '<button type="button" class="btn primary wide" id="rev">Revisar do início</button>' +
+      '<button type="button" class="btn" id="home">' + esc(L("path")) + '</button>' +
+      '<button type="button" class="btn primary wide" id="rev">' + esc(L("reviewAll")) + '</button>' +
     '</div></div>';
   $("#home").onclick = function(){ go("home"); };
   $("#rev").onclick = function(){ startModule(0); };
 }
 
-function render(){
-  if (st.view === "lesson") renderLesson();
-  else if (st.view === "difficulty") renderDifficulty();
-  else if (st.view === "quiz") renderQuiz();
-  else if (st.view === "done") renderDone();
-  else if (st.view === "all") renderAll();
-  else { st.confirmReset = false; renderHome(); }
+/* ---------- Novo assunto ---------- */
+function renderNew(){
+  var f = st.form || (st.form = {title: "", text: "", lang: LANG === "it" ? "it" : "pt"});
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("cancel")) + '">' + ICON.x + '</button><h2 class="tt">' + esc(L("newSub")) + '</h2></div></div>' +
+    '<div class="wrap body">' +
+      '<p class="lead left">' + esc(L("newHelp")) + '</p>' +
+      '<div class="fld"><label for="f-title">' + esc(L("fTitle")) + '</label><input id="f-title" type="text" maxlength="80" autocomplete="off" placeholder="' + esc(L("fTitlePh")) + '"></div>' +
+      '<div class="fld"><label for="f-lang">' + esc(L("fLang")) + '</label><select id="f-lang"><option value="pt">' + esc(L("ptn")) + '</option><option value="it">' + esc(L("itn")) + '</option></select></div>' +
+      '<div class="fld"><label for="f-text">' + esc(L("fText")) + '</label><textarea id="f-text" placeholder="' + esc(L("fTextPh")) + '"></textarea></div>' +
+      '<div class="cnt" id="cnt"></div>' +
+      '<p class="msg err" id="ferr" hidden></p>' +
+    '</div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="make">' + esc(L("make")) + '</button></div></div>';
+  var ti = $("#f-title"), te = $("#f-text"), sl = $("#f-lang"), cnt = $("#cnt"), er = $("#ferr");
+  ti.value = f.title; te.value = f.text; sl.value = f.lang;
+  function upd(){
+    f.title = ti.value; f.text = te.value; f.lang = sl.value;
+    var c = f.text.trim().length;
+    cnt.textContent = c ? L("cnt", {c: c, m: Math.max(1, chunkText(f.text).length)}) : "";
+    er.hidden = true;
+  }
+  ti.oninput = te.oninput = sl.onchange = upd; upd();
+  $("#exit").onclick = toLib;
+  $("#make").onclick = function(){
+    upd();
+    var c = f.text.trim().length, msg = "";
+    if (!f.title.trim()) msg = L("errTitle");
+    else if (c < MINCHARS) msg = L("errShort", {min: MINCHARS});
+    else if (c > MAXCHARS) msg = L("errBig", {max: MAXCHARS});
+    if (msg) { er.textContent = msg; er.hidden = false; return; }
+    var chunks = chunkText(f.text);
+    G = {title: f.title.trim(), lang: f.lang, chunks: chunks, mods: [], status: chunks.map(function(){ return "wait"; }), err: "", wait: 0, saving: false, saveFail: false};
+    go("gen"); runGen();
+  };
+}
+
+/* ---------- Geração do assunto ---------- */
+function renderGen(){
+  if (!G) return;
+  var done = G.status.filter(function(s){ return s === "ok"; }).length;
+  var pct = Math.round(done / G.chunks.length * 100);
+  var rows = G.chunks.map(function(c, i){
+    var s = G.status[i];
+    var label = s === "ok" ? G.mods[i].t : esc(L("modN", {n: i + 1}));
+    var ic = s === "ok" ? ICON.check : s === "run" ? '<span class="spin sm"></span>' : s === "err" ? "!" : "";
+    return '<li class="gi ' + s + '"><span class="gdot">' + ic + '</span><span class="gtxt">' + label + '<small>' + c.length + ' ' + (uiLang() === "it" ? "caratteri" : "caracteres") + '</small></span></li>';
+  }).join("");
+  var note = G.saving ? L("saving") : G.err ? G.err : G.wait ? L("waiting", {s: G.wait}) : L("wake");
+  var canRetry = !!G.err;
+  app.innerHTML =
+    '<div class="wrap hero"><p class="kicker">' + esc(L("genKick")) + '</p><h1>' + esc(G.title) + '</h1><p class="sub">' + esc(L("genSub")) + '</p>' +
+    '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div></div>' +
+    '<div class="wrap"><ul class="glist">' + rows + '</ul><p class="msg' + (G.err ? " err" : "") + '" style="margin-top:14px" id="gmsg">' + esc(note) + '</p></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn" id="gcancel">' + esc(L("cancel")) + '</button>' +
+    (canRetry ? '<button type="button" class="btn primary wide" id="gretry">' + esc(G.saveFail ? L("saveAgain") : L("retry")) + '</button>' : "") +
+    '</div></div>';
+  WAITCB = null;
+  $("#gcancel").onclick = function(){ NAV++; G = null; toLib(); };
+  var rt = $("#gretry");
+  if (rt) rt.onclick = function(){ if (G.saveFail) finishGen(G.run); else runGen(); };
+}
+async function runGen(){
+  var my = ++NAV;
+  G.run = my; G.err = ""; G.saveFail = false;
+  for (var i = 0; i < G.chunks.length; i++) {
+    if (G.status[i] === "ok") continue;
+    G.status[i] = "run"; G.wait = 0;
+    if (st.view === "gen") renderGen();
+    WAITCB = function(w){ if (G && my === NAV) { G.wait = w; if (st.view === "gen") { var m = document.getElementById("gmsg"); if (m) m.textContent = L("waiting", {s: w}); } } };
+    try {
+      var out = await api("/api/module", {
+        title: G.title, lang: G.lang, index: i, total: G.chunks.length,
+        prev: G.mods.filter(Boolean).map(function(m){ return plain(m.t); }), text: G.chunks[i]
+      });
+      if (my !== NAV) return;
+      G.mods[i] = buildModule(out.module);
+      G.status[i] = "ok"; G.wait = 0;
+    } catch (e) {
+      if (my !== NAV) return;
+      G.status[i] = "err"; G.err = e.message || String(e);
+      if (st.view === "gen") renderGen();
+      return;
+    }
+  }
+  if (my !== NAV) return;
+  await finishGen(my);
+}
+async function finishGen(my){
+  G.saving = true; G.err = ""; G.saveFail = false;
+  if (st.view === "gen") renderGen();
+  var meta = {id: rid(), title: G.title, origin: G.lang, n: G.mods.length, color: LIB.length % PALETTE.length, createdAt: Date.now()};
+  try { await Store.save(meta, G.mods); }
+  catch (e) {
+    if (my !== NAV) return;
+    G.saving = false; G.saveFail = true; G.err = L("errSave") + " " + (e.message || "");
+    if (st.view === "gen") renderGen();
+    return;
+  }
+  if (my !== NAV) return;
+  G = null; st.form = null;
+  await refreshLib(true);
+  openSubject(meta.id);
 }
 
 /* ---------- Assistente de IA ---------- */
-// Depois de publicar o backend (por exemplo, no Render), coloque aqui a URL pública dele.
-// Exemplo: https://meu-projeto-api.onrender.com (sem barra no final).
-var AI_API_BASE = "https://estudar-kp6f.onrender.com";
-(function initAIAssistant(){
+var AIUI = null;
+function showAI(on){ var r = document.getElementById("ai-assistant-root"); if (r) r.style.display = on ? "" : "none"; }
+function modText(i){
+  var m = (M[i] && M[i].steps) ? M[i] : normMod(ORIG[i]);
+  return "MÓDULO " + (i + 1) + ": " + plain(m.t) + "\n" + m.steps.map(function(s){ return plain(s.t) + "\n" + plain(s.h); }).join("\n");
+}
+function words(s){ return (String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").match(/[a-z0-9]{4,}/g)) || []; }
+function readingText(mod, q){
+  if (mod >= 0) return modText(mod).slice(0, 15000);
+  var qw = words(q);
+  var sc = ORIG.map(function(_, i){
+    var t = " " + words(modText(i)).join(" ") + " ", s = 0;
+    qw.forEach(function(w){ if (t.indexOf(" " + w) >= 0) s++; });
+    return [s, i];
+  });
+  sc.sort(function(a, b){ return b[0] - a[0] || a[1] - b[1]; });
+  var chosen = sc.slice(0, 3).map(function(x){ return x[1]; }).sort(function(a, b){ return a - b; });
+  var per = Math.floor(14500 / chosen.length);
+  return chosen.map(function(i){ return modText(i).slice(0, per); }).join("\n\n");
+}
+function initAI(){
   var root = document.getElementById("ai-assistant-root");
   if (!root) return;
-  root.innerHTML = '<button class="ai-launch" id="ai-launch" type="button" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a7 7 0 00-7 7v3a3 3 0 003 3h1v-6H8a4 4 0 018 0h-1v6h1a3 3 0 003-3v-3a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.8"/><path d="M9 20h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Assistente IA</button>' +
-    '<section class="ai-panel" id="ai-panel" aria-label="Assistente de segurança em laboratório" aria-hidden="true">' +
-      '<header class="ai-head"><div class="ai-avatar">✦</div><div class="ai-head-copy"><strong>Assistente de laboratório</strong><small>Respostas baseadas nas leituras</small></div><button class="ai-close" id="ai-close" aria-label="Fechar assistente" type="button">×</button></header>' +
-      '<div class="ai-controls"><select id="ai-module" aria-label="Módulo de referência"><option value="-1">Todos os módulos</option>' + M.map(function(m,i){return '<option value="'+i+'">Módulo '+(i+1)+' — '+m.t+'</option>';}).join('') + '</select></div>' +
-      '<div class="ai-messages" id="ai-messages" aria-live="polite"><div class="ai-msg bot">Olá! Posso explicar os conceitos das leituras, comparar definições ou ajudar você a revisar para a prova. Escolha um módulo e faça sua pergunta.</div></div>' +
-      '<form class="ai-compose" id="ai-form"><textarea id="ai-question" rows="1" maxlength="1200" placeholder="Pergunte sobre o conteúdo..." required></textarea><button class="ai-send" id="ai-send" type="submit" aria-label="Enviar pergunta">➤</button></form>' +
-      '<div class="ai-note">A IA pode errar. Confira as informações no material e siga sempre as orientações do professor.</div>' +
+  root.innerHTML = '<button class="ai-launch" id="ai-launch" type="button" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a7 7 0 00-7 7v3a3 3 0 003 3h1v-6H8a4 4 0 018 0h-1v6h1a3 3 0 003-3v-3a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.8"/><path d="M9 20h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="ai-btn-t"></span></button>' +
+    '<section class="ai-panel" id="ai-panel" aria-hidden="true">' +
+      '<header class="ai-head"><div class="ai-avatar">✦</div><div class="ai-head-copy"><strong id="ai-title"></strong><small id="ai-small"></small></div><button class="ai-close" id="ai-close" type="button">×</button></header>' +
+      '<div class="ai-controls"><select id="ai-module"></select></div>' +
+      '<div class="ai-messages" id="ai-messages" aria-live="polite"></div>' +
+      '<form class="ai-compose" id="ai-form"><textarea id="ai-question" rows="1" maxlength="1200" required></textarea><button class="ai-send" id="ai-send" type="submit">➤</button></form>' +
+      '<div class="ai-note" id="ai-note"></div>' +
     '</section>';
-  var launch=root.querySelector('#ai-launch'), panel=root.querySelector('#ai-panel'), close=root.querySelector('#ai-close'), form=root.querySelector('#ai-form'), input=root.querySelector('#ai-question'), messages=root.querySelector('#ai-messages'), select=root.querySelector('#ai-module'), send=root.querySelector('#ai-send');
-  var hintMode = false;
-  window.addEventListener('quiz-hint-request', function(ev){ hintMode=true; select.value=String(ev.detail.module); input.value='Estou fazendo uma questão de '+({easy:'nível fácil',medium:'nível médio',hard:'nível difícil'}[ev.detail.difficulty])+': “'+ev.detail.question+'”. Explique os termos e me dê uma pista gradual sem revelar a alternativa correta.'; toggle(true); input.focus(); });
-  function toggle(open){panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launch.setAttribute('aria-expanded',String(open));if(open) input.focus();}
-  launch.addEventListener('click',function(){toggle(!panel.classList.contains('open'));});
-  close.addEventListener('click',function(){toggle(false);launch.focus();});
-  function addMessage(text,who,extra){var d=document.createElement('div');d.className='ai-msg '+who+(extra?' '+extra:'');d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight;return d;}
-  function readingText(module){
-    var chosen=module<0?M:[M[module]];
-    return chosen.map(function(m,i){return 'MÓDULO '+(module<0?i+1:module+1)+': '+m.t+'\n'+m.steps.map(function(s){var tmp=document.createElement('div');tmp.innerHTML=s.h;return s.t+'\n'+tmp.textContent.replace(/\s+/g,' ').trim();}).join('\n');}).join('\n\n');
-  }
-  form.addEventListener('submit',async function(ev){
-    ev.preventDefault(); var question=input.value.trim(); if(!question)return;
-    var mod=parseInt(select.value,10); addMessage(question,'user'); input.value=''; send.disabled=true;
-    var pending=addMessage('Pensando na leitura...','bot');
-    try{
-      var currentHint = hintMode; hintMode = false;
-      var response=await fetch(AI_API_BASE.replace(/\/$/,'')+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question,module:mod,mode:currentHint?'hint':'study',context:readingText(mod)})});
-      var data=await response.json();
-      if(!response.ok) throw new Error(data.error||'Não foi possível consultar a assistente.');
-      pending.textContent=data.answer||'Não recebi uma resposta. Tente novamente.';
-    }catch(err){pending.classList.add('error');pending.textContent='Não consegui conectar à IA. '+(AI_API_BASE.includes('SUA-API-NO-RENDER')?'Configure a URL do backend no início do código da assistente. ':'')+(err.message||'Verifique o servidor e a configuração da GROQ_API_KEY.');}
-    finally{send.disabled=false;messages.scrollTop=messages.scrollHeight;input.focus();}
+  var q = function(s){ return root.querySelector(s); };
+  AIUI = {root: root, launch: q("#ai-launch"), panel: q("#ai-panel"), close: q("#ai-close"), form: q("#ai-form"), input: q("#ai-question"), messages: q("#ai-messages"), select: q("#ai-module"), send: q("#ai-send")};
+  function toggle(open){ AIUI.panel.classList.toggle("open", open); AIUI.panel.setAttribute("aria-hidden", String(!open)); AIUI.launch.setAttribute("aria-expanded", String(open)); if (open) AIUI.input.focus(); }
+  AIUI.launch.addEventListener("click", function(){ toggle(!AIUI.panel.classList.contains("open")); });
+  AIUI.close.addEventListener("click", function(){ toggle(false); AIUI.launch.focus(); });
+  AIUI.input.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); AIUI.send.click(); }
   });
-})();
+  AIUI.form.addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var question = AIUI.input.value.trim();
+    if (!question || !S) return;
+    var mod = parseInt(AIUI.select.value, 10);
+    aiMsg(question, "user"); AIUI.input.value = ""; AIUI.send.disabled = true;
+    var pending = aiMsg(L("aiThink"), "bot");
+    WAITCB = function(w){ pending.textContent = L("waiting", {s: w}); };
+    try {
+      var data = await api("/api/chat", {question: question, module: mod, context: readingText(mod, question), lang: LANG, subject: plain(S.titleShown || S.title)});
+      pending.textContent = data.answer || "";
+    } catch (err) {
+      pending.classList.add("error");
+      pending.textContent = L("aiErr") + " " + (err.message || "");
+    } finally {
+      WAITCB = null; AIUI.send.disabled = false; AIUI.messages.scrollTop = AIUI.messages.scrollHeight; AIUI.input.focus();
+    }
+  });
+}
+function aiMsg(text, who){
+  var d = document.createElement("div");
+  d.className = "ai-msg " + who; d.textContent = text;
+  AIUI.messages.appendChild(d); AIUI.messages.scrollTop = AIUI.messages.scrollHeight;
+  return d;
+}
+function updateAI(){
+  if (!AIUI || !S) return;
+  var r = AIUI.root, set = function(id, t){ r.querySelector(id).textContent = t; };
+  set("#ai-btn-t", L("aiBtn")); set("#ai-title", L("aiTitle")); set("#ai-small", L("aiSmall")); set("#ai-note", L("aiNote"));
+  r.querySelector("#ai-close").setAttribute("aria-label", L("aiClose"));
+  AIUI.send.setAttribute("aria-label", L("aiSend"));
+  AIUI.select.setAttribute("aria-label", L("aiRef"));
+  AIUI.input.setAttribute("placeholder", L("aiPh"));
+  AIUI.panel.setAttribute("aria-label", L("aiTitle"));
+  AIUI.select.innerHTML = '<option value="-1">' + esc(L("aiAll")) + '</option>' +
+    M.map(function(m, i){ return '<option value="' + i + '">' + esc(L("aiMod", {n: i + 1, t: plain(m.t)})) + '</option>'; }).join("");
+  AIUI.messages.innerHTML = "";
+  aiMsg(L("aiHello"), "bot");
+}
 
-render();
+/* ---------- Roteamento ---------- */
+function render(){
+  var v = st.view;
+  showAI(["home", "lesson", "done", "all"].indexOf(v) >= 0);
+  if (v === "lib") renderLib();
+  else if (v === "new") renderNew();
+  else if (v === "gen") renderGen();
+  else if (v === "lesson") renderLesson();
+  else if (v === "quiz") renderQuiz();
+  else if (v === "done") renderDone();
+  else if (v === "all") renderAll();
+  else { st.confirmReset = false; renderHome(); }
+}
+
+/* Botão Voltar do aparelho: sobe um nível em vez de sair do site */
+try { history.replaceState({r: 1}, ""); history.pushState({a: 1}, ""); } catch (e) {}
+window.addEventListener("popstate", function(){
+  var v = st.view;
+  if (v === "lib") return;
+  try { history.pushState({a: 1}, ""); } catch (e) {}
+  if (v === "gen") return;
+  NAV++;
+  if (["lesson", "quiz", "done", "all"].indexOf(v) >= 0 && S) { st.view = "home"; render(); window.scrollTo(0, 0); }
+  else toLib();
+});
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") refreshLib(true); });
+setInterval(function(){ if (st.view === "lib" && document.visibilityState === "visible") refreshLib(true); }, 45000);
+
+initAI(); showAI(false);
+LIB = [builtMeta()];
+renderLib();
+refreshLib(true);
 </script>
 </body>
 </html>
