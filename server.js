@@ -167,7 +167,7 @@ const QRULES = {
 };
 const DEPTH = {
   easy: 'Etapas: 2 a 3, com explicações simples e curtas.',
-  medium: 'Etapas: 2 a 4, com explicação clara e alguns detalhes concretos.',
+  medium: 'Etapas: 3 a 5, com explicação clara e DETALHES CONCRETOS (datas, nomes, números, causas e consequências, comparações entre conceitos parecidos), pois as perguntas dos níveis médio e difícil vão cobrar esses detalhes.',
   hard: 'Etapas: 3 a 5, densas: inclua datas, nomes, números, causas e consequências, e comparações entre conceitos parecidos, pois as perguntas vão cobrar esses detalhes.'
 };
 
@@ -181,7 +181,7 @@ async function genModule(body) {
   const total = Math.max(1, Math.min(Number(body.total) || 1, 50));
   const prev = (Array.isArray(body.prev) ? body.prev : []).slice(0, 14).map(x => str(x, 80)).filter(Boolean);
   if (!outline && text.length < 120) throw new HttpError(400, 'Texto curto demais para gerar um módulo.');
-  const level = ['easy', 'medium', 'hard'].includes(body.level) ? body.level : 'medium';
+  const level = 'medium';
   const memo = lang === 'it' ? 'Da ricordare' : 'Decorar';
   const sys = `Você cria material de estudo a partir de um texto fornecido pelo estudante. Responda SOMENTE com um objeto JSON válido, sem comentários e sem texto fora do JSON.
 Regras:
@@ -236,6 +236,49 @@ ${QRULES[level]}
     catch (e) { lastErr = e.message || 'formato inválido'; }
   }
   throw new HttpError(502, `A IA não conseguiu montar este módulo (${lastErr}). Tente de novo.`);
+}
+
+// ---------- Perguntas por nível (sob demanda) ----------
+async function genQuestions(body) {
+  const lang = needLang(body.lang);
+  const level = ['easy', 'medium', 'hard'].includes(body.level) ? body.level : 'medium';
+  const title = str(body.title, 100) || 'Assunto';
+  const mod = body.module && typeof body.module === 'object' ? body.module : {};
+  const mtitle = str(mod.title, 100), text = str(mod.text, 9000);
+  if (text.length < 80) throw new HttpError(400, 'Conteúdo do módulo curto demais.');
+  const sys = `Você cria perguntas de múltipla escolha para estudar. Responda SOMENTE com um objeto JSON válido. Escreva tudo em ${LANGS[lang]}. Formatação permitida: **negrito** e *itálico*; nunca HTML.`;
+  const usr = `Assunto: ${title}
+Módulo: ${mtitle}
+
+CONTEÚDO DO MÓDULO (é tudo o que o aluno estudou):
+"""
+${text}
+"""
+
+${QRULES[level]}
+- Use SOMENTE fatos presentes no CONTEÚDO DO MÓDULO. A dificuldade vem do raciocínio exigido (aplicar, comparar, ordenar, ligar causa e efeito, notar um detalhe trocado), nunca de cobrar algo que o módulo não explicou.
+- As 4 alternativas têm tamanho e estrutura de frase quase iguais e a certa NÃO pode ser sempre a mais longa; em várias perguntas a certa deve ser a mais curta. Proibido "todas as anteriores" e "nenhuma das anteriores".
+
+Formato:
+{ "questions": [ { "q": "pergunta", "correct": "resposta certa", "wrong": ["errada", "errada", "errada"], "why": "explicação curta" } ] }`;
+  const want = level === 'hard' ? 6 : level === 'easy' ? 4 : 5;
+  let lastErr = '';
+  for (let i = 0; i < 2; i++) {
+    const out = await groq([{ role: 'system', content: sys }, { role: 'user', content: usr + (lastErr ? `\n\nA tentativa anterior falhou (${lastErr}). Refaça com o JSON completo e válido.` : '') }], level === 'hard' ? 3200 : 2200, true, level === 'hard' ? 'medium' : 'low');
+    try {
+      const o = parseJson(out);
+      const questions = (Array.isArray(o.questions) ? o.questions : []).slice(0, 8).map(q => ({
+        q: str(q && q.q, 300), correct: str(q && q.correct, 260),
+        wrong: (Array.isArray(q && q.wrong) ? q.wrong : []).map(x => str(x, 260)).filter(Boolean).slice(0, 3),
+        why: str(q && q.why, 400)
+      })).filter(q => q.q && q.correct && q.wrong.length >= 2 && q.why);
+      if (questions.length < Math.min(3, want)) throw new Error('perguntas insuficientes');
+      const longest = questions.filter(q => q.correct.length >= Math.max(...q.wrong.map(w => w.length)) * 1.15 + 3).length;
+      if (i === 0 && longest > Math.ceil(questions.length / 2)) { lastErr = 'a resposta certa está sempre maior que as erradas; deixe as 4 alternativas com tamanho parecido'; continue; }
+      return { questions };
+    } catch (e) { lastErr = e.message || 'formato inválido'; }
+  }
+  throw new HttpError(502, `A IA não conseguiu montar as perguntas (${lastErr}). Tente de novo.`);
 }
 
 // ---------- Plano da trilha ----------
@@ -308,7 +351,7 @@ Responda SOMENTE com JSON no formato {"items": {"chave": "texto traduzido"}}.`;
   return { items: res };
 }
 
-const routes = { '/api/chat': chat, '/api/module': genModule, '/api/plan': planSubject, '/api/translate': translate };
+const routes = { '/api/chat': chat, '/api/module': genModule, '/api/plan': planSubject, '/api/questions': genQuestions, '/api/translate': translate };
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
