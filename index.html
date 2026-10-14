@@ -626,11 +626,6 @@ h2{font-family:var(--fd);font-weight:800;letter-spacing:-.03em;line-height:1.08}
 .ai-compose textarea{border:2px solid var(--edge);border-radius:12px;font-weight:500}
 .ai-send{background:var(--accent);color:var(--on-accent);border:2px solid var(--edge);border-radius:12px;box-shadow:2px 2px 0 var(--shadow-c)}
 
-/* Telas largas: margem vermelha de caderno */
-@media(min-width:900px){
-  body::before{content:"";position:fixed;top:0;bottom:0;left:max(24px,calc(50% - 392px));width:2px;background:rgba(217,59,85,.35);pointer-events:none;z-index:0}
-  #app{position:relative;z-index:1}
-}
 @media(min-width:600px){
   .path{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
   .mod{height:100%}
@@ -655,6 +650,14 @@ h1{font-size:clamp(32px,8.4vw,46px)}
 .libhead .row2{margin-top:2px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mod.cur{background:color-mix(in srgb,var(--accent) 14%,var(--surface))}}
 :root[data-theme="dark"] .mod.cur{background:color-mix(in srgb,var(--accent) 14%,var(--surface))}
+
+/* Alternar tema */
+.langrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.thm{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--edge);background:var(--surface);color:var(--ink);border-radius:12px;box-shadow:2px 2px 0 var(--shadow-c);font:800 13.5px var(--f);padding:8px 13px;min-height:42px;cursor:pointer;transition:transform .1s,box-shadow .1s}
+.thm:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--shadow-c)}
+.thm:active{transform:translate(2px,2px);box-shadow:none}
+.thm:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.thm svg{color:#e0a800;flex:none}
 </style>
 </head>
 <body>
@@ -1130,7 +1133,7 @@ var T = {
   pt: {
     app: "Caderno de estudos", libKicker: "Seus assuntos",
     libSub: "Escolha um assunto para estudar ou crie um novo a partir de um resumo.",
-    newSub: "Novo assunto", langLbl: "Idioma", orig: "Original", ptn: "Português", itn: "Italiano",
+    newSub: "Novo assunto", themeLight: "Tema claro", themeDark: "Tema escuro", langLbl: "Idioma", orig: "Original", ptn: "Português", itn: "Italiano",
     modsN: "{n} módulos", pctDone: "{p}% concluído", toLib: "Caderno",
     offline: "Sem conexão com o caderno compartilhado. Mostrando o que está salvo neste aparelho.",
     noDb: "Os assuntos novos ficam só neste aparelho. Configure o Firebase (veja o LEIA-ME) para eles aparecerem nos outros aparelhos.",
@@ -1178,7 +1181,7 @@ var T = {
   it: {
     app: "Quaderno di studio", libKicker: "I tuoi argomenti",
     libSub: "Scegli un argomento da studiare o creane uno nuovo partendo da un riassunto.",
-    newSub: "Nuovo argomento", langLbl: "Lingua", orig: "Originale", ptn: "Português", itn: "Italiano",
+    newSub: "Nuovo argomento", themeLight: "Tema chiaro", themeDark: "Tema scuro", langLbl: "Lingua", orig: "Originale", ptn: "Português", itn: "Italiano",
     modsN: "{n} moduli", pctDone: "{p}% completato", toLib: "Quaderno",
     offline: "Nessun collegamento al quaderno condiviso. Mostro ciò che è salvato su questo dispositivo.",
     noDb: "I nuovi argomenti restano solo su questo dispositivo. Configura Firebase (vedi il LEGGIMI) per vederli sugli altri dispositivi.",
@@ -1542,13 +1545,29 @@ function go(view){ st.view = view; save(); render(); window.scrollTo(0, 0); }
 function $(sel){ return app.querySelector(sel); }
 function effLang(){ return (LANG === "orig" || (S && S.origin === LANG)) ? null : LANG; }
 
+function curTheme(){
+  var t = LS.get("caderno-theme");
+  if (t === "light" || t === "dark") return t;
+  return (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+}
+function applyTheme(){ document.documentElement.setAttribute("data-theme", curTheme()); }
+function themeBtn(){
+  var dark = curTheme() === "dark";
+  var ic = dark
+    ? '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'
+    : '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" fill="currentColor"/></svg>';
+  var lbl = dark ? L("themeLight") : L("themeDark");
+  return '<button type="button" class="thm" aria-label="' + esc(lbl) + '">' + ic + '<span>' + esc(lbl) + '</span></button>';
+}
 function langBar(){
-  return '<div class="seg" role="group" aria-label="' + esc(L("langLbl")) + '">' +
+  return '<div class="langrow"><div class="seg" role="group" aria-label="' + esc(L("langLbl")) + '">' +
     [["orig", L("orig")], ["pt", L("ptn")], ["it", L("itn")]].map(function(x){
       return '<button type="button" data-l="' + x[0] + '" aria-pressed="' + (LANG === x[0]) + '">' + esc(x[1]) + '</button>';
-    }).join("") + '</div>';
+    }).join("") + '</div>' + themeBtn() + '</div>';
 }
 function bindLang(){
+  var tb = app.querySelector(".thm");
+  if (tb) tb.onclick = function(){ LS.set("caderno-theme", curTheme() === "dark" ? "light" : "dark"); applyTheme(); render(); };
   app.querySelectorAll(".seg button").forEach(function(b){ b.onclick = function(){ setLang(b.getAttribute("data-l")); }; });
 }
 function setLang(l){
@@ -2141,6 +2160,7 @@ window.addEventListener("popstate", function(){
 document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") refreshLib(true); });
 setInterval(function(){ if (st.view === "lib" && document.visibilityState === "visible") refreshLib(true); }, 45000);
 
+applyTheme();
 initAI(); showAI(false);
 LIB = [builtMeta()];
 renderLib();
