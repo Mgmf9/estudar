@@ -48,10 +48,10 @@ function readBody(req) {
 }
 
 // ---------- Groq ----------
-async function groq(messages, maxTokens, wantJson) {
+async function groq(messages, maxTokens, wantJson, effort) {
   const payload = { model: MODEL, temperature: 0.25, max_tokens: maxTokens, messages };
   if (wantJson) payload.response_format = { type: 'json_object' };
-  if (/^openai\/gpt-oss/.test(MODEL)) payload.reasoning_effort = 'low';
+  if (/^openai\/gpt-oss/.test(MODEL)) payload.reasoning_effort = effort || 'low';
   let attempt = 0;
   for (;;) {
     let r;
@@ -155,6 +155,22 @@ function normModule(o) {
   };
 }
 
+const QRULES = {
+  easy: '- "questions": exatamente 4 perguntas de múltipla escolha, NÍVEL FÁCIL: verificam se o aluno reconheceu as ideias principais do módulo (definições, quem/o quê/quando básicos). As alternativas erradas são claramente distintas da certa, mas relacionadas ao assunto (nada absurdo).',
+  medium: '- "questions": exatamente 5 perguntas de múltipla escolha, NÍVEL MÉDIO: misture compreensão e aplicação simples (explicar por que, relacionar duas ideias, reconhecer um exemplo). As 3 alternativas erradas são plausíveis e usam termos reais do módulo.',
+  hard: `- "questions": exatamente 6 perguntas de múltipla escolha, NÍVEL DIFÍCIL, no estilo de vestibular/prova universitária para quem estudou o módulo com atenção.
+  * Nenhuma pergunta pode ser de definição simples nem de lembrar uma palavra solta. Misture: (a) aplicar o conceito a um caso ou cenário novo; (b) causa e consequência, ou ordem dos fatos; (c) distinguir dois conceitos, personagens, fases ou grupos parecidos; (d) escolher a afirmação correta quando as quatro parecem verdadeiras e só uma tem todos os detalhes certos (data, número, nome, quem fez o quê); (e) interpretar uma situação ou trecho.
+  * As 3 alternativas erradas são "quase certas": verdadeiras em outro contexto, ou com UM único detalhe trocado (data, nome, ordem, sujeito, causa por consequência), ou pertencentes a outro ponto do mesmo assunto. Nunca absurdas, nunca de outro assunto.
+  * No máximo 1 pergunta no formato "qual NÃO...", e só quando a falsa for muito parecida com as verdadeiras.
+  * TODO fato necessário para acertar tem de estar explicado nas etapas do módulo: o aluno precisa conseguir acertar só estudando o módulo, sem chute e sem conhecimento externo. Por isso, em módulo difícil as etapas trazem mais detalhe (datas, nomes, números, relações de causa e efeito, comparações).
+  * "why" explica o raciocínio e por que a alternativa mais tentadora está errada.`
+};
+const DEPTH = {
+  easy: 'Etapas: 2 a 3, com explicações simples e curtas.',
+  medium: 'Etapas: 2 a 4, com explicação clara e alguns detalhes concretos.',
+  hard: 'Etapas: 3 a 5, densas: inclua datas, nomes, números, causas e consequências, e comparações entre conceitos parecidos, pois as perguntas vão cobrar esses detalhes.'
+};
+
 async function genModule(body) {
   const lang = needLang(body.lang);
   const text = str(body.text, 9000);
@@ -165,6 +181,7 @@ async function genModule(body) {
   const total = Math.max(1, Math.min(Number(body.total) || 1, 50));
   const prev = (Array.isArray(body.prev) ? body.prev : []).slice(0, 14).map(x => str(x, 80)).filter(Boolean);
   if (!outline && text.length < 120) throw new HttpError(400, 'Texto curto demais para gerar um módulo.');
+  const level = ['easy', 'medium', 'hard'].includes(body.level) ? body.level : 'medium';
   const memo = lang === 'it' ? 'Da ricordare' : 'Decorar';
   const sys = `Você cria material de estudo a partir de um texto fornecido pelo estudante. Responda SOMENTE com um objeto JSON válido, sem comentários e sem texto fora do JSON.
 Regras:
@@ -201,13 +218,15 @@ Regras do formato:
 - "kind": m = conceito ou definição; s = procedimento ou prática; w = ponto de atenção; p = erro comum ou o que evitar. Escolha o que melhor descreve o módulo.
 - "steps": de 2 a 4 etapas, cada uma com 1 a 3 blocos. Use os tipos de bloco que fizerem sentido (não é preciso usar todos). Inclua pelo menos um bloco "key" no módulo.
 - Cubra os pontos importantes do trecho, sem copiar o texto inteiro.
-- "questions": exatamente 5 perguntas de múltipla escolha sobre o conteúdo deste módulo. Nível DIFÍCIL: cada pergunta exige ter estudado o módulo (números, diferenças entre conceitos parecidos, causa e consequência, aplicação em um caso concreto), nunca algo que se acerta por bom senso; mas tudo deve estar no texto fornecido. As 3 alternativas erradas devem ser plausíveis: use termos, números e conceitos REAIS do próprio texto, trocados ou misturados (por exemplo, o valor de outro item). A resposta certa NÃO pode ser a mais longa nem a mais detalhada: as 4 alternativas têm tamanho e estrutura de frase quase iguais (diferença de poucas palavras), e a certa não é sempre a mais completa; em várias perguntas a certa deve ser a mais curta. Proibido "todas as anteriores", "nenhuma das anteriores" e alternativas absurdas ou obviamente fora do assunto.`;
+- ${DEPTH[level]}
+${QRULES[level]}
+- Em qualquer nível: as 4 alternativas têm tamanho e estrutura de frase quase iguais (diferença de poucas palavras) e a certa NÃO pode ser sempre a mais longa ou a mais detalhada; em várias perguntas a certa deve ser a mais curta. Proibido "todas as anteriores" e "nenhuma das anteriores".`;
   let lastErr = '';
   for (let i = 0; i < 2; i++) {
     const out = await groq([
       { role: 'system', content: sys },
       { role: 'user', content: usr + (lastErr ? `\n\nA tentativa anterior falhou (${lastErr}). Refaça com o JSON completo e válido.` : '') }
-    ], 3000, true);
+    ], level === 'hard' ? 4200 : 3000, true, level === 'hard' ? 'medium' : 'low');
     try {
       const mod = normModule(parseJson(out));
       const longest = mod.questions.filter(q => { const m = Math.max(...q.wrong.map(w => w.length)); return q.correct.length >= m * 1.15 + 3; }).length;
