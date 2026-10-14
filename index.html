@@ -1158,7 +1158,7 @@ var T = {
     newHelp: "Cole o resumo ou o texto que você quer estudar. A IA planeja os módulos pelo tamanho do assunto (não do texto): usa o que você colar como base e completa o que faltar. Quanto mais específico o nome, melhor.",
     fTitle: "Nome do assunto", fTitlePh: "Ex.: Revolução Francesa", fLang: "Idioma do material gerado",
     fText: "Texto do resumo", fTextPh: "Cole aqui o resumo ou o texto do assunto...",
-    cnt: "{c} caracteres", fCount: "Quantidade de módulos", countAuto: "Automático (a IA decide pelo assunto)", planning: "Planejando os módulos do assunto…", planningSub: "Montando a lista de módulos",
+    cnt: "{c} caracteres", fLevel: "Dificuldade das perguntas", lvEasy: "Fácil", lvMedium: "Médio", lvHard: "Difícil (de prova)", fCount: "Quantidade de módulos", countAuto: "Automático (a IA decide pelo assunto)", planning: "Planejando os módulos do assunto…", planningSub: "Montando a lista de módulos",
     errTitle: "Dê um nome ao assunto.",
     errShort: "Cole pelo menos algumas frases ({min} caracteres) sobre o assunto.",
     errBig: "O texto passou do limite de {max} caracteres. Divida em dois assuntos.",
@@ -1206,7 +1206,7 @@ var T = {
     newHelp: "Incolla il riassunto o il testo che vuoi studiare. L'IA pianifica i moduli in base all'ampiezza dell'argomento (non del testo): usa ciò che incolli come base e completa il resto. Più il nome è preciso, meglio è.",
     fTitle: "Nome dell'argomento", fTitlePh: "Es.: Rivoluzione francese", fLang: "Lingua del materiale generato",
     fText: "Testo del riassunto", fTextPh: "Incolla qui il riassunto o il testo dell'argomento...",
-    cnt: "{c} caratteri", fCount: "Numero di moduli", countAuto: "Automatico (decide l'IA in base all'argomento)", planning: "Pianificazione dei moduli…", planningSub: "Creo l'elenco dei moduli",
+    cnt: "{c} caratteri", fLevel: "Difficoltà delle domande", lvEasy: "Facile", lvMedium: "Medio", lvHard: "Difficile (da esame)", fCount: "Numero di moduli", countAuto: "Automatico (decide l'IA in base all'argomento)", planning: "Pianificazione dei moduli…", planningSub: "Creo l'elenco dei moduli",
     errTitle: "Dai un nome all'argomento.",
     errShort: "Incolla almeno qualche frase ({min} caratteri) sull'argomento.",
     errBig: "Il testo supera il limite di {max} caratteri. Dividilo in due argomenti.",
@@ -1722,7 +1722,7 @@ async function openSubject(id){
   try {
     var mods = meta.built ? LAB : await Store.getModules(id);
     if (my !== NAV) return;
-    S = {id: id, title: meta.title, origin: meta.origin, built: !!meta.built, n: mods.length};
+    S = {id: id, title: meta.title, origin: meta.origin, built: !!meta.built, level: meta.level || "", n: mods.length};
     ORIG = mods;
     if (effLang()) renderLoading(L("translating"), L("translatingSub"));
     await applyLang(my);
@@ -1813,7 +1813,7 @@ function renderHome(){
       '<span class="st">' + esc(status) + '</span></button>';
   }).join("");
   var ctaLabel = all ? L("reviewAll") : st.unlocked === 0 ? L("start") : L("contN", {n: nxt + 1});
-  var kick = S.built ? L("kickLab") : L("kickGen", {n: M.length});
+  var kick = S.built ? L("kickLab") : L("kickGen", {n: M.length}) + (S.level ? " · " + L(S.level === "easy" ? "lvEasy" : S.level === "hard" ? "lvHard" : "lvMedium").replace(/ \(.*\)$/, "") : "");
   var sub = (S.built && LANG === "orig") ? L("subLab") : L("subGen");
   app.innerHTML =
     '<div class="wrap hero">' +
@@ -1967,7 +1967,7 @@ function renderAll(){
 
 /* ---------- Novo assunto ---------- */
 function renderNew(){
-  var f = st.form || (st.form = {title: "", text: "", lang: LANG === "it" ? "it" : "pt", count: "0"});
+  var f = st.form || (st.form = {title: "", text: "", lang: LANG === "it" ? "it" : "pt", count: "0", level: "medium"});
   app.innerHTML =
     '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("cancel")) + '">' + ICON.x + '</button><h2 class="tt">' + esc(L("newSub")) + '</h2></div></div>' +
     '<div class="wrap body">' +
@@ -1975,20 +1975,21 @@ function renderNew(){
       '<div class="fld"><label for="f-title">' + esc(L("fTitle")) + '</label><input id="f-title" type="text" maxlength="80" autocomplete="off" placeholder="' + esc(L("fTitlePh")) + '"></div>' +
       '<div class="fld"><label for="f-lang">' + esc(L("fLang")) + '</label><select id="f-lang"><option value="pt">' + esc(L("ptn")) + '</option><option value="it">' + esc(L("itn")) + '</option></select></div>' +
       '<div class="fld"><label for="f-count">' + esc(L("fCount")) + '</label><select id="f-count"><option value="0">' + esc(L("countAuto")) + '</option>' + [4, 6, 8, 10, 12].map(function(n){ return '<option value="' + n + '">' + n + '</option>'; }).join("") + '</select></div>' +
+      '<div class="fld"><label for="f-level">' + esc(L("fLevel")) + '</label><select id="f-level"><option value="easy">' + esc(L("lvEasy")) + '</option><option value="medium">' + esc(L("lvMedium")) + '</option><option value="hard">' + esc(L("lvHard")) + '</option></select></div>' +
       '<div class="fld"><label for="f-text">' + esc(L("fText")) + '</label><textarea id="f-text" placeholder="' + esc(L("fTextPh")) + '"></textarea></div>' +
       '<div class="cnt" id="cnt"></div>' +
       '<p class="msg err" id="ferr" hidden></p>' +
     '</div>' +
     '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="make">' + esc(L("make")) + '</button></div></div>';
-  var ti = $("#f-title"), te = $("#f-text"), sl = $("#f-lang"), fc = $("#f-count"), cnt = $("#cnt"), er = $("#ferr");
-  ti.value = f.title; te.value = f.text; sl.value = f.lang; fc.value = f.count || "0";
+  var ti = $("#f-title"), te = $("#f-text"), sl = $("#f-lang"), fc = $("#f-count"), fl = $("#f-level"), cnt = $("#cnt"), er = $("#ferr");
+  ti.value = f.title; te.value = f.text; sl.value = f.lang; fc.value = f.count || "0"; fl.value = f.level || "medium";
   function upd(){
-    f.title = ti.value; f.text = te.value; f.lang = sl.value; f.count = fc.value;
+    f.title = ti.value; f.text = te.value; f.lang = sl.value; f.count = fc.value; f.level = fl.value;
     var c = f.text.trim().length;
     cnt.textContent = c ? L("cnt", {c: c}) : "";
     er.hidden = true;
   }
-  ti.oninput = te.oninput = sl.onchange = fc.onchange = upd; upd();
+  ti.oninput = te.oninput = sl.onchange = fc.onchange = fl.onchange = upd; upd();
   $("#exit").onclick = toLib;
   $("#make").onclick = function(){
     upd();
@@ -1997,7 +1998,7 @@ function renderNew(){
     else if (c < MINCHARS) msg = L("errShort", {min: MINCHARS});
     else if (c > MAXCHARS) msg = L("errBig", {max: MAXCHARS});
     if (msg) { er.textContent = msg; er.hidden = false; return; }
-    G = {title: f.title.trim(), lang: f.lang, text: f.text.trim(), count: Number(f.count) || 0, pieces: chunkText(f.text), chunks: [], mods: [], status: [], err: "", wait: 0, saving: false, saveFail: false};
+    G = {title: f.title.trim(), lang: f.lang, text: f.text.trim(), count: Number(f.count) || 0, level: f.level || "medium", pieces: chunkText(f.text), chunks: [], mods: [], status: [], err: "", wait: 0, saving: false, saveFail: false};
     go("gen"); runGen();
   };
 }
@@ -2051,7 +2052,7 @@ async function runGen(){
     WAITCB = function(w){ if (G && my === NAV) { G.wait = w; if (st.view === "gen") { var m = document.getElementById("gmsg"); if (m) m.textContent = L("waiting", {s: w}); } } };
     try {
       var out = await api("/api/module", {
-        title: G.title, lang: G.lang, index: i, total: G.chunks.length,
+        title: G.title, lang: G.lang, level: G.level, index: i, total: G.chunks.length,
         prev: G.mods.filter(Boolean).map(function(m){ return plain(m.t); }), text: relevantText(G.pieces, G.chunks[i]),
         outline: {title: G.chunks[i].title, focus: G.chunks[i].focus, points: G.chunks[i].points}
       });
@@ -2071,7 +2072,7 @@ async function runGen(){
 async function finishGen(my){
   G.saving = true; G.err = ""; G.saveFail = false;
   if (st.view === "gen") renderGen();
-  var meta = {id: rid(), title: G.title, origin: G.lang, n: G.mods.length, color: LIB.length % PALETTE.length, createdAt: Date.now()};
+  var meta = {id: rid(), title: G.title, origin: G.lang, level: G.level, n: G.mods.length, color: LIB.length % PALETTE.length, createdAt: Date.now()};
   try { await Store.save(meta, G.mods); }
   catch (e) {
     if (my !== NAV) return;
