@@ -159,22 +159,24 @@ async function genModule(body) {
   const lang = needLang(body.lang);
   const text = str(body.text, 9000);
   const title = str(body.title, 100) || 'Assunto';
+  const ol = body.outline && typeof body.outline === 'object' ? body.outline : null;
+  const outline = ol ? { title: str(ol.title, 90), focus: str(ol.focus, 400), points: (Array.isArray(ol.points) ? ol.points : []).slice(0, 8).map(x => str(x, 140)).filter(Boolean) } : null;
   const index = Math.max(0, Math.min(Number(body.index) || 0, 50));
   const total = Math.max(1, Math.min(Number(body.total) || 1, 50));
   const prev = (Array.isArray(body.prev) ? body.prev : []).slice(0, 14).map(x => str(x, 80)).filter(Boolean);
-  if (text.length < 120) throw new HttpError(400, 'Texto curto demais para gerar um módulo.');
+  if (!outline && text.length < 120) throw new HttpError(400, 'Texto curto demais para gerar um módulo.');
   const memo = lang === 'it' ? 'Da ricordare' : 'Decorar';
   const sys = `Você cria material de estudo a partir de um texto fornecido pelo estudante. Responda SOMENTE com um objeto JSON válido, sem comentários e sem texto fora do JSON.
 Regras:
-- Use exclusivamente informações do TEXTO. Não invente fatos, números, nomes ou exemplos que não estejam nele.
+${outline ? '- O TEXTO do estudante é a base principal: use-o sempre que ele cobrir o ponto e nunca o contradiga. Quando ele não cobrir algo essencial do tema do módulo, complete com conhecimento geral confiável e amplamente aceito. Não invente números, datas ou nomes de que você não tenha certeza.' : '- Use exclusivamente informações do TEXTO. Não invente fatos, números, nomes ou exemplos que não estejam nele.'}
 - Escreva tudo em ${LANGS[lang]}: títulos, etapas, perguntas, alternativas e explicações. Nomes próprios, siglas, nomes científicos e referências de leis podem ficar no idioma original.
 - Frases curtas e diretas. Formatação permitida dentro dos textos: **negrito** e *itálico*. Nunca use HTML.`;
   const usr = `Assunto geral: ${title}
-Este é o trecho ${index + 1} de ${total} do texto do estudante. Transforme SOMENTE este trecho em um módulo de estudo.
+${outline ? `Este é o módulo ${index + 1} de ${total} da trilha de estudo. Título planejado: ${outline.title}\nO que cobrir: ${outline.focus}\nTópicos: ${outline.points.join(' | ')}\nMonte um módulo completo e didático sobre ISSO (não sobre o assunto inteiro).` : `Este é o trecho ${index + 1} de ${total} do texto do estudante. Transforme SOMENTE este trecho em um módulo de estudo.`}
 ${prev.length ? `Módulos já criados (não repita estes títulos): ${prev.join(' | ')}\n` : ''}
-TEXTO:
+${outline ? 'TEXTO DO ESTUDANTE (trechos mais relacionados; pode estar incompleto)' : 'TEXTO'}:
 """
-${text}
+${text || '(o estudante não enviou texto sobre este ponto)'}
 """
 
 Devolva um JSON neste formato:
@@ -217,6 +219,48 @@ Regras do formato:
   throw new HttpError(502, `A IA não conseguiu montar este módulo (${lastErr}). Tente de novo.`);
 }
 
+// ---------- Plano da trilha ----------
+async function planSubject(body) {
+  const lang = needLang(body.lang);
+  const title = str(body.title, 100);
+  const text = str(body.text, 12000);
+  const want = Math.max(0, Math.min(Number(body.count) || 0, 12));
+  if (!title) throw new HttpError(400, 'Dê um nome ao assunto.');
+  const sys = `Você é um professor que planeja trilhas de estudo. Responda SOMENTE com um objeto JSON válido. Escreva em ${LANGS[lang]}.`;
+  const usr = `Assunto: ${title}
+
+TEXTO DO ESTUDANTE (pode ser curto ou incompleto):
+"""
+${text || '(sem texto)'}
+"""
+
+Planeje a trilha de módulos para o estudante dominar o ASSUNTO como um todo, e não apenas o que está no texto.
+${want ? `Crie exatamente ${want} módulos.` : `Decida o número de módulos pela AMPLITUDE DO ASSUNTO, nunca pelo tamanho do texto: assunto amplo (uma revolução, uma guerra, um grande conteúdo de prova) pede de 8 a 12 módulos; assunto médio, de 5 a 7; assunto estreito, de 3 a 4.`}
+Regras:
+- O texto do estudante é a base e define o enfoque; organize-o e COMPLETE as lacunas importantes do tema com conhecimento geral confiável, em ordem lógica (por exemplo, cronológica ou do básico ao avançado).
+- Cada módulo cobre uma parte distinta, sem repetir os outros, e cabe em uns 5 a 10 minutos de estudo.
+- Os pontos do texto do estudante devem aparecer em algum módulo.
+
+Formato:
+{ "modules": [ { "title": "título curto (até 60 caracteres)", "focus": "1 ou 2 frases do que este módulo cobre", "points": ["tópico", "tópico", "tópico"] } ] }
+Cada módulo tem de 3 a 6 tópicos.`;
+  let lastErr = '';
+  for (let i = 0; i < 2; i++) {
+    const out = await groq([{ role: 'system', content: sys }, { role: 'user', content: usr + (lastErr ? `\n\nA tentativa anterior falhou (${lastErr}). Devolva o JSON completo e válido.` : '') }], 2500, true);
+    try {
+      const o = parseJson(out);
+      const mods = (Array.isArray(o.modules) ? o.modules : []).slice(0, 12).map(m => ({
+        title: str(m && m.title, 90),
+        focus: str(m && m.focus, 400),
+        points: (Array.isArray(m && m.points) ? m.points : []).map(x => str(x, 140)).filter(Boolean).slice(0, 8)
+      })).filter(m => m.title && m.focus);
+      if (mods.length < 3) throw new Error('plano com poucos módulos');
+      return { modules: mods };
+    } catch (e) { lastErr = e.message || 'formato inválido'; }
+  }
+  throw new HttpError(502, `A IA não conseguiu planejar os módulos (${lastErr}). Tente de novo.`);
+}
+
 // ---------- Tradução ----------
 async function translate(body) {
   const lang = needLang(body.lang);
@@ -245,7 +289,7 @@ Responda SOMENTE com JSON no formato {"items": {"chave": "texto traduzido"}}.`;
   return { items: res };
 }
 
-const routes = { '/api/chat': chat, '/api/module': genModule, '/api/translate': translate };
+const routes = { '/api/chat': chat, '/api/module': genModule, '/api/plan': planSubject, '/api/translate': translate };
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
