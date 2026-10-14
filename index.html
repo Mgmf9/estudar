@@ -1116,7 +1116,7 @@ var CFG = {
   // Exemplo: "https://meu-caderno-default-rtdb.firebaseio.com". Vazio = assuntos só neste aparelho.
   DB: "https://caderno-estudos-f375f-default-rtdb.firebaseio.com"
 };
-var MAXMOD = 12, MAXCHARS = 30000, MINCHARS = 250;
+var MAXMOD = 12, MAXCHARS = 30000, MINCHARS = 30;
 var PALETTE = ["#316ee8", "#159765", "#d9a400", "#dc4c55", "#7a5af8"];
 var RECAP_LAB = [
   {b: "70 m²", t: "superfície ar-sangue nos pulmões"},
@@ -1155,12 +1155,12 @@ var T = {
     allLeadLab: "Antes da prova, releia os pontos marcados como Decorar e estes números:",
     allLeadGen: "Releia os pontos marcados como Decorar e refaça os módulos em que ainda tiver dúvida.",
     memo: "Decorar",
-    newHelp: "Cole o resumo ou o texto que você quer estudar. A IA monta módulos e perguntas usando só esse texto, sem inventar conteúdo.",
+    newHelp: "Cole o resumo ou o texto que você quer estudar. A IA planeja os módulos pelo tamanho do assunto (não do texto): usa o que você colar como base e completa o que faltar. Quanto mais específico o nome, melhor.",
     fTitle: "Nome do assunto", fTitlePh: "Ex.: Revolução Francesa", fLang: "Idioma do material gerado",
     fText: "Texto do resumo", fTextPh: "Cole aqui o resumo ou o texto do assunto...",
-    cnt: "{c} caracteres · cerca de {m} módulos",
+    cnt: "{c} caracteres", fCount: "Quantidade de módulos", countAuto: "Automático (a IA decide pelo assunto)", planning: "Planejando os módulos do assunto…", planningSub: "Montando a lista de módulos",
     errTitle: "Dê um nome ao assunto.",
-    errShort: "Cole um texto maior (pelo menos {min} caracteres) para a IA ter o que resumir.",
+    errShort: "Cole pelo menos algumas frases ({min} caracteres) sobre o assunto.",
     errBig: "O texto passou do limite de {max} caracteres. Divida em dois assuntos.",
     make: "Gerar assunto", cancel: "Cancelar",
     genKick: "Criando assunto", genSub: "A IA está lendo o texto e montando cada módulo. Pode levar alguns minutos; mantenha esta tela aberta.",
@@ -1203,12 +1203,12 @@ var T = {
     allLeadLab: "Prima della verifica, rileggi i punti segnati come Da ricordare e questi numeri:",
     allLeadGen: "Rileggi i punti segnati come Da ricordare e ripeti i moduli di cui hai ancora dubbi.",
     memo: "Da ricordare",
-    newHelp: "Incolla il riassunto o il testo che vuoi studiare. L'IA crea moduli e domande usando solo questo testo, senza inventare contenuti.",
+    newHelp: "Incolla il riassunto o il testo che vuoi studiare. L'IA pianifica i moduli in base all'ampiezza dell'argomento (non del testo): usa ciò che incolli come base e completa il resto. Più il nome è preciso, meglio è.",
     fTitle: "Nome dell'argomento", fTitlePh: "Es.: Rivoluzione francese", fLang: "Lingua del materiale generato",
     fText: "Testo del riassunto", fTextPh: "Incolla qui il riassunto o il testo dell'argomento...",
-    cnt: "{c} caratteri · circa {m} moduli",
+    cnt: "{c} caratteri", fCount: "Numero di moduli", countAuto: "Automatico (decide l'IA in base all'argomento)", planning: "Pianificazione dei moduli…", planningSub: "Creo l'elenco dei moduli",
     errTitle: "Dai un nome all'argomento.",
-    errShort: "Incolla un testo più lungo (almeno {min} caratteri) perché l'IA abbia qualcosa da riassumere.",
+    errShort: "Incolla almeno qualche frase ({min} caratteri) sull'argomento.",
     errBig: "Il testo supera il limite di {max} caratteri. Dividilo in due argomenti.",
     make: "Genera argomento", cancel: "Annulla",
     genKick: "Creazione argomento", genSub: "L'IA sta leggendo il testo e creando ogni modulo. Può richiedere qualche minuto; tieni aperta questa schermata.",
@@ -1331,21 +1331,39 @@ function chunkText(raw){
     });
     if (cur.trim()) parts.push(cur.trim());
   });
-  function isHead(p){ return p.length < 90 && !/[.!?;,]$/.test(p) && p.split(/\s+/).length <= 12; }
+  function isNum(p){ return p.length < 140 && /^(\d+[.)]|[IVX]+[.)]|#{1,3}\s|módulo\s*\d|capítulo\s*\d|parte\s*\d)/i.test(p) && p.split("\n").length === 1; }
+  function isHead(p){ return isNum(p) || (p.length < 90 && !/[.!?;,]$/.test(p) && p.split(/\s+/).length <= 12); }
   function pack(target){
     var out = [], cur = "";
     parts.forEach(function(p){
       var big = cur.length >= target * 0.45;
-      if (cur && ((cur.length + p.length + 2 > target && cur.length >= 700) || (isHead(p) && big))) { out.push(cur); cur = ""; }
+      if (cur && ((cur.length + p.length + 2 > target && cur.length >= 600) || (isNum(p) && cur.length >= 350) || (isHead(p) && big))) { out.push(cur); cur = ""; }
       cur += (cur ? "\n\n" : "") + p;
     });
     if (cur) out.push(cur);
-    if (out.length > 1 && out[out.length - 1].length < 450) { var last = out.pop(); out[out.length - 1] += "\n\n" + last; }
+    if (out.length > 1 && out[out.length - 1].length < 300) { var last = out.pop(); out[out.length - 1] += "\n\n" + last; }
     return out;
   }
-  var target = 2600, out = pack(target);
+  var target = 1300, out = pack(target);
   while (out.length > MAXMOD && target < 20000) { target = Math.round(target * 1.3); out = pack(target); }
   return out;
+}
+
+/* Escolhe os trechos do texto do estudante mais ligados a um módulo planejado */
+function relevantText(pieces, c){
+  if (!pieces || !pieces.length) return "";
+  var q = words([c.title, c.focus].concat(c.points || []).join(" "));
+  var sc = pieces.map(function(p, i){
+    var t = " " + words(p).join(" ") + " ", s = 0;
+    q.forEach(function(w){ if (t.indexOf(" " + w) >= 0) s++; });
+    return [s, i];
+  });
+  sc.sort(function(a, b){ return b[0] - a[0] || a[1] - b[1]; });
+  var chosen = [], size = 0;
+  sc.forEach(function(x){ if (x[0] > 0 && size + pieces[x[1]].length <= 4200) { chosen.push(x[1]); size += pieces[x[1]].length; } });
+  if (!chosen.length) { var all = pieces.join("\n\n"); return all.length <= 4200 ? all : pieces[0].slice(0, 4200); }
+  chosen.sort(function(a, b){ return a - b; });
+  return chosen.map(function(i){ return pieces[i]; }).join("\n\n");
 }
 
 /* ---------- Backend (IA) ---------- */
@@ -1949,27 +1967,28 @@ function renderAll(){
 
 /* ---------- Novo assunto ---------- */
 function renderNew(){
-  var f = st.form || (st.form = {title: "", text: "", lang: LANG === "it" ? "it" : "pt"});
+  var f = st.form || (st.form = {title: "", text: "", lang: LANG === "it" ? "it" : "pt", count: "0"});
   app.innerHTML =
     '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("cancel")) + '">' + ICON.x + '</button><h2 class="tt">' + esc(L("newSub")) + '</h2></div></div>' +
     '<div class="wrap body">' +
       '<p class="lead left">' + esc(L("newHelp")) + '</p>' +
       '<div class="fld"><label for="f-title">' + esc(L("fTitle")) + '</label><input id="f-title" type="text" maxlength="80" autocomplete="off" placeholder="' + esc(L("fTitlePh")) + '"></div>' +
       '<div class="fld"><label for="f-lang">' + esc(L("fLang")) + '</label><select id="f-lang"><option value="pt">' + esc(L("ptn")) + '</option><option value="it">' + esc(L("itn")) + '</option></select></div>' +
+      '<div class="fld"><label for="f-count">' + esc(L("fCount")) + '</label><select id="f-count"><option value="0">' + esc(L("countAuto")) + '</option>' + [4, 6, 8, 10, 12].map(function(n){ return '<option value="' + n + '">' + n + '</option>'; }).join("") + '</select></div>' +
       '<div class="fld"><label for="f-text">' + esc(L("fText")) + '</label><textarea id="f-text" placeholder="' + esc(L("fTextPh")) + '"></textarea></div>' +
       '<div class="cnt" id="cnt"></div>' +
       '<p class="msg err" id="ferr" hidden></p>' +
     '</div>' +
     '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="make">' + esc(L("make")) + '</button></div></div>';
-  var ti = $("#f-title"), te = $("#f-text"), sl = $("#f-lang"), cnt = $("#cnt"), er = $("#ferr");
-  ti.value = f.title; te.value = f.text; sl.value = f.lang;
+  var ti = $("#f-title"), te = $("#f-text"), sl = $("#f-lang"), fc = $("#f-count"), cnt = $("#cnt"), er = $("#ferr");
+  ti.value = f.title; te.value = f.text; sl.value = f.lang; fc.value = f.count || "0";
   function upd(){
-    f.title = ti.value; f.text = te.value; f.lang = sl.value;
+    f.title = ti.value; f.text = te.value; f.lang = sl.value; f.count = fc.value;
     var c = f.text.trim().length;
-    cnt.textContent = c ? L("cnt", {c: c, m: Math.max(1, chunkText(f.text).length)}) : "";
+    cnt.textContent = c ? L("cnt", {c: c}) : "";
     er.hidden = true;
   }
-  ti.oninput = te.oninput = sl.onchange = upd; upd();
+  ti.oninput = te.oninput = sl.onchange = fc.onchange = upd; upd();
   $("#exit").onclick = toLib;
   $("#make").onclick = function(){
     upd();
@@ -1978,8 +1997,7 @@ function renderNew(){
     else if (c < MINCHARS) msg = L("errShort", {min: MINCHARS});
     else if (c > MAXCHARS) msg = L("errBig", {max: MAXCHARS});
     if (msg) { er.textContent = msg; er.hidden = false; return; }
-    var chunks = chunkText(f.text);
-    G = {title: f.title.trim(), lang: f.lang, chunks: chunks, mods: [], status: chunks.map(function(){ return "wait"; }), err: "", wait: 0, saving: false, saveFail: false};
+    G = {title: f.title.trim(), lang: f.lang, text: f.text.trim(), count: Number(f.count) || 0, pieces: chunkText(f.text), chunks: [], mods: [], status: [], err: "", wait: 0, saving: false, saveFail: false};
     go("gen"); runGen();
   };
 }
@@ -1988,12 +2006,12 @@ function renderNew(){
 function renderGen(){
   if (!G) return;
   var done = G.status.filter(function(s){ return s === "ok"; }).length;
-  var pct = Math.round(done / G.chunks.length * 100);
-  var rows = G.chunks.map(function(c, i){
+  var pct = G.chunks.length ? Math.round(done / G.chunks.length * 100) : 0;
+  var rows = !G.chunks.length ? '<li class="gi run"><span class="gdot"><span class="spin sm"></span></span><span class="gtxt">' + esc(L("planning")) + '<small>' + esc(L("planningSub")) + '</small></span></li>' : G.chunks.map(function(c, i){
     var s = G.status[i];
-    var label = s === "ok" ? G.mods[i].t : esc(L("modN", {n: i + 1}));
+    var label = s === "ok" ? G.mods[i].t : esc(c.title);
     var ic = s === "ok" ? ICON.check : s === "run" ? '<span class="spin sm"></span>' : s === "err" ? "!" : "";
-    return '<li class="gi ' + s + '"><span class="gdot">' + ic + '</span><span class="gtxt">' + label + '<small>' + c.length + ' ' + (uiLang() === "it" ? "caratteri" : "caracteres") + '</small></span></li>';
+    return '<li class="gi ' + s + '"><span class="gdot">' + ic + '</span><span class="gtxt">' + label + '<small>' + esc(L("modN", {n: i + 1})) + '</small></span></li>';
   }).join("");
   var note = G.saving ? L("saving") : G.err ? G.err : G.wait ? L("waiting", {s: G.wait}) : L("wake");
   var canRetry = !!G.err;
@@ -2012,6 +2030,20 @@ function renderGen(){
 async function runGen(){
   var my = ++NAV;
   G.run = my; G.err = ""; G.saveFail = false;
+  if (!G.chunks.length) {
+    if (st.view === "gen") renderGen();
+    WAITCB = function(w){ if (G && my === NAV) { G.wait = w; var m = document.getElementById("gmsg"); if (m) m.textContent = L("waiting", {s: w}); } };
+    try {
+      var pl = await api("/api/plan", {title: G.title, lang: G.lang, text: G.text, count: G.count});
+      if (my !== NAV) return;
+      G.chunks = pl.modules; G.status = pl.modules.map(function(){ return "wait"; }); G.mods = []; G.wait = 0;
+    } catch (e) {
+      if (my !== NAV) return;
+      G.err = e.message || String(e);
+      if (st.view === "gen") renderGen();
+      return;
+    }
+  }
   for (var i = 0; i < G.chunks.length; i++) {
     if (G.status[i] === "ok") continue;
     G.status[i] = "run"; G.wait = 0;
@@ -2020,7 +2052,8 @@ async function runGen(){
     try {
       var out = await api("/api/module", {
         title: G.title, lang: G.lang, index: i, total: G.chunks.length,
-        prev: G.mods.filter(Boolean).map(function(m){ return plain(m.t); }), text: G.chunks[i]
+        prev: G.mods.filter(Boolean).map(function(m){ return plain(m.t); }), text: relevantText(G.pieces, G.chunks[i]),
+        outline: {title: G.chunks[i].title, focus: G.chunks[i].focus, points: G.chunks[i].points}
       });
       if (my !== NAV) return;
       G.mods[i] = buildModule(out.module);
