@@ -669,6 +669,64 @@ h1{font-size:clamp(32px,8.4vw,46px)}
 .opt.lv.sel{background:var(--surface);box-shadow:3px 3px 0 var(--accent)}
 .chlv{margin-left:auto;border:0;background:transparent;color:var(--blue);font:700 20px var(--fh);cursor:pointer;padding:0 2px;text-decoration:underline;text-underline-offset:3px}
 .crumb{width:100%}
+
+/* Anexar imagem (OCR) */
+.ocr{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.ocr .btn{display:inline-flex;align-items:center;gap:9px;min-height:48px;font-size:15px}
+.ocr .btn svg{flex:none}
+.ocr .cnt{margin:0;max-width:60ch;line-height:1.45}
+
+/* ===== Extras ===== */
+.dash{margin-top:14px}
+.dash .stats{margin-bottom:10px}
+.dash .cnt{margin:6px 0 0;font-size:14px;color:var(--muted);font-weight:600}
+.tools,.tools2{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tools .btn,.tools2 .btn{flex:1 1 auto;min-height:46px;padding:10px 14px;font-size:15px}
+.searchbox{margin-top:14px}
+.searchbox input,.cfg select,.cfg input,.exam input,.flf select,.linkf input,.edit input,.edit textarea{width:100%;border:2px solid var(--edge);border-radius:12px;background:var(--surface);color:var(--ink);font:500 16px var(--f);padding:11px 13px;box-shadow:2px 2px 0 var(--shadow-c);min-width:0}
+.sres-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.sres{text-align:left;border:2px solid var(--edge);border-radius:12px;background:var(--surface);color:var(--ink);padding:10px 12px;display:flex;flex-direction:column;gap:3px;cursor:pointer;font-family:var(--f)}
+.sres small{color:var(--muted);font-weight:700}
+.sres span{font-size:14px;color:var(--ink)}
+mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
+.cfg{margin-top:12px;border:2px dashed var(--line-dark);border-radius:12px;padding:8px 12px}
+.cfg summary{cursor:pointer;font-weight:800}
+.cfg label,.exam label{display:block;margin:10px 0 4px;font-weight:700;color:var(--muted)}
+.cfgrow{display:flex;gap:8px;align-items:center}
+.cfgrow .btn{flex:none;min-height:44px;padding:8px 12px;font-size:14px}
+.exam{margin-top:14px}
+.exam .cnt{margin-top:6px;font-size:14px;color:var(--muted);font-weight:600}
+.flf{display:flex;gap:8px;flex-wrap:wrap}
+.flf select{flex:1 1 140px}
+.fcard{display:flex;flex-direction:column;justify-content:space-between;gap:10px;width:100%;min-height:300px;margin-top:10px;text-align:left;border:2px solid var(--edge);border-radius:18px;background:var(--surface);color:var(--ink);box-shadow:4px 4px 0 var(--shadow-c);padding:18px;cursor:pointer;font-family:var(--f)}
+.fcard.back{background:var(--blue-bg,#e3effb)}
+.fcard .fl{font-size:13px;font-weight:800;color:var(--muted)}
+.fcard .fb{flex:1;font-size:17px;line-height:1.55}
+.fcard .fb h3{font-size:22px;margin:0}
+.fcard .ft{font-size:13px;color:var(--muted);text-align:center}
+.fq{font-size:19px;font-weight:700}
+.tmr{margin-left:auto;font:800 16px var(--f);border:2px solid var(--edge);border-radius:10px;padding:4px 10px;background:var(--surface)}
+.tmr.low{background:var(--bad);color:#fff}
+.sec{font-family:var(--fh);font-size:24px;color:var(--blue);margin:22px 0 8px}
+.byrow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin:8px 0;font-weight:600}
+.byrow .mb{grid-column:1/3;display:block;height:10px;border:2px solid var(--edge);border-radius:8px;background:var(--surface);overflow:hidden}
+.byrow .mb i{display:block;height:100%;background:var(--ok)}
+.errc{border:2px solid var(--edge);border-radius:14px;background:var(--surface);padding:12px 14px;margin:12px 0;box-shadow:3px 3px 0 var(--shadow-c)}
+.errc .eq{font-size:18px;margin:6px 0}
+.errc .row{display:flex;gap:8px;margin-top:8px}
+.errc .ea{margin-top:8px}
+.expl{margin-top:10px;padding:10px 12px;border:2px dashed var(--edge);border-radius:12px;background:var(--surface);font-weight:600;white-space:pre-wrap}
+.edit label{display:block;margin:12px 0 4px;font-weight:800;color:var(--muted)}
+.edit label.okl{color:var(--ok)}
+.edstep,.edq{border:2px solid var(--edge);border-radius:14px;padding:4px 14px 12px;margin:12px 0;background:var(--surface)}
+.edbody{border:2px solid var(--edge);border-radius:12px;padding:10px 12px;min-height:80px;background:var(--bg)}
+.edrow{display:flex;gap:12px;width:100%;margin:8px 0;text-align:left;justify-content:flex-start}
+.edrow b{flex:none}
+.chlv#speak{display:inline-flex;align-items:center;gap:6px;margin:0 0 10px}
+.acct{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:12px;font-weight:700}
+.acct .goalsel{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:14px;margin-left:auto}
+.acct select{border:2px solid var(--edge);border-radius:10px;background:var(--surface);color:var(--ink);font:700 15px var(--f);padding:4px 8px}
+.acct .btn.ghost{min-height:36px;padding:2px 8px}
 </style>
 </head>
 <body>
@@ -1169,7 +1227,7 @@ var T = {
     newHelp: "Cole o resumo ou o texto que você quer estudar. A IA planeja os módulos pelo tamanho do assunto (não do texto): usa o que você colar como base e completa o que faltar. Quanto mais específico o nome, melhor.",
     fTitle: "Nome do assunto", fTitlePh: "Ex.: Revolução Francesa", fLang: "Idioma do material gerado",
     fText: "Texto do resumo", fTextPh: "Cole aqui o resumo ou o texto do assunto...",
-    cnt: "{c} caracteres", lvTitle: "Escolha a dificuldade", lvSub: "As perguntas deste módulo vão ser só do nível escolhido.", lvEasy: "Fácil", lvMedium: "Médio", lvHard: "Difícil", lvEasyD: "Reconhecer as ideias principais do módulo.", lvMediumD: "Entender e aplicar o que foi estudado.", lvHardD: "Nível de prova: casos novos, comparações e detalhes que confundem.", lvLoading: "Preparando perguntas ({l})…", lvLoadingSub: "A IA está montando perguntas deste nível", lvErr: "Não consegui preparar as perguntas", lvChange: "Mudar dificuldade", fCount: "Quantidade de módulos", countAuto: "Automático (a IA decide pelo assunto)", planning: "Planejando os módulos do assunto…", planningSub: "Montando a lista de módulos",
+    cnt: "{c} caracteres", imgBtn: "Anexar foto do resumo", imgHelp: "O texto da imagem é lido aqui no seu aparelho, de graça e sem limite. Funciona melhor com texto impresso ou digitado, em foto nítida e bem iluminada. Confira o texto antes de gerar.", imgLoad: "Carregando o leitor de texto (só na primeira vez)…", imgRead: "Lendo imagem {n} de {t}… {p}%", imgOk: "{n} imagem(ns) lida(s). Confira e corrija o texto abaixo.", imgNone: "Não encontrei texto na imagem {n}. Tente uma foto mais nítida.", imgErr: "Não consegui ler as imagens. Verifique a internet e tente de novo.", lvTitle: "Escolha a dificuldade", lvSub: "As perguntas deste módulo vão ser só do nível escolhido.", lvEasy: "Fácil", lvMedium: "Médio", lvHard: "Difícil", lvEasyD: "Reconhecer as ideias principais do módulo.", lvMediumD: "Entender e aplicar o que foi estudado.", lvHardD: "Nível de prova: casos novos, comparações e detalhes que confundem.", lvLoading: "Preparando perguntas ({l})…", lvLoadingSub: "A IA está montando perguntas deste nível", lvErr: "Não consegui preparar as perguntas", lvChange: "Mudar dificuldade", fCount: "Quantidade de módulos", countAuto: "Automático (a IA decide pelo assunto)", planning: "Planejando os módulos do assunto…", planningSub: "Montando a lista de módulos",
     errTitle: "Dê um nome ao assunto.",
     errShort: "Cole pelo menos algumas frases ({min} caracteres) sobre o assunto.",
     errBig: "O texto passou do limite de {max} caracteres. Divida em dois assuntos.",
@@ -1217,7 +1275,7 @@ var T = {
     newHelp: "Incolla il riassunto o il testo che vuoi studiare. L'IA pianifica i moduli in base all'ampiezza dell'argomento (non del testo): usa ciò che incolli come base e completa il resto. Più il nome è preciso, meglio è.",
     fTitle: "Nome dell'argomento", fTitlePh: "Es.: Rivoluzione francese", fLang: "Lingua del materiale generato",
     fText: "Testo del riassunto", fTextPh: "Incolla qui il riassunto o il testo dell'argomento...",
-    cnt: "{c} caratteri", lvTitle: "Scegli la difficoltà", lvSub: "Le domande di questo modulo saranno solo del livello scelto.", lvEasy: "Facile", lvMedium: "Medio", lvHard: "Difficile", lvEasyD: "Riconoscere le idee principali del modulo.", lvMediumD: "Capire e applicare ciò che hai studiato.", lvHardD: "Livello d'esame: casi nuovi, confronti e dettagli ingannevoli.", lvLoading: "Preparo le domande ({l})…", lvLoadingSub: "L'IA sta creando domande di questo livello", lvErr: "Non sono riuscito a preparare le domande", lvChange: "Cambia difficoltà", fCount: "Numero di moduli", countAuto: "Automatico (decide l'IA in base all'argomento)", planning: "Pianificazione dei moduli…", planningSub: "Creo l'elenco dei moduli",
+    cnt: "{c} caratteri", imgBtn: "Allega foto del riassunto", imgHelp: "Il testo dell'immagine viene letto sul tuo dispositivo, gratis e senza limiti. Funziona meglio con testo stampato o digitato, in foto nitide e ben illuminate. Controlla il testo prima di generare.", imgLoad: "Carico il lettore di testo (solo la prima volta)…", imgRead: "Leggo l'immagine {n} di {t}… {p}%", imgOk: "{n} immagine/i letta/e. Controlla e correggi il testo qui sotto.", imgNone: "Nessun testo trovato nell'immagine {n}. Prova una foto più nitida.", imgErr: "Non sono riuscito a leggere le immagini. Controlla la connessione e riprova.", lvTitle: "Scegli la difficoltà", lvSub: "Le domande di questo modulo saranno solo del livello scelto.", lvEasy: "Facile", lvMedium: "Medio", lvHard: "Difficile", lvEasyD: "Riconoscere le idee principali del modulo.", lvMediumD: "Capire e applicare ciò che hai studiato.", lvHardD: "Livello d'esame: casi nuovi, confronti e dettagli ingannevoli.", lvLoading: "Preparo le domande ({l})…", lvLoadingSub: "L'IA sta creando domande di questo livello", lvErr: "Non sono riuscito a preparare le domande", lvChange: "Cambia difficoltà", fCount: "Numero di moduli", countAuto: "Automatico (decide l'IA in base all'argomento)", planning: "Pianificazione dei moduli…", planningSub: "Creo l'elenco dei moduli",
     errTitle: "Dai un nome all'argomento.",
     errShort: "Incolla almeno qualche frase ({min} caratteri) sull'argomento.",
     errBig: "Il testo supera il limite di {max} caratteri. Dividilo in due argomenti.",
@@ -1250,7 +1308,7 @@ var LS = {
   del: function(k){ try { localStorage.removeItem(k); } catch (e) {} }
 };
 function jget(k, d){ var v = LS.get(k); if (!v) return d; try { return JSON.parse(v); } catch (e) { return d; } }
-function jset(k, v){ return LS.set(k, JSON.stringify(v)); }
+function jset(k, v){ var r = LS.set(k, JSON.stringify(v)); if (typeof syncTouch === "function") syncTouch(k); return r; }
 function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
 function rid(){ return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -1419,7 +1477,49 @@ async function translateBatch(obj, lang){
   keys.forEach(function(k){ res[k] = (typeof got[k] === "string" && got[k].trim()) ? got[k] : obj[k]; });
   return res;
 }
+var LT = {}, LTBAD = {};
+function withTimeout(p, ms){
+  return new Promise(function(res, rej){
+    var t = setTimeout(function(){ rej(new Error("timeout")); }, ms);
+    Promise.resolve(p).then(function(v){ clearTimeout(t); res(v); }, function(x){ clearTimeout(t); rej(x); });
+  });
+}
+async function getLocalTranslator(lang, allowDownload){
+  try {
+    if (!("Translator" in self) || (lang !== "it" && lang !== "pt") || LTBAD[lang]) return null;
+    if (LT[lang]) return LT[lang];
+    var pair = {sourceLanguage: lang === "it" ? "pt" : "it", targetLanguage: lang};
+    var av = await withTimeout(Translator.availability(pair), 3000);
+    if (av === "unavailable") { LTBAD[lang] = true; return null; }
+    if (av !== "available" && !allowDownload) return null;
+    LT[lang] = await withTimeout(Translator.create(pair), allowDownload && av !== "available" ? 600000 : 10000);
+    return LT[lang];
+  } catch (x) { if (x && x.message === "timeout") LTBAD[lang] = true; return null; }
+}
+async function translateHtmlLocal(t, html){
+  var doc = new DOMParser().parseFromString("<div>" + html + "</div>", "text/html"), root = doc.body.firstChild;
+  var nodes = [], w = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  while (w.nextNode()) { if (/\S/.test(w.currentNode.nodeValue)) nodes.push(w.currentNode); }
+  for (var i = 0; i < nodes.length; i++) {
+    var s = nodes[i].nodeValue, core = s.trim();
+    var r = await withTimeout(t.translate(core), 15000);
+    nodes[i].nodeValue = s.match(/^\s*/)[0] + r + s.match(/\s*$/)[0];
+  }
+  return root.innerHTML;
+}
 async function translateMap(items, lang, onProg){
+  var lt = await getLocalTranslator(lang, false);
+  if (lt) {
+    try {
+      var ks = Object.keys(items), o2 = {};
+      for (var q = 0; q < ks.length; q++) {
+    if (onProg) onProg(q, ks.length);
+        o2[ks[q]] = await translateHtmlLocal(lt, String(items[ks[q]]));
+      }
+      if (onProg) onProg(ks.length, ks.length);
+      return o2;
+    } catch (x) { LTBAD[lang] = true; delete LT[lang]; /* se o tradutor do navegador falhar, usa a IA */ }
+  }
   var keys = Object.keys(items), batches = [], cur = {}, size = 0, out = {};
   keys.forEach(function(k){
     var v = String(items[k]);
@@ -1554,7 +1654,7 @@ var NAV = 0;
 var TT = {}, TBUSY = false;
 var st = {view: "lib", unlocked: 0, cur: 0, xp: 0, step: 0, qi: 0, order: [], sel: null, tries: 0, gained: 0, first: false, pool: {}, last: {}, confirmReset: false, confirmDel: false, form: null};
 
-function progKey(id){ return id === "lab" ? "sicurezza-lab-progress-v2" : "cad-prog-" + id; }
+function progKey(id){ return PK(id === "lab" ? "sicurezza-lab-progress-v2" : "cad-prog-" + id); }
 function readProg(id){ return jget(progKey(id), {}) || {}; }
 function loadProg(){
   var p = readProg(S.id);
@@ -1574,6 +1674,7 @@ var ICON = {
   check: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 018 0v2.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
   plus: '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>',
+  cam: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 016.5 6h1.2l1.1-1.6A1.5 1.5 0 0110 3.8h4a1.5 1.5 0 011.2.6L16.3 6h1.2A2.5 2.5 0 0120 8.5v8A2.5 2.5 0 0117.5 19h-11A2.5 2.5 0 014 16.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12.4" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
   back: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'
 };
 var SIGNS = {
@@ -1620,6 +1721,7 @@ function bindLang(){
 function setLang(l){
   if (l === LANG) return;
   LANG = l; jset("cad-lang", l);
+  if (l !== "orig") getLocalTranslator(l, true);
   if (st.view === "lib") { renderLib(); ensureTitleTr(); }
   else if (S && st.view === "home") openSubject(S.id);
 }
@@ -1660,7 +1762,7 @@ async function refreshLib(silent){
   var items = res.items.filter(function(x){ return x && x.id && x.title; }).sort(function(a, b){ return (a.createdAt || 0) - (b.createdAt || 0); });
   LIB = [builtMeta()].concat(items);
   LIBOFF = res.offline;
-  if (st.view === "lib") renderLib();
+  if (st.view === "lib" && !(document.activeElement && document.activeElement.id === "sq")) renderLib();
   ensureTitleTr();
 }
 async function ensureTitleTr(){
@@ -1686,6 +1788,7 @@ async function ensureTitleTr(){
   if (st.view === "lib") renderLib();
 }
 function toLib(){
+  if (!USER) { S = null; M = []; ORIG = []; st.view = "login"; render(); return; }
   S = null; M = []; ORIG = []; st.view = "lib"; showAI(false); WAITCB = null;
   renderLib(); window.scrollTo(0, 0); refreshLib(true);
 }
@@ -1705,13 +1808,13 @@ function renderLib(){
       '<button type="button" class="plus" id="newtop" aria-label="' + esc(L("newSub")) + '">' + ICON.plus + '</button></div>' +
       '<h1>' + esc(L("app")) + '</h1>' +
       '<p class="sub">' + esc(L("libSub")) + '</p>' +
-      '<div class="row2">' + langBar() + '</div>' +
+      '<div class="row2">' + langBar() + '</div>' + dashHtml() +
       (!dbOn() ? '<div class="banner warn">' + esc(L("noDb")) + '</div>' : "") +
       (LIBOFF ? '<div class="banner warn">' + esc(L("offline")) + '</div>' : "") +
     '</div>' +
     '<div class="wrap shelf">' + cards +
       '<button type="button" class="nb add" id="newcard">' + ICON.plus + '<span>' + esc(L("newSub")) + '</span></button></div>';
-  bindLang();
+  bindLang(); bindDash();
   app.querySelectorAll(".nb[data-id]").forEach(function(b){ b.onclick = function(){ openSubject(b.getAttribute("data-id")); }; });
   $("#newtop").onclick = $("#newcard").onclick = function(){ st.form = st.form || {title: "", text: "", lang: LANG === "it" ? "it" : "pt"}; go("new"); };
 }
@@ -1878,6 +1981,7 @@ function renderLevel(){
         return '<button type="button" class="opt lv lv-' + d[0] + (d[0] === cur ? " sel" : "") + '" data-lv="' + d[0] + '"><span class="l">' + (d[0] === "easy" ? "1" : d[0] === "medium" ? "2" : "3") + '</span><span><strong>' + esc(L(d[1])) + '</strong><small>' + esc(L(d[2])) + '</small></span></button>';
       }).join("") + '</div>' +
     '</div>';
+  $("#tbback").onclick = function(){ st.step = Math.max(0, m.steps.length - 1); go("lesson"); };
   $("#exit").onclick = function(){ go("home"); };
   app.querySelectorAll(".lv").forEach(function(b){ b.onclick = function(){ chooseLevel(b.getAttribute("data-lv")); }; });
 }
@@ -1891,7 +1995,7 @@ function openQuiz(){
 function topbar(m, idx){
   var total = m.steps.length + 1, segs = "";
   for (var i = 0; i < total; i++) segs += '<i class="' + (i < idx ? "on" : i === idx ? "now" : "") + '"></i>';
-  return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("exit")) + '">' + ICON.x + '</button><div class="segs" role="progressbar" aria-valuemin="1" aria-valuemax="' + total + '" aria-valuenow="' + (idx + 1) + '">' + segs + '</div></div></div>';
+  return '<div class="top"><div class="wrap"><button type="button" class="x" id="tbback" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><div class="segs" role="progressbar" aria-valuemin="1" aria-valuemax="' + total + '" aria-valuenow="' + (idx + 1) + '">' + segs + '</div><button type="button" class="x" id="exit" aria-label="' + esc(L("exit")) + '">' + ICON.x + '</button></div></div>';
 }
 
 function renderHome(){
@@ -1906,7 +2010,7 @@ function renderHome(){
     var label = L("modL", {n: i + 1, t: plain(m.t)}) + (locked ? " " + L("lockedL") : done ? " " + L("doneL") : "");
     return '<button type="button" class="mod' + (done ? " done" : "") + (cur ? " cur" : "") + (locked ? " locked" : "") + '" data-i="' + i + '"' + (locked ? " disabled" : "") + ' aria-label="' + esc(label) + '">' +
       '<span class="node">' + sign(m.s) + badge + '</span>' +
-      '<span class="mt">' + kindPill(m) + '<strong>' + m.t + '</strong><span class="meta">' + m.tag + '</span></span>' +
+      '<span class="mt">' + kindPill(m) + '<strong>' + m.t + '</strong><span class="meta">' + m.tag + accBadge(i) + '</span></span>' +
       '<span class="st">' + esc(status) + '</span></button>';
   }).join("");
   var ctaLabel = all ? L("reviewAll") : st.unlocked === 0 ? L("start") : L("contN", {n: nxt + 1});
@@ -1920,6 +2024,7 @@ function renderHome(){
       '<p class="sub">' + esc(sub) + '</p>' +
       '<div class="stats"><span class="pill">' + ICON.star + esc(L("xp", {n: st.xp})) + '</span><span class="pill">' + esc(L("modsDone", {n: n, m: M.length})) + '</span></div>' +
       '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>' +
+      homeTools() +
     '</div>' +
     '<div class="wrap path">' + cards + '</div>' +
     '<div class="wrap foot" style="gap:6px;flex-wrap:wrap">' +
@@ -1927,7 +2032,7 @@ function renderHome(){
       (!S.built ? '<button type="button" class="btn ghost" id="del" style="color:var(--bad)">' + esc(st.confirmDel ? L("delConfirm") : L("delSub")) + '</button>' : "") +
     '</div>' +
     '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="cta">' + esc(ctaLabel) + '</button></div></div>';
-  bindLang();
+  bindLang(); bindHomeTools();
   $("#tolib").onclick = toLib;
   app.querySelectorAll(".mod").forEach(function(b){ b.onclick = function(){ startModule(parseInt(b.getAttribute("data-i"), 10)); }; });
   $("#cta").onclick = function(){ startModule(all ? 0 : nxt); };
@@ -1952,6 +2057,7 @@ function renderLesson(){
     topbar(m, st.step) +
     '<div class="wrap body">' +
       '<p class="crumb">' + kindPill(m) + '<span>' + esc(L("modL", {n: st.cur + 1, t: plain(m.t)})) + '</span></p>' +
+      speakBtn() +
       '<h2>' + step.t + '</h2>' +
       '<div class="stack">' + step.h + '</div>' +
     '</div>' +
@@ -1959,6 +2065,8 @@ function renderLesson(){
       (st.step > 0 ? '<button type="button" class="btn" id="back">' + esc(L("back")) + '</button>' : "") +
       '<button type="button" class="btn primary wide" id="next">' + esc(lastStep ? L("goQ") : L("next")) + '</button>' +
     '</div></div>';
+  bindSpeak(step);
+  $("#tbback").onclick = function(){ if (st.step > 0) { st.step--; save(); render(); window.scrollTo(0, 0); } else go("home"); };
   $("#exit").onclick = function(){ go("home"); };
   var bk = $("#back");
   if (bk) bk.onclick = function(){ st.step--; save(); render(); window.scrollTo(0, 0); };
@@ -1980,6 +2088,7 @@ function renderQuiz(){
       '<div class="opts" role="group" aria-label="' + esc(L("alts")) + '">' + opts + '</div>' +
     '</div>' +
     '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>' + esc(L("verify")) + '</button></div></div>';
+  $("#tbback").onclick = function(){ go("level"); };
   $("#exit").onclick = function(){ go("home"); };
   $("#chlv").onclick = function(){ go("level"); };
   var btns = app.querySelectorAll(".opt");
@@ -1996,6 +2105,7 @@ function renderQuiz(){
     if (st.sel === null) return;
     var okPos = st.order.indexOf(q.c);
     var ok = st.sel === okPos;
+    trackAnswer(ok, q);
     btns.forEach(function(x, i){
       x.disabled = true; x.classList.remove("sel");
       if (i === okPos) x.classList.add("right");
@@ -2018,7 +2128,8 @@ function renderQuiz(){
       st.tries++; save();
       bar.className = "bar sheet no";
       bar.setAttribute("role", "status");
-      bar.innerHTML = '<div class="wrap"><div><strong>' + esc(L("wrong")) + '</strong><p><b>' + esc(L("rightAns")) + '</b> ' + q.o[q.c] + '. ' + q.e + '</p></div><div class="row"><button type="button" class="btn bad wide" id="again">' + esc(L("again")) + '</button><button type="button" class="btn" id="reread">' + esc(L("reread")) + '</button></div></div>';
+      bar.innerHTML = '<div class="wrap"><div><strong>' + esc(L("wrong")) + '</strong><p><b>' + esc(L("rightAns")) + '</b> ' + q.o[q.c] + '. ' + q.e + '</p></div><div class="row"><button type="button" class="btn bad wide" id="again">' + esc(L("again")) + '</button><button type="button" class="btn" id="reread">' + esc(L("reread")) + '</button><button type="button" class="btn" id="explain">' + esc(L("explainBtn")) + '</button></div><div class="expl" id="expl" hidden></div></div>';
+      $("#explain").onclick = function(){ explainWrong(q, st.order[st.sel], st.cur, $("#expl"), $("#explain")); };
       $("#again").onclick = function(){ openQuiz(); };
       $("#reread").onclick = function(){ st.step = 0; go("lesson"); };
       $("#again").focus();
@@ -2063,6 +2174,66 @@ function renderAll(){
   $("#rev").onclick = function(){ startModule(0); };
 }
 
+/* ---------- Ler texto de imagens (OCR no aparelho, gratuito) ---------- */
+var OCRLIB = null;
+function loadOcrLib(){
+  if (self.Tesseract) return Promise.resolve();
+  if (OCRLIB) return OCRLIB;
+  OCRLIB = new Promise(function(res, rej){
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
+    s.onload = function(){ res(); };
+    s.onerror = function(){ OCRLIB = null; rej(new Error("ocr lib")); };
+    document.head.appendChild(s);
+  });
+  return OCRLIB;
+}
+async function prepImage(file){
+  var bmp = await createImageBitmap(file);
+  var w = bmp.width, h = bmp.height, big = Math.max(w, h), k = 1;
+  if (big > 2200) k = 2200 / big; else if (big < 1100) k = Math.min(2, 1400 / big);
+  var c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+  var x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height);
+  try { x.filter = "grayscale(1) contrast(1.35)"; } catch (err) {}
+  x.drawImage(bmp, 0, 0, c.width, c.height);
+  if (bmp.close) bmp.close();
+  return c;
+}
+function tidyOcr(t){
+  var lines = String(t || "").replace(/\r/g, "").replace(/-\n(?=[a-zà-ú])/g, "").split("\n").map(function(l){ return l.replace(/[ \t]+/g, " ").trim(); });
+  var out = [];
+  lines.forEach(function(l){
+    if (!l) { if (out.length && out[out.length - 1] !== "") out.push(""); return; }
+    var prev = out.length ? out[out.length - 1] : "";
+    if (prev && !/[.:;!?)”"]$/.test(prev) && /^[a-zà-ú]/.test(l) && prev.length > 40) out[out.length - 1] = prev + " " + l;
+    else out.push(l);
+  });
+  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+async function ocrFiles(files, lang, say){
+  say(L("imgLoad"));
+  await loadOcrLib();
+  var code = lang === "it" ? "ita" : "por", prog = 0;
+  var worker = await Tesseract.createWorker(code, 1, {
+    langPath: "https://cdn.jsdelivr.net/npm/@tesseract.js-data/" + code + "/4.0.0_best_int",
+    logger: function(m){ if (m && m.status === "recognizing text") prog = Math.round((m.progress || 0) * 100); }
+  });
+  var texts = [], timer = null, cur = 0;
+  try {
+    timer = setInterval(function(){ say(L("imgRead", {n: cur + 1, t: files.length, p: prog})); }, 300);
+    for (cur = 0; cur < files.length; cur++) {
+      prog = 0; say(L("imgRead", {n: cur + 1, t: files.length, p: 0}));
+      var cv = await prepImage(files[cur]);
+      var r = await worker.recognize(cv);
+      var t = tidyOcr(r && r.data && r.data.text);
+      texts.push(t.length >= 15 ? t : "");
+    }
+  } finally { if (timer) clearInterval(timer); try { await worker.terminate(); } catch (err) {} }
+  return texts;
+}
+
 /* ---------- Novo assunto ---------- */
 function renderNew(){
   var f = st.form || (st.form = {title: "", text: "", lang: LANG === "it" ? "it" : "pt", count: "0"});
@@ -2074,6 +2245,8 @@ function renderNew(){
       '<div class="fld"><label for="f-lang">' + esc(L("fLang")) + '</label><select id="f-lang"><option value="pt">' + esc(L("ptn")) + '</option><option value="it">' + esc(L("itn")) + '</option></select></div>' +
       '<div class="fld"><label for="f-count">' + esc(L("fCount")) + '</label><select id="f-count"><option value="0">' + esc(L("countAuto")) + '</option>' + [4, 6, 8, 10, 12].map(function(n){ return '<option value="' + n + '">' + n + '</option>'; }).join("") + '</select></div>' +
       '<div class="fld"><label for="f-text">' + esc(L("fText")) + '</label><textarea id="f-text" placeholder="' + esc(L("fTextPh")) + '"></textarea></div>' +
+      '<div class="ocr"><input type="file" id="f-img" accept="image/*" multiple hidden><button type="button" class="btn" id="f-imgbtn">' + ICON.cam + '<span>' + esc(L("imgBtn")) + '</span></button><p class="cnt" id="imgmsg">' + esc(L("imgHelp")) + '</p></div>' +
+      newExtrasHtml() +
       '<div class="cnt" id="cnt"></div>' +
       '<p class="msg err" id="ferr" hidden></p>' +
     '</div>' +
@@ -2088,6 +2261,27 @@ function renderNew(){
   }
   ti.oninput = te.oninput = sl.onchange = fc.onchange = upd; upd();
   $("#exit").onclick = toLib;
+  var fimg = $("#f-img"), fbtn = $("#f-imgbtn"), imsg = $("#imgmsg"), busy = false;
+  fbtn.onclick = function(){ if (!busy) fimg.click(); };
+  fimg.onchange = async function(){
+    var files = Array.prototype.slice.call(fimg.files || []).slice(0, 12);
+    fimg.value = "";
+    if (!files.length || busy) return;
+    busy = true; fbtn.disabled = true; er.hidden = true;
+    function say(m){ imsg.textContent = m; }
+    try {
+      var texts = await ocrFiles(files, sl.value, say), ok = 0, none = "";
+      texts.forEach(function(t, i){
+        if (!t) { if (!none) none = L("imgNone", {n: i + 1}); return; }
+        ok++;
+        te.value = (te.value.trim() ? te.value.trim() + "\n\n" : "") + t;
+      });
+      upd();
+      say(ok ? L("imgOk", {n: ok}) + (none ? " " + none : "") : (none || L("imgErr")));
+    } catch (err) { say(L("imgErr")); }
+    busy = false; fbtn.disabled = false;
+  };
+  bindNewExtras(te, sl, upd, er);
   $("#make").onclick = function(){
     upd();
     var c = f.text.trim().length, msg = "";
@@ -2264,8 +2458,11 @@ function updateAI(){
 }
 
 /* ---------- Roteamento ---------- */
+var GLOBAL_VIEWS = ["rev", "revdone", "errs"];
+var SUBJ_VIEWS = ["lesson", "quiz", "level", "done", "all", "flash", "sim", "simq", "simres", "edit", "editmod"];
 function render(){
   var v = st.view;
+  stopExtras();
   showAI(["home", "lesson", "done", "all"].indexOf(v) >= 0);
   if (v === "lib") renderLib();
   else if (v === "new") renderNew();
@@ -2275,28 +2472,942 @@ function render(){
   else if (v === "level") renderLevel();
   else if (v === "done") renderDone();
   else if (v === "all") renderAll();
+  else if (EXTRA_VIEWS[v]) EXTRA_VIEWS[v]();
   else { st.confirmReset = false; renderHome(); }
 }
 
+
+/* ====================================================================
+   Extras: perfis, metas, revisão espaçada, caderno de erros, busca,
+   flashcards, simulado, editor, voz, PDF/link, exportar e compartilhar
+   ==================================================================== */
+
+var X = {
+  pt: {
+    streakN: "{n} dias seguidos", streak1: "1 dia seguido", todayG: "Hoje: {a}/{g}",
+    dueBtn: "Revisar ({n})", dueNone: "Revisão", errsBtn: "Erros ({n})",
+    goalLeft: "Faltam {n} perguntas para a meta de hoje.", goalDone: "Meta de hoje cumprida. Bom trabalho!",
+    searchPh: "Buscar em todos os assuntos…", searching: "Procurando…", noRes: "Nada encontrado.", resStep: "Conteúdo", resQ: "Pergunta",
+    cfg: "Ajustes", profLbl: "Perfil", profDef: "Padrão", profNew: "Novo perfil", profAsk: "Nome do novo perfil:", goalLbl: "Meta diária (perguntas)",
+    cfgHelp: "Cada perfil tem progresso, revisões e metas próprios neste aparelho.",
+    revTitle: "Revisão", revNone: "Nada para revisar agora. Responda mais perguntas nos módulos e elas voltam aqui no momento certo.",
+    revDoneT: "Revisão concluída", revScore: "Você acertou {a} de {n}.", revBack: "Voltar ao caderno", revNext: "Próxima", revFinish: "Concluir",
+    revHint: "Estas perguntas voltam quando é a hora certa de lembrar: quanto mais você acerta, mais espaçadas ficam.",
+    errsTitle: "Caderno de erros", errsNone: "Nenhum erro pendente. Bom trabalho!", errsRedo: "Refazer estes ({n})", errsKnow: "Já sei",
+    errsShow: "Ver resposta", errsHide: "Ocultar", errsWrong: "errou {n}x", errsSub: "Perguntas que você errou e ainda não fixou.",
+    explainBtn: "Não entendi", explaining: "Pensando em um jeito mais simples…", explainErr: "Não consegui explicar agora.",
+    accTxt: " · {p}% de acerto",
+    flashBtn: "Flashcards", simBtn: "Simulado", editBtn: "Editar", pdfBtn: "Exportar PDF", linkBtn: "Copiar link", linkOk: "Link copiado!",
+    examLbl: "Data da prova", examNone: "Defina a data da prova para ver o plano de estudo.",
+    examPlan: "Faltam {d} dias e {m} módulos: faça cerca de {p} por dia e use o último dia para revisar.",
+    examPlan1: "Falta 1 dia. Revise com Revisão e Simulado.", examToday: "A prova é hoje. Faça uma Revisão e um Simulado rápidos.",
+    examPast: "A data da prova já passou.", examDone: "Todos os módulos concluídos. Use Revisão e Simulado até a prova (faltam {d} dias).",
+    dueHere: "{n} perguntas deste assunto para revisar",
+    speak: "Ouvir", speakStop: "Parar",
+    flTitle: "Flashcards", flAll: "Todos os módulos", flConcepts: "Conceitos", flQuestions: "Perguntas", flBoth: "Tudo", flTap: "Toque para virar",
+    flKnow: "Já sei", flLater: "Rever depois", flLeft: "{n} restantes", flDone: "Deck concluído!", flRestart: "Recomeçar", flEmpty: "Sem cartões neste filtro.", flFront: "Frente", flBack: "Verso",
+    simTitle: "Simulado", simCount: "Quantidade de perguntas", simLevel: "Dificuldade", simMix: "Misto", simStart: "Começar simulado",
+    simNote: "O simulado usa o material no idioma original e só mostra o resultado no final, como numa prova.",
+    simTime: "Tempo: {m} min", simPrev: "Anterior", simNext: "Próxima", simFinish: "Finalizar", simQ: "Pergunta {i} de {n}",
+    simUnans: "Há {n} sem resposta. Finalizar mesmo assim?", simResT: "Resultado do simulado", simScore: "{a} de {n} ({p}%)",
+    simTimeUp: "O tempo acabou.", simByMod: "Por módulo", simWrong: "Para revisar", simSaved: "Seus erros foram salvos no Caderno de erros.",
+    simNew: "Novo simulado", simYours: "Sua resposta:", simNoAns: "sem resposta", simTooFew: "Este assunto ainda tem poucas perguntas para um simulado.", simRight: "Gabarito:",
+    edTitle: "Editar assunto", edHelp: "Corrija textos e perguntas. As mudanças valem em todos os aparelhos.",
+    edOrigOnly: "Para editar, volte ao idioma Original.", edToOrig: "Ir para Original", edBuilt: "Este assunto é fixo e não pode ser editado.",
+    edSave: "Salvar alterações", edSaved: "Salvo!", edSaving: "Salvando…", edErr: "Não consegui salvar.",
+    edModT: "Título do módulo", edTag: "Resumo curto", edSteps: "Etapas de leitura", edStepT: "Título da etapa", edStepB: "Texto da etapa",
+    edQs: "Perguntas", edQ: "Pergunta", edCorrect: "Alternativa correta", edWrong: "Alternativa errada", edExpl: "Explicação",
+    edDelQ: "Excluir pergunta", edDelStep: "Excluir etapa", edAddQ: "Adicionar pergunta", edAddStep: "Adicionar etapa",
+    edLast: "É preciso manter pelo menos um item.", edNote: "Ao salvar, traduções e perguntas Fácil/Difícil deste módulo serão recriadas quando precisar.",
+    edMod: "Módulo {n}",
+    pdfAttach: "Anexar PDF", pdfRead: "Lendo o PDF… página {p} de {t}", pdfOcr: "Página {p} sem texto: lendo como imagem…",
+    pdfNone: "Não encontrei texto nesse PDF.", pdfErr: "Não consegui ler o PDF. Verifique a internet e tente de novo.", pdfOk: "PDF lido ({n} páginas). Confira o texto abaixo.", pdfCut: " O texto foi cortado no limite de {max} caracteres.",
+    linkLbl: "Ou cole o link de uma página", linkGet: "Buscar texto", linkBusy: "Buscando…", linkAdded: "Texto do link adicionado. Confira abaixo.", linkErr: "Não consegui ler o link: {e}",
+    loginAsk: "Você já tem uma conta?", loginHas: "Já tenho conta", loginHasD: "Entrar com meu nome e senha.", loginMk: "Criar conta", loginMkD: "Primeira vez aqui: escolher nome e senha.", loginTaken: "Esse nome já está em uso. Escolha outro ou entre na conta existente.", loginNone: "Não existe conta com esse nome. Confira ou crie uma conta.",
+    loginTitle: "Entrar no caderno", loginHelp: "Use seu nome e uma senha. Seu progresso, revisões e metas ficam salvos na conta e acompanham você em qualquer aparelho.",
+    loginName: "Nome de usuário", loginPass: "Senha (mínimo 4 caracteres)", loginPass2: "Repita a senha", loginBtn: "Entrar", loginNew: "Criar conta", loginNewHint: "Não existe conta com esse nome. Repita a senha para criar uma.",
+    loginBadName: "Use um nome com pelo menos 2 letras ou números.", loginShort: "A senha precisa ter pelo menos 4 caracteres.", loginWrong: "Senha incorreta.", loginMismatch: "As senhas não são iguais.", loginErr: "Não consegui falar com o servidor do caderno. Tente de novo.", loginBusy: "Entrando…",
+    hello: "Olá, {n}", logout: "Sair", loginAdopt: "O progresso que já estava neste aparelho foi levado para a conta.",
+    pdfPrint: "Não foi possível abrir a janela de impressão. Permita pop-ups e tente de novo.",
+    pdfAnswerL: "Resposta", pdfQs: "Perguntas"
+  },
+  it: {
+    streakN: "{n} giorni di fila", streak1: "1 giorno di fila", todayG: "Oggi: {a}/{g}",
+    dueBtn: "Ripassa ({n})", dueNone: "Ripasso", errsBtn: "Errori ({n})",
+    goalLeft: "Mancano {n} domande all'obiettivo di oggi.", goalDone: "Obiettivo di oggi raggiunto. Ottimo lavoro!",
+    searchPh: "Cerca in tutti gli argomenti…", searching: "Cerco…", noRes: "Nessun risultato.", resStep: "Contenuto", resQ: "Domanda",
+    cfg: "Impostazioni", profLbl: "Profilo", profDef: "Predefinito", profNew: "Nuovo profilo", profAsk: "Nome del nuovo profilo:", goalLbl: "Obiettivo giornaliero (domande)",
+    cfgHelp: "Ogni profilo ha progressi, ripassi e obiettivi propri su questo dispositivo.",
+    revTitle: "Ripasso", revNone: "Niente da ripassare ora. Rispondi ad altre domande nei moduli e torneranno qui al momento giusto.",
+    revDoneT: "Ripasso completato", revScore: "Hai risposto bene a {a} su {n}.", revBack: "Torna al quaderno", revNext: "Successiva", revFinish: "Concludi",
+    revHint: "Queste domande tornano quando è il momento giusto per ricordarle: più rispondi bene, più si distanziano.",
+    errsTitle: "Quaderno degli errori", errsNone: "Nessun errore in sospeso. Ottimo lavoro!", errsRedo: "Rifai questi ({n})", errsKnow: "Lo so",
+    errsShow: "Vedi la risposta", errsHide: "Nascondi", errsWrong: "sbagliata {n} volte", errsSub: "Domande sbagliate che non hai ancora fissato.",
+    explainBtn: "Non ho capito", explaining: "Cerco un modo più semplice…", explainErr: "Non riesco a spiegare ora.",
+    accTxt: " · {p}% corrette",
+    flashBtn: "Flashcard", simBtn: "Simulazione", editBtn: "Modifica", pdfBtn: "Esporta PDF", linkBtn: "Copia link", linkOk: "Link copiato!",
+    examLbl: "Data della verifica", examNone: "Imposta la data della verifica per vedere il piano di studio.",
+    examPlan: "Mancano {d} giorni e {m} moduli: fanne circa {p} al giorno e usa l'ultimo giorno per ripassare.",
+    examPlan1: "Manca 1 giorno. Ripassa con Ripasso e Simulazione.", examToday: "La verifica è oggi. Fai un Ripasso e una Simulazione veloci.",
+    examPast: "La data della verifica è passata.", examDone: "Tutti i moduli completati. Usa Ripasso e Simulazione fino alla verifica (mancano {d} giorni).",
+    dueHere: "{n} domande di questo argomento da ripassare",
+    speak: "Ascolta", speakStop: "Ferma",
+    flTitle: "Flashcard", flAll: "Tutti i moduli", flConcepts: "Concetti", flQuestions: "Domande", flBoth: "Tutto", flTap: "Tocca per girare",
+    flKnow: "Lo so", flLater: "Rivedi dopo", flLeft: "{n} rimaste", flDone: "Mazzo completato!", flRestart: "Ricomincia", flEmpty: "Nessuna carta con questo filtro.", flFront: "Fronte", flBack: "Retro",
+    simTitle: "Simulazione", simCount: "Numero di domande", simLevel: "Difficoltà", simMix: "Misto", simStart: "Inizia la simulazione",
+    simNote: "La simulazione usa il materiale nella lingua originale e mostra il risultato solo alla fine, come in una verifica.",
+    simTime: "Tempo: {m} min", simPrev: "Precedente", simNext: "Successiva", simFinish: "Termina", simQ: "Domanda {i} di {n}",
+    simUnans: "Ci sono {n} domande senza risposta. Terminare comunque?", simResT: "Risultato della simulazione", simScore: "{a} su {n} ({p}%)",
+    simTimeUp: "Il tempo è scaduto.", simByMod: "Per modulo", simWrong: "Da ripassare", simSaved: "I tuoi errori sono stati salvati nel Quaderno degli errori.",
+    simNew: "Nuova simulazione", simYours: "La tua risposta:", simNoAns: "senza risposta", simTooFew: "Questo argomento ha ancora poche domande per una simulazione.", simRight: "Risposta corretta:",
+    edTitle: "Modifica argomento", edHelp: "Correggi testi e domande. Le modifiche valgono su tutti i dispositivi.",
+    edOrigOnly: "Per modificare, torna alla lingua Originale.", edToOrig: "Vai a Originale", edBuilt: "Questo argomento è fisso e non si può modificare.",
+    edSave: "Salva modifiche", edSaved: "Salvato!", edSaving: "Salvataggio…", edErr: "Non sono riuscito a salvare.",
+    edModT: "Titolo del modulo", edTag: "Breve descrizione", edSteps: "Passi di lettura", edStepT: "Titolo del passo", edStepB: "Testo del passo",
+    edQs: "Domande", edQ: "Domanda", edCorrect: "Risposta corretta", edWrong: "Risposta sbagliata", edExpl: "Spiegazione",
+    edDelQ: "Elimina domanda", edDelStep: "Elimina passo", edAddQ: "Aggiungi domanda", edAddStep: "Aggiungi passo",
+    edLast: "Devi mantenere almeno un elemento.", edNote: "Salvando, traduzioni e domande Facile/Difficile di questo modulo verranno ricreate quando servono.",
+    edMod: "Modulo {n}",
+    pdfAttach: "Allega PDF", pdfRead: "Leggo il PDF… pagina {p} di {t}", pdfOcr: "Pagina {p} senza testo: la leggo come immagine…",
+    pdfNone: "Non ho trovato testo in questo PDF.", pdfErr: "Non sono riuscito a leggere il PDF. Controlla la connessione e riprova.", pdfOk: "PDF letto ({n} pagine). Controlla il testo qui sotto.", pdfCut: " Il testo è stato tagliato al limite di {max} caratteri.",
+    linkLbl: "Oppure incolla il link di una pagina", linkGet: "Cerca testo", linkBusy: "Cerco…", linkAdded: "Testo del link aggiunto. Controlla qui sotto.", linkErr: "Non sono riuscito a leggere il link: {e}",
+    loginAsk: "Hai già un account?", loginHas: "Ho già un account", loginHasD: "Accedi con nome e password.", loginMk: "Crea account", loginMkD: "Prima volta qui: scegli nome e password.", loginTaken: "Questo nome è già in uso. Scegline un altro o accedi all'account esistente.", loginNone: "Non esiste un account con questo nome. Controlla o crea un account.",
+    loginTitle: "Accedi al quaderno", loginHelp: "Usa il tuo nome e una password. Progressi, ripassi e obiettivi restano salvati nell'account e ti seguono su ogni dispositivo.",
+    loginName: "Nome utente", loginPass: "Password (minimo 4 caratteri)", loginPass2: "Ripeti la password", loginBtn: "Accedi", loginNew: "Crea account", loginNewHint: "Non esiste un account con questo nome. Ripeti la password per crearne uno.",
+    loginBadName: "Usa un nome con almeno 2 lettere o numeri.", loginShort: "La password deve avere almeno 4 caratteri.", loginWrong: "Password errata.", loginMismatch: "Le password non coincidono.", loginErr: "Non riesco a contattare il server del quaderno. Riprova.", loginBusy: "Accesso…",
+    hello: "Ciao, {n}", logout: "Esci", loginAdopt: "I progressi già presenti su questo dispositivo sono stati portati nell'account.",
+    pdfPrint: "Impossibile aprire la finestra di stampa. Consenti i pop-up e riprova.",
+    pdfAnswerL: "Risposta", pdfQs: "Domande"
+  }
+};
+Object.keys(X.pt).forEach(function(k){ T.pt[k] = X.pt[k]; });
+Object.keys(X.it).forEach(function(k){ T.it[k] = X.it[k]; });
+ICON.flame = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5c.6 3.2-2.2 4.6-3.6 7C7 12 7.2 15 9 16.8c-.4-1.9.6-3.2 1.7-4 .3 1.7 1.3 2.4 2 3.4.9 1.3.6 2.8-.3 3.7 3.2-.3 5.9-2.6 5.9-6 0-3.6-2.7-4.8-3.4-7.3-.4-1.4-.3-3-.9-4.1z" fill="currentColor"/></svg>';
+ICON.vol = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+/* ---------- Conta (nome + senha), com progresso sincronizado ---------- */
+var USER = jget("cad-user", null);
+if (USER && !USER.slug) USER = null;
+function PK(k){ return USER ? k + "@" + USER.slug : k; }
+var SYNC_RE = /^(cad-prog-|sicurezza-lab-progress-v2|cad-srs|cad-stats)/;
+function slugOf(n){ return norm(n).replace(/[^a-z0-9_-]+/g, "").slice(0, 24); }
+async function hashPass(slug, pass){
+  var str = "caderno:" + slug + ":" + pass;
+  try {
+    var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.prototype.map.call(new Uint8Array(buf), function(b){ return (b < 16 ? "0" : "") + b.toString(16); }).join("");
+  } catch (e) {
+    var h1 = 5381, h2 = 52711;
+    for (var i = 0; i < str.length; i++) { var c = str.charCodeAt(i); h1 = ((h1 * 33) ^ c) >>> 0; h2 = ((h2 * 31) + c) >>> 0; }
+    return "f" + h1.toString(16) + h2.toString(16);
+  }
+}
+/* Contas já criadas (entram no banco no primeiro login) */
+var SEED_ACCOUNTS = {pietra: {name: "Pietra", h: "7e1e16b5da3aa22944e6fee02178b5fd7155c53df136762a5a58d821afc982cc", c: 1760000000000}};
+async function userGet(slug){
+  var acc = dbOn() ? await dbReq("GET", "users/" + slug + "/acc") : (jget("cad-users-local", {})[slug] || null);
+  if (!acc && SEED_ACCOUNTS[slug]) { acc = SEED_ACCOUNTS[slug]; try { await userPut(slug, acc); } catch (e) {} }
+  return acc;
+}
+async function userPut(slug, acc){
+  if (dbOn()) { await dbReq("PUT", "users/" + slug + "/acc", acc); return; }
+  var u = jget("cad-users-local", {}); u[slug] = acc; jset("cad-users-local", u);
+}
+var PUSHT = null;
+function syncTouch(k){
+  if (!USER || k.slice(-USER.slug.length - 1) !== "@" + USER.slug || !SYNC_RE.test(k)) return;
+  LS.set("cad-t:" + k, String(Date.now()));
+  clearTimeout(PUSHT); PUSHT = setTimeout(pushSync, 1500);
+}
+function syncKeys(){
+  var out = [];
+  if (!USER) return out;
+  try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (SYNC_RE.test(k) && k.slice(-USER.slug.length - 1) === "@" + USER.slug) out.push(k); } } catch (e) {}
+  return out;
+}
+async function pushSync(){
+  if (!USER || !dbOn()) return;
+  var blob = {};
+  syncKeys().forEach(function(k){ var v = LS.get(k); if (v != null) blob[k] = {t: Number(LS.get("cad-t:" + k)) || 0, v: v}; });
+  try { await dbReq("PUT", "users/" + USER.slug + "/data", blob); } catch (e) {}
+}
+async function pullSync(){
+  if (!USER || !dbOn()) return false;
+  var rem; try { rem = await dbReq("GET", "users/" + USER.slug + "/data"); } catch (e) { return false; }
+  var changed = false;
+  Object.keys(rem || {}).forEach(function(k){
+    var r = rem[k]; if (!r || typeof r.v !== "string" || !SYNC_RE.test(k) || k.slice(-USER.slug.length - 1) !== "@" + USER.slug) return;
+    if ((Number(r.t) || 0) > (Number(LS.get("cad-t:" + k)) || 0)) { LS.set(k, r.v); LS.set("cad-t:" + k, String(r.t)); changed = true; }
+  });
+  return changed;
+}
+function adoptLocal(slug){
+  var n = 0;
+  try {
+    var keys = []; for (var i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
+    keys.forEach(function(k){ if (SYNC_RE.test(k) && k.indexOf("@") < 0) { var v = LS.get(k); if (v != null && LS.get(k + "@" + slug) == null) { LS.set(k + "@" + slug, v); LS.set("cad-t:" + k + "@" + slug, String(Date.now())); n++; } } });
+  } catch (e) {}
+  return n;
+}
+function logout(){
+  LGMODE = null; USER = null; LS.del("cad-user"); S = null; M = []; ORIG = []; SR = null; SQ = ""; SIDX = null;
+  st.form = null; G = null; NAV++; go("login");
+}
+var LGMODE = null;
+function renderLogin(){
+  if (!LGMODE) {
+    app.innerHTML =
+      '<div class="wrap hero"><p class="kicker">' + esc(L("app")) + '</p><h1>' + esc(L("loginAsk")) + '</h1><p class="sub">' + esc(L("loginHelp")) + '</p></div>' +
+      '<div class="wrap body"><div class="opts"><button type="button" class="opt lv" id="lg-has"><span class="l">1</span><span><strong>' + esc(L("loginHas")) + '</strong><small>' + esc(L("loginHasD")) + '</small></span></button>' +
+      '<button type="button" class="opt lv" id="lg-mk"><span class="l">2</span><span><strong>' + esc(L("loginMk")) + '</strong><small>' + esc(L("loginMkD")) + '</small></span></button></div></div>';
+    $("#lg-has").onclick = function(){ LGMODE = "in"; renderLogin(); };
+    $("#lg-mk").onclick = function(){ LGMODE = "new"; renderLogin(); };
+    return;
+  }
+  var isNew = LGMODE === "new";
+  app.innerHTML =
+    '<div class="wrap hero"><p class="kicker">' + esc(L("app")) + '</p><h1>' + esc(L(isNew ? "loginMk" : "loginHas")) + '</h1></div>' +
+    '<div class="wrap body"><div class="fld"><label for="lg-n">' + esc(L("loginName")) + '</label><input id="lg-n" type="text" autocomplete="username" autocapitalize="none" maxlength="24"></div>' +
+    '<div class="fld"><label for="lg-p">' + esc(L("loginPass")) + '</label><input id="lg-p" type="password" autocomplete="' + (isNew ? "new-password" : "current-password") + '" maxlength="64"></div>' +
+    (isNew ? '<div class="fld"><label for="lg-c">' + esc(L("loginPass2")) + '</label><input id="lg-c" type="password" autocomplete="new-password" maxlength="64"></div>' : "") +
+    '<p class="msg err" id="lg-m" hidden></p></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn" id="lg-back">' + esc(L("back")) + '</button><button type="button" class="btn primary wide" id="lg-go">' + esc(L(isNew ? "loginNew" : "loginBtn")) + '</button></div></div>';
+  var n = $("#lg-n"), p = $("#lg-p"), c = $("#lg-c"), m = $("#lg-m"), go1 = $("#lg-go");
+  if (!isNew) { var last = LS.get("cad-lastname"); if (last) n.value = last; }
+  function say(t, hint){ m.textContent = t; m.hidden = !t; m.className = "msg" + (hint ? "" : " err"); }
+  async function submit(){
+    var name = n.value.trim(), slug = slugOf(name), pass = p.value;
+    if (slug.length < 2) return say(L("loginBadName"));
+    if (pass.length < 4) return say(L("loginShort"));
+    if (isNew && c.value !== pass) return say(L("loginMismatch"));
+    go1.disabled = true; say(L("loginBusy"), true);
+    try {
+      var h = await hashPass(slug, pass), acc = await userGet(slug), adopted = 0;
+      if (isNew) {
+        if (acc) { say(L("loginTaken")); go1.disabled = false; return; }
+        await userPut(slug, {name: name, h: h, c: Date.now()});
+        USER = {slug: slug, name: name}; adopted = adoptLocal(slug);
+      } else {
+        if (!acc) { say(L("loginNone")); go1.disabled = false; return; }
+        if (acc.h !== h) { say(L("loginWrong")); go1.disabled = false; return; }
+        USER = {slug: slug, name: acc.name || name};
+      }
+      jset("cad-user", USER); LS.set("cad-lastname", USER.name);
+      LGMODE = null;
+      if (adopted) pushSync(); else await pullSync();
+      toLib();
+    } catch (e) { say(L("loginErr")); go1.disabled = false; }
+  }
+  go1.onclick = submit;
+  $("#lg-back").onclick = function(){ LGMODE = null; renderLogin(); };
+  [n, p, c].forEach(function(x){ if (x) x.onkeydown = function(e){ if (e.key === "Enter") submit(); }; });
+  n.oninput = p.oninput = function(){ say(""); };
+  n.focus();
+}
+
+/* ---------- Estatísticas e metas ---------- */
+var DAY = 864e5;
+function pad2(n){ return (n < 10 ? "0" : "") + n; }
+function dayKey(t){ var d = new Date(t == null ? Date.now() : t); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+function stats(){
+  var s = jget(PK("cad-stats"), null);
+  if (!s || typeof s !== "object") s = {};
+  if (!s.days) s.days = {}; if (!s.mods) s.mods = {}; if (!s.exams) s.exams = {}; if (!s.goal) s.goal = 10;
+  return s;
+}
+function putStats(s){
+  var keys = Object.keys(s.days).sort();
+  while (keys.length > 400) delete s.days[keys.shift()];
+  jset(PK("cad-stats"), s);
+}
+function recordAnswer(ok, sid, mi){
+  var s = stats(), k = dayKey(), d = s.days[k] || (s.days[k] = {q: 0, ok: 0});
+  d.q++; if (ok) d.ok++;
+  var mk = sid + "|" + mi, m = s.mods[mk] || (s.mods[mk] = {q: 0, ok: 0});
+  m.q++; if (ok) m.ok++;
+  putStats(s);
+}
+function streakDays(){
+  var s = stats(), t = Date.now();
+  if (!(s.days[dayKey(t)] && s.days[dayKey(t)].q > 0)) t -= DAY;
+  var n = 0;
+  while (s.days[dayKey(t)] && s.days[dayKey(t)].q > 0) { n++; t -= DAY; }
+  return n;
+}
+function accBadge(i){
+  if (!S) return "";
+  var m = stats().mods[S.id + "|" + i];
+  if (!m || m.q < 2) return "";
+  return L("accTxt", {p: Math.round(m.ok / m.q * 100)});
+}
+
+/* ---------- Revisão espaçada (caixas de Leitner) ---------- */
+var INTERVALS = [0, 1, 2, 4, 8, 16, 32];
+function srsAll(){ var a = jget(PK("cad-srs"), {}); return a && typeof a === "object" ? a : {}; }
+function srsPut(a){
+  var ks = Object.keys(a);
+  if (ks.length > 800) {
+    ks.filter(function(k){ return a[k].box >= 5; }).sort(function(x, y){ return (a[x].due || 0) - (a[y].due || 0); }).slice(0, ks.length - 700).forEach(function(k){ delete a[k]; });
+  }
+  jset(PK("cad-srs"), a);
+}
+function srsUpdate(key, ok, meta){
+  var a = srsAll(), now = Date.now(), e = a[key];
+  if (!e) {
+    if (!meta) return;
+    e = a[key] = {box: 0, wrong: 0, right: 0, due: now, sid: meta.sid, st: meta.st, mi: meta.mi, mt: meta.mt, q: meta.q};
+  } else if (meta) { e.st = meta.st; e.mt = meta.mt; e.q = meta.q; }
+  if (ok) {
+    e.right++;
+    if (e.box === 0 || (e.due || 0) <= now) { e.box = Math.min(e.box + 1, 6); e.due = now + INTERVALS[e.box] * DAY; }
+  } else { e.wrong++; e.box = 0; e.due = now; e.lw = now; }
+  srsPut(a);
+}
+function trackAnswer(ok, q){
+  if (!S) return;
+  try {
+    recordAnswer(ok, S.id, st.cur);
+    srsUpdate(S.id + "|" + st.cur + "|" + curLevel() + "|" + st.qi, ok, {sid: S.id, st: plain(S.titleShown || S.title), mi: st.cur, mt: plain(M[st.cur].t), q: {p: q.p, o: q.o.slice(), c: q.c, e: q.e}});
+  } catch (e) {}
+}
+function srsList(filter){
+  var a = srsAll(), out = [];
+  Object.keys(a).forEach(function(k){ var e = a[k]; if (e && e.q && e.q.o && filter(e)) out.push({key: k, e: e}); });
+  return out;
+}
+function dueList(sid){ var n = Date.now(); return srsList(function(e){ return e.due <= n && (!sid || e.sid === sid); }).sort(function(x, y){ return x.e.due - y.e.due; }); }
+function errList(){ return srsList(function(e){ return e.wrong > 0 && e.box <= 2; }).sort(function(x, y){ return (y.e.lw || 0) - (x.e.lw || 0); }); }
+
+/* ---------- Painel da biblioteca ---------- */
+var SQ = "", SR = null, SIDX = null, SIDXAT = 0, STO = null;
+function dashHtml(){
+  var n = dueList().length, er = errList().length, s = stats(), d = s.days[dayKey()] || {q: 0}, g = s.goal || 10, sk = streakDays();
+  var pct = Math.min(100, Math.round(d.q / g * 100));
+  return '<div class="dash">' +
+    '<div class="stats"><span class="pill">' + ICON.flame + esc(sk === 1 ? L("streak1") : L("streakN", {n: sk})) + '</span><span class="pill">' + esc(L("todayG", {a: d.q, g: g})) + '</span></div>' +
+    '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>' +
+    '<p class="cnt">' + esc(d.q >= g ? L("goalDone") : L("goalLeft", {n: g - d.q})) + '</p>' +
+    '<div class="tools"><button type="button" class="btn' + (n ? " primary" : "") + '" id="d-rev"' + (n ? "" : "") + '>' + esc(n ? L("dueBtn", {n: n}) : L("dueNone")) + '</button>' +
+    '<button type="button" class="btn" id="d-errs">' + esc(L("errsBtn", {n: er})) + '</button></div>' +
+    '<div class="searchbox"><input id="sq" type="search" autocomplete="off" placeholder="' + esc(L("searchPh")) + '" value="' + esc(SQ) + '"></div><div id="sres" class="sres-list"></div>' +
+    '<div class="acct"><span>' + esc(L("hello", {n: USER ? USER.name : ""})) + '</span><label class="goalsel">' + esc(L("goalLbl")) + ' <select id="goal">' + [5, 10, 15, 20, 30, 50].map(function(x){ return '<option value="' + x + '"' + (x === g ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></label><button type="button" class="btn ghost" id="logout">' + esc(L("logout")) + '</button></div>' +
+  '</div>';
+}
+function bindDash(){
+  var b;
+  if ((b = $("#d-rev"))) b.onclick = function(){ var l = dueList(); if (l.length) startReview(l.slice(0, 20), "due"); else go("rev"); };
+  if ((b = $("#d-errs"))) b.onclick = function(){ go("errs"); };
+  if ((b = $("#logout"))) b.onclick = logout;
+  if ((b = $("#goal"))) b.onchange = function(){ var s = stats(); s.goal = Number(b.value) || 10; putStats(s); renderLib(); };
+  var sq = $("#sq");
+  if (sq) {
+    sq.oninput = function(){ SQ = sq.value; clearTimeout(STO); STO = setTimeout(runSearch, 250); };
+    if (SQ.trim()) paintSearch();
+  }
+}
+function norm(s){ return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+async function buildIndex(){
+  if (SIDX && Date.now() - SIDXAT < 120000) return SIDX;
+  var out = [];
+  for (var k = 0; k < LIB.length; k++) {
+    var m = LIB[k], mods;
+    try { mods = m.built ? LAB : await Store.getModules(m.id); } catch (e) { continue; }
+    mods.forEach(function(md, i){
+      var nm = normMod(md), mt = plain(nm.t);
+      nm.steps.forEach(function(s, si){ out.push({sid: m.id, st: m.title, mi: i, si: si, mt: mt, title: plain(s.t), text: plain(s.t) + ". " + plain(s.h), kind: "s"}); });
+      nm.qs.forEach(function(q){ out.push({sid: m.id, st: m.title, mi: i, si: -1, mt: mt, title: plain(q.p), text: plain(q.p) + " " + q.o.map(plain).join(" ") + " " + plain(q.e), kind: "q"}); });
+    });
+  }
+  SIDX = out; SIDXAT = Date.now();
+  return out;
+}
+async function runSearch(){
+  var q = SQ.trim();
+  if (q.length < 2) { SR = null; paintSearch(); return; }
+  SR = "busy"; paintSearch();
+  var idx = await buildIndex();
+  if (q !== SQ.trim()) return;
+  var ws = norm(q).split(/\s+/).filter(Boolean), res = [];
+  idx.forEach(function(it){
+    var nt = norm(it.text), nti = norm(it.title), sc = 0, ok = true;
+    ws.forEach(function(w){ var c = nt.split(w).length - 1; if (!c) ok = false; sc += c + (nti.indexOf(w) >= 0 ? 3 : 0); });
+    if (ok) res.push({it: it, sc: sc, pos: nt.indexOf(ws[0])});
+  });
+  res.sort(function(a, b){ return b.sc - a.sc; });
+  SR = res.slice(0, 25).map(function(r){
+    var t = r.it.text, a = Math.max(0, r.pos - 50), snip = (a > 0 ? "…" : "") + t.slice(a, a + 140) + (a + 140 < t.length ? "…" : "");
+    return {it: r.it, snip: snip, ws: ws};
+  });
+  paintSearch();
+}
+function paintSearch(){
+  var box = document.getElementById("sres");
+  if (!box) return;
+  if (SR === "busy") { box.innerHTML = '<p class="cnt">' + esc(L("searching")) + '</p>'; return; }
+  if (!SR) { box.innerHTML = ""; return; }
+  if (!SR.length) { box.innerHTML = '<p class="cnt">' + esc(L("noRes")) + '</p>'; return; }
+  box.innerHTML = SR.map(function(r, i){
+    var sn = esc(r.snip);
+    r.ws.forEach(function(w){ if (w.length > 1 && /^[a-z0-9]+$/.test(w)) sn = sn.replace(new RegExp("(" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"), "<mark>$1</mark>"); });
+    var sj = LIB.filter(function(x){ return x.id === r.it.sid; })[0];
+    return '<button type="button" class="sres" data-i="' + i + '"><strong>' + esc(r.it.title.slice(0, 90)) + '</strong>' +
+      '<small>' + esc(L(r.it.kind === "s" ? "resStep" : "resQ")) + ' · ' + esc(sj ? titleFor(sj) : r.it.st) + ' · ' + esc(L("modL", {n: r.it.mi + 1, t: r.it.mt}).slice(0, 80)) + '</small><span>' + sn + '</span></button>';
+  }).join("");
+  box.querySelectorAll(".sres").forEach(function(b){
+    b.onclick = function(){ var r = SR[Number(b.getAttribute("data-i"))].it; jumpTo(r.sid, r.mi, r.kind === "s" ? r.si : 9999); };
+  });
+}
+async function jumpTo(sid, mi, si){
+  await openSubject(sid);
+  if (!S || S.id !== sid || st.view !== "home") return;
+  await startModule(mi);
+  if (st.view === "lesson" && M[mi].steps) { st.step = Math.max(0, Math.min(si, M[mi].steps.length - 1)); render(); window.scrollTo(0, 0); }
+}
+
+/* ---------- Sessão de revisão ---------- */
+var RV = null;
+function startReview(list, mode){
+  if (!list || !list.length) return;
+  RV = {list: list.slice(), i: 0, right: 0, mode: mode, order: null, sel: null};
+  RV.order = shuffle(range(list[0].e.q.o.length));
+  go("rev");
+}
+function renderRev(){
+  if (!RV || !RV.list.length) {
+    app.innerHTML = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("cancel")) + '">' + ICON.x + '</button><h2 class="tt">' + esc(L("revTitle")) + '</h2></div></div>' +
+      '<div class="wrap body center"><p class="lead">' + esc(L("revNone")) + '</p></div>';
+    $("#exit").onclick = toLib; return;
+  }
+  var it = RV.list[RV.i], e = it.e, q = e.q, n = RV.list.length;
+  var opts = RV.order.map(function(oi, pos){
+    return '<button type="button" class="opt" data-pos="' + pos + '"><span class="l">' + "ABCD".charAt(pos) + '</span><span>' + clean(q.o[oi]) + '</span></button>';
+  }).join("");
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("cancel")) + '">' + ICON.x + '</button><h2 class="tt">' + esc(L("revTitle")) + ' · ' + (RV.i + 1) + '/' + n + '</h2></div></div>' +
+    '<div class="wrap body"><p class="crumb"><span>' + esc(e.st + " · " + L("modL", {n: e.mi + 1, t: e.mt})) + '</span></p>' +
+    '<h2 class="q">' + clean(q.p) + '</h2><div class="opts" role="group">' + opts + '</div></div>' +
+    '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>' + esc(L("verify")) + '</button></div></div>';
+  $("#exit").onclick = toLib;
+  var btns = app.querySelectorAll(".opt"), verify = $("#verify");
+  btns.forEach(function(b){
+    b.onclick = function(){
+      RV.sel = parseInt(b.getAttribute("data-pos"), 10);
+      btns.forEach(function(x){ x.classList.remove("sel"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("sel"); b.setAttribute("aria-pressed", "true"); verify.disabled = false;
+    };
+  });
+  verify.onclick = function(){
+    if (RV.sel === null) return;
+    var okPos = RV.order.indexOf(q.c), ok = RV.sel === okPos;
+    btns.forEach(function(x, i){ x.disabled = true; x.classList.remove("sel"); if (i === okPos) x.classList.add("right"); else if (i === RV.sel) x.classList.add("wrong"); });
+    try { srsUpdate(it.key, ok, null); recordAnswer(ok, e.sid, e.mi); } catch (er) {}
+    if (ok) RV.right++;
+    var last = RV.i >= n - 1, bar = $("#bar");
+    bar.className = "bar sheet " + (ok ? "ok" : "no"); bar.setAttribute("role", "status");
+    bar.innerHTML = '<div class="wrap"><div><strong>' + esc(ok ? L("right") : L("wrong")) + '</strong><p>' + (ok ? "" : '<b>' + esc(L("rightAns")) + '</b> ' + clean(q.o[q.c]) + '. ') + clean(q.e) + '</p></div>' +
+      '<div class="row"><button type="button" class="btn ' + (ok ? "good" : "bad") + ' wide" id="go">' + esc(last ? L("revFinish") : L("revNext")) + '</button>' +
+      (ok ? "" : '<button type="button" class="btn" id="explain">' + esc(L("explainBtn")) + '</button>') + '</div><div class="expl" id="expl" hidden></div></div>';
+    $("#go").onclick = function(){
+      if (last) { go("revdone"); return; }
+      RV.i++; RV.sel = null; RV.order = shuffle(range(RV.list[RV.i].e.q.o.length)); render(); window.scrollTo(0, 0);
+    };
+    $("#go").focus();
+    var ex = $("#explain");
+    if (ex) ex.onclick = function(){ explainWrong(q, RV.order[RV.sel], -1, $("#expl"), ex, e); };
+  };
+}
+function renderRevDone(){
+  var n = RV ? RV.list.length : 0, a = RV ? RV.right : 0;
+  app.innerHTML = '<div class="wrap body center">' + sign("s") + '<h2>' + esc(L("revDoneT")) + '</h2><span class="xp">' + ICON.star + esc(L("revScore", {a: a, n: n})) + '</span><p class="lead">' + esc(L("revHint")) + '</p></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="back">' + esc(L("revBack")) + '</button></div></div>';
+  $("#back").onclick = toLib;
+}
+function renderErrs(){
+  var list = errList();
+  app.innerHTML = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("errsTitle")) + '</h2></div></div>' +
+    '<div class="wrap body"><p class="lead left">' + esc(L("errsSub")) + '</p>' +
+    (list.length ? list.map(function(it, i){
+      var e = it.e, q = e.q;
+      return '<div class="errc" data-i="' + i + '"><p class="crumb"><span>' + esc(e.st + " · " + L("modL", {n: e.mi + 1, t: e.mt})) + ' · ' + esc(L("errsWrong", {n: e.wrong})) + '</span></p>' +
+        '<h3 class="eq">' + clean(q.p) + '</h3><div class="ea" hidden><p><b>' + esc(L("rightAns")) + '</b> ' + clean(q.o[q.c]) + '</p><p>' + clean(q.e) + '</p></div>' +
+        '<div class="row"><button type="button" class="btn" data-a="show">' + esc(L("errsShow")) + '</button><button type="button" class="btn ghost" data-a="know">' + esc(L("errsKnow")) + '</button></div></div>';
+    }).join("") : '<p class="lead">' + esc(L("errsNone")) + '</p>') +
+    '</div>' + (list.length ? '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="redo">' + esc(L("errsRedo", {n: Math.min(list.length, 20)})) + '</button></div></div>' : "");
+  $("#exit").onclick = toLib;
+  var rd = $("#redo"); if (rd) rd.onclick = function(){ startReview(list.slice(0, 20), "errs"); };
+  app.querySelectorAll(".errc").forEach(function(c){
+    var it = list[Number(c.getAttribute("data-i"))];
+    c.querySelector('[data-a="show"]').onclick = function(){ var a = c.querySelector(".ea"); a.hidden = !a.hidden; this.textContent = L(a.hidden ? "errsShow" : "errsHide"); };
+    c.querySelector('[data-a="know"]').onclick = function(){ var all = srsAll(); if (all[it.key]) { all[it.key].box = 6; all[it.key].due = Date.now() + 32 * DAY; srsPut(all); } renderErrs(); };
+  });
+}
+
+/* ---------- "Não entendi": explicação alternativa pela IA ---------- */
+async function explainWrong(q, chosenIdx, modIdx, box, btn, entry){
+  btn.disabled = true; box.hidden = false; box.textContent = L("explaining");
+  var chosen = chosenIdx >= 0 && q.o[chosenIdx] != null ? plain(q.o[chosenIdx]) : "";
+  var ctx = "";
+  try { if (modIdx >= 0) ctx = modText(modIdx).slice(0, 9000); } catch (e) {}
+  var qt = "Pergunta de estudo: " + plain(q.p) + "\nAlternativa que escolhi: " + chosen + "\nResposta correta: " + plain(q.o[q.c]) + "\nExplicação oficial: " + plain(q.e) +
+    "\n\nExplique com palavras simples, em no máximo 5 frases, por que a resposta correta está certa e a minha está errada. Use um exemplo curto do dia a dia.";
+  if (!ctx) ctx = plain(q.p) + "\n" + q.o.map(plain).join("\n") + "\n" + plain(q.e);
+  try {
+    WAITCB = function(w){ box.textContent = L("waiting", {s: w}); };
+    var d = await api("/api/chat", {question: qt, module: modIdx, context: ctx, lang: LANG === "it" ? "it" : "pt", subject: entry ? entry.st : plain(S ? (S.titleShown || S.title) : "")});
+    box.textContent = d.answer || "";
+  } catch (e) { box.textContent = L("explainErr") + " " + (e.message || ""); }
+  WAITCB = null; btn.disabled = false;
+}
+
+/* ---------- Ferramentas na tela do assunto ---------- */
+ICON.doc = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 3.5h8l4 4V20a1 1 0 01-1 1H6a1 1 0 01-1-1V4.5a1 1 0 011-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3.5V8h4M8.5 13h7M8.5 16.5h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function examPlanText(){
+  var d = stats().exams[S.id];
+  if (!d) return L("examNone");
+  var days = Math.round((new Date(d + "T00:00:00") - new Date(dayKey() + "T00:00:00")) / DAY);
+  if (isNaN(days)) return L("examNone");
+  if (days < 0) return L("examPast");
+  if (days === 0) return L("examToday");
+  var rem = M.length - Math.min(st.unlocked, M.length);
+  if (rem <= 0) return L("examDone", {d: days});
+  if (days === 1) return L("examPlan1");
+  return L("examPlan", {d: days, m: rem, p: Math.ceil(rem / Math.max(1, days - 1))});
+}
+function homeTools(){
+  var due = dueList(S.id).length;
+  return '<div class="tools2">' +
+    '<button type="button" class="btn" id="h-fl">' + esc(L("flashBtn")) + '</button>' +
+    '<button type="button" class="btn" id="h-sim">' + esc(L("simBtn")) + '</button>' +
+    (S.built ? "" : '<button type="button" class="btn" id="h-ed">' + esc(L("editBtn")) + '</button>') +
+    '<button type="button" class="btn" id="h-pdf">' + esc(L("pdfBtn")) + '</button>' +
+    (S.built ? "" : '<button type="button" class="btn" id="h-link">' + esc(L("linkBtn")) + '</button>') +
+    '</div>' +
+    (due ? '<button type="button" class="btn primary wide" id="h-due" style="margin-top:10px;width:100%">' + esc(L("dueHere", {n: due})) + '</button>' : "") +
+    '<div class="exam"><label for="exd">' + esc(L("examLbl")) + '</label><input type="date" id="exd" value="' + esc(stats().exams[S.id] || "") + '"><p class="cnt" id="exp">' + esc(examPlanText()) + '</p></div>';
+}
+function bindHomeTools(){
+  var b;
+  if ((b = $("#h-fl"))) b.onclick = function(){ FC = null; go("flash"); };
+  if ((b = $("#h-sim"))) b.onclick = function(){ SM = null; go("sim"); };
+  if ((b = $("#h-ed"))) b.onclick = function(){ go("edit"); };
+  if ((b = $("#h-pdf"))) b.onclick = exportPdf;
+  if ((b = $("#h-due"))) b.onclick = function(){ startReview(dueList(S.id).slice(0, 20), "due"); };
+  if ((b = $("#h-link"))) b.onclick = function(){
+    var url = location.href.split("#")[0] + "#s=" + S.id, btn = b;
+    function ok(){ btn.textContent = L("linkOk"); setTimeout(function(){ btn.textContent = L("linkBtn"); }, 2200); }
+    try { navigator.clipboard.writeText(url).then(ok, function(){ window.prompt(L("linkBtn"), url); }); } catch (e) { window.prompt(L("linkBtn"), url); }
+  };
+  if ((b = $("#exd"))) b.onchange = function(){
+    var s = stats(); if (b.value) s.exams[S.id] = b.value; else delete s.exams[S.id];
+    putStats(s); var p = $("#exp"); if (p) p.textContent = examPlanText();
+  };
+}
+
+/* ---------- Ler em voz alta ---------- */
+var SPK = false;
+function speakBtn(){ return ("speechSynthesis" in window && "SpeechSynthesisUtterance" in window) ? '<button type="button" class="chlv" id="speak">' + ICON.vol + ' <span>' + esc(L("speak")) + '</span></button>' : ""; }
+function bindSpeak(step){
+  var b = $("#speak"); if (!b) return;
+  b.onclick = function(){
+    var lab = b.querySelector("span");
+    if (SPK) { stopExtras(); lab.textContent = L("speak"); return; }
+    var txt = plain(step.t) + ". " + plain(String(step.h).replace(/<\/(p|li|dd|dt|h4|div)>/gi, "$&. "));
+    var parts = txt.match(/[^.!?;:]+[.!?;:]*\s*/g) || [txt], chunks = [], cur = "";
+    parts.forEach(function(x){ if ((cur + x).length > 180 && cur) { chunks.push(cur); cur = x; } else cur += x; });
+    if (cur.trim()) chunks.push(cur);
+    var lg = effLang() || S.origin, lang = lg === "it" ? "it-IT" : "pt-BR", i = 0;
+    SPK = true; lab.textContent = L("speakStop");
+    function next(){
+      if (!SPK || i >= chunks.length) { SPK = false; var l2 = document.querySelector("#speak span"); if (l2) l2.textContent = L("speak"); return; }
+      var u = new SpeechSynthesisUtterance(chunks[i++]); u.lang = lang; u.rate = 0.95;
+      u.onend = next; u.onerror = function(){ SPK = false; var l3 = document.querySelector("#speak span"); if (l3) l3.textContent = L("speak"); };
+      speechSynthesis.speak(u);
+    }
+    next();
+  };
+}
+function stopExtras(){
+  SPK = false;
+  try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
+}
+
+/* ---------- Flashcards ---------- */
+var FC = null;
+function buildFc(){
+  var cards = [], idxs = FC.mi < 0 ? range(ORIG.length) : [FC.mi];
+  idxs.forEach(function(i){
+    var nm = (M[i] && M[i].steps) ? M[i] : normMod(ORIG[i]), mt = plain(M[i] ? M[i].t : nm.t);
+    if (FC.kind !== "q") nm.steps.forEach(function(s){ cards.push({f: '<h3>' + s.t + '</h3>', b: '<div class="stack">' + s.h + '</div>', l: mt + " · " + L("flConcepts")}); });
+    if (FC.kind !== "c") {
+      var qb = ORIG[i].qb || {}, bank = qb.medium || qb.easy || qb.hard || [];
+      bank.forEach(function(q){ cards.push({f: '<p class="fq">' + clean(q.p) + '</p>', b: '<p class="fa"><b>' + clean(q.o[q.c]) + '</b></p><p>' + clean(q.e) + '</p>', l: mt + " · " + L("flQuestions")}); });
+    }
+  });
+  FC.deck = shuffle(cards); FC.total = FC.deck.length; FC.flip = false;
+}
+function renderFlash(){
+  if (!FC) FC = {mi: -1, kind: "b"};
+  if (!FC.deck) buildFc();
+  var c = FC.deck[0];
+  var mods = '<option value="-1">' + esc(L("flAll")) + '</option>' + ORIG.map(function(m, i){ return '<option value="' + i + '"' + (FC.mi === i ? " selected" : "") + '>' + esc(L("modL", {n: i + 1, t: plain(M[i] ? M[i].t : m.t)}).slice(0, 60)) + '</option>'; }).join("");
+  var kinds = [["b", "flBoth"], ["c", "flConcepts"], ["q", "flQuestions"]].map(function(k){ return '<option value="' + k[0] + '"' + (FC.kind === k[0] ? " selected" : "") + '>' + esc(L(k[1])) + '</option>'; }).join("");
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("flTitle")) + '</h2></div></div>' +
+    '<div class="wrap body"><div class="flf"><select id="fl-mod" aria-label="' + esc(L("flAll")) + '">' + mods + '</select><select id="fl-kind">' + kinds + '</select></div>' +
+    (c ? '<p class="cnt">' + esc(L("flLeft", {n: FC.deck.length})) + '</p>' +
+      '<button type="button" class="fcard' + (FC.flip ? " back" : "") + '" id="fc" aria-label="' + esc(L("flTap")) + '"><span class="fl">' + esc(c.l) + ' · ' + esc(L(FC.flip ? "flBack" : "flFront")) + '</span><span class="fb">' + (FC.flip ? c.b : c.f) + '</span><span class="ft">' + esc(L("flTap")) + '</span></button>'
+      : '<div class="center" style="padding-top:30px">' + sign("s") + '<h2>' + esc(FC.total ? L("flDone") : L("flEmpty")) + '</h2></div>') +
+    '</div>' +
+    '<div class="bar"><div class="wrap">' + (c ? '<button type="button" class="btn" id="later">' + esc(L("flLater")) + '</button><button type="button" class="btn good wide" id="know">' + esc(L("flKnow")) + '</button>' : '<button type="button" class="btn primary wide" id="restart">' + esc(L("flRestart")) + '</button>') + '</div></div>';
+  $("#exit").onclick = function(){ go("home"); };
+  $("#fl-mod").onchange = function(){ FC.mi = Number(this.value); FC.deck = null; renderFlash(); };
+  $("#fl-kind").onchange = function(){ FC.kind = this.value; FC.deck = null; renderFlash(); };
+  var f = $("#fc"); if (f) f.onclick = function(){ FC.flip = !FC.flip; renderFlash(); };
+  var kn = $("#know"); if (kn) kn.onclick = function(){ FC.deck.shift(); FC.flip = false; renderFlash(); window.scrollTo(0, 0); };
+  var lt = $("#later"); if (lt) lt.onclick = function(){ FC.deck.push(FC.deck.shift()); FC.flip = false; renderFlash(); window.scrollTo(0, 0); };
+  var rs = $("#restart"); if (rs) rs.onclick = function(){ FC.deck = null; renderFlash(); };
+}
+
+/* ---------- Simulado ---------- */
+var SM = null;
+function simLevels(){ var l = {}; ORIG.forEach(function(m){ Object.keys(m.qb || {}).forEach(function(k){ if ((m.qb[k] || []).length) l[k] = 1; }); }); return Object.keys(l); }
+function buildSim(n, level){
+  var pools = ORIG.map(function(m, i){
+    var qb = m.qb || {}, lv = level === "mix" ? Object.keys(qb) : (qb[level] ? [level] : Object.keys(qb).slice(0, 1)), seen = {}, arr = [];
+    lv.forEach(function(l){ (qb[l] || []).forEach(function(q, k){
+      var key = plain(q.p); if (seen[key]) return; seen[key] = 1;
+      arr.push({mi: i, level: l, k: k, q: {p: clean(q.p), o: q.o.map(clean), c: q.c, e: clean(q.e)}, ord: shuffle(range(q.o.length)), sel: null});
+    }); });
+    return shuffle(arr);
+  });
+  var items = [], left = true;
+  while (items.length < n && left) {
+    left = false;
+    shuffle(range(pools.length)).forEach(function(i){ if (items.length < n && pools[i].length) { items.push(pools[i].pop()); left = true; } });
+  }
+  return shuffle(items);
+}
+function renderSimSetup(){
+  var lvs = simLevels(), multi = lvs.length > 1;
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("simTitle")) + '</h2></div></div>' +
+    '<div class="wrap body"><p class="lead left">' + esc(L("simNote")) + '</p>' +
+    '<div class="fld"><label for="sm-n">' + esc(L("simCount")) + '</label><select id="sm-n">' + [10, 20, 30, 40].map(function(x){ return '<option value="' + x + '"' + (x === 20 ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></div>' +
+    (multi ? '<div class="fld"><label for="sm-l">' + esc(L("simLevel")) + '</label><select id="sm-l"><option value="mix">' + esc(L("simMix")) + '</option><option value="easy">' + esc(L("lvEasy")) + '</option><option value="medium">' + esc(L("lvMedium")) + '</option><option value="hard">' + esc(L("lvHard")) + '</option></select></div>' : "") +
+    '<p class="msg err" id="sm-err" hidden></p></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="sm-go">' + esc(L("simStart")) + '</button></div></div>';
+  $("#exit").onclick = function(){ go("home"); };
+  $("#sm-go").onclick = function(){
+    var n = Number($("#sm-n").value) || 20, lv = multi ? $("#sm-l").value : "medium";
+    var items = buildSim(n, lv);
+    if (items.length < 4) { var er = $("#sm-err"); er.textContent = L("simTooFew"); er.hidden = false; return; }
+    SM = {items: items, i: 0, done: false, timeUp: false, mins: Math.max(5, Math.ceil(items.length * 1.2)), timer: null};
+    SM.endAt = Date.now() + SM.mins * 60000;
+    go("simq");
+  };
+}
+function fmtTime(ms){ var s = Math.max(0, Math.round(ms / 1000)); return pad2(Math.floor(s / 60)) + ":" + pad2(s % 60); }
+function renderSimq(){
+  if (!SM || SM.done) { go("sim"); return; }
+  var it = SM.items[SM.i], n = SM.items.length, q = it.q, last = SM.i === n - 1;
+  var opts = it.ord.map(function(oi, pos){
+    return '<button type="button" class="opt' + (it.sel === pos ? " sel" : "") + '" data-pos="' + pos + '" aria-pressed="' + (it.sel === pos) + '"><span class="l">' + "ABCD".charAt(pos) + '</span><span>' + q.o[oi] + '</span></button>';
+  }).join("");
+  var segs = ""; for (var k = 0; k < n; k++) segs += '<i class="' + (SM.items[k].sel !== null ? "on" : k === SM.i ? "now" : "") + '"></i>';
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><div class="segs">' + segs + '</div><span class="tmr" id="tm">' + fmtTime(SM.endAt - Date.now()) + '</span></div></div>' +
+    '<div class="wrap body"><p class="crumb"><span>' + esc(L("simQ", {i: SM.i + 1, n: n})) + '</span></p><h2 class="q">' + q.p + '</h2><div class="opts" role="group">' + opts + '</div></div>' +
+    '<div class="bar"><div class="wrap">' + (SM.i > 0 ? '<button type="button" class="btn" id="sm-prev">' + esc(L("simPrev")) + '</button>' : "") +
+    '<button type="button" class="btn ' + (last ? "good" : "primary") + ' wide" id="sm-next">' + esc(last ? L("simFinish") : L("simNext")) + '</button></div></div>';
+  $("#exit").onclick = function(){ if (window.confirm(L("simFinish") + "?")) finishSim(false); };
+  app.querySelectorAll(".opt").forEach(function(b){ b.onclick = function(){ it.sel = parseInt(b.getAttribute("data-pos"), 10); renderSimq(); }; });
+  var pv = $("#sm-prev"); if (pv) pv.onclick = function(){ SM.i--; renderSimq(); window.scrollTo(0, 0); };
+  $("#sm-next").onclick = function(){
+    if (!last) { SM.i++; renderSimq(); window.scrollTo(0, 0); return; }
+    var un = SM.items.filter(function(x){ return x.sel === null; }).length;
+    if (un && !window.confirm(L("simUnans", {n: un}))) return;
+    finishSim(false);
+  };
+  if (!SM.timer) SM.timer = setInterval(function(){
+    if (!SM || SM.done || st.view !== "simq") { clearInterval(SM && SM.timer); if (SM) SM.timer = null; return; }
+    var left = SM.endAt - Date.now(), t = document.getElementById("tm");
+    if (t) { t.textContent = fmtTime(left); t.classList.toggle("low", left < 60000); }
+    if (left <= 0) finishSim(true);
+  }, 1000);
+}
+function finishSim(timeUp){
+  if (!SM || SM.done) return;
+  SM.done = true; SM.timeUp = !!timeUp; SM.usedMs = Math.min(Date.now() - (SM.endAt - SM.mins * 60000), SM.mins * 60000);
+  if (SM.timer) { clearInterval(SM.timer); SM.timer = null; }
+  SM.items.forEach(function(it){
+    if (it.sel === null) return;
+    var ok = it.ord[it.sel] === it.q.c;
+    it.ok = ok;
+    try { recordAnswer(ok, S.id, it.mi); srsUpdate(S.id + "|" + it.mi + "|" + it.level + "|" + it.k, ok, {sid: S.id, st: plain(S.titleShown || S.title), mi: it.mi, mt: plain(M[it.mi].t), q: {p: it.q.p, o: it.q.o.slice(), c: it.q.c, e: it.q.e}}); } catch (e) {}
+  });
+  go("simres");
+}
+function renderSimRes(){
+  if (!SM) { go("sim"); return; }
+  var items = SM.items, n = items.length, a = items.filter(function(x){ return x.ok; }).length, pct = Math.round(a / n * 100);
+  var by = {};
+  items.forEach(function(x){ var b = by[x.mi] || (by[x.mi] = {q: 0, ok: 0}); b.q++; if (x.ok) b.ok++; });
+  var rows = Object.keys(by).sort(function(x, y){ return x - y; }).map(function(k){
+    var b = by[k], p = Math.round(b.ok / b.q * 100);
+    return '<div class="byrow"><span>' + esc(L("modL", {n: Number(k) + 1, t: plain(M[k].t)}).slice(0, 70)) + '</span><b>' + b.ok + '/' + b.q + '</b><span class="mb"><i style="width:' + p + '%"></i></span></div>';
+  }).join("");
+  var wrong = items.filter(function(x){ return !x.ok; }).map(function(x){
+    return '<div class="errc"><h3 class="eq">' + x.q.p + '</h3><p><b>' + esc(L("simYours")) + '</b> ' + (x.sel === null ? esc(L("simNoAns")) : x.q.o[x.ord[x.sel]]) + '</p><p><b>' + esc(L("simRight")) + '</b> ' + x.q.o[x.q.c] + '</p><p>' + x.q.e + '</p></div>';
+  }).join("");
+  app.innerHTML =
+    '<div class="wrap body center">' + sign(pct >= 70 ? "s" : "w") + '<h2>' + esc(L("simResT")) + '</h2><span class="xp">' + ICON.star + esc(L("simScore", {a: a, n: n, p: pct})) + '</span>' +
+    '<p class="lead">' + esc((SM.timeUp ? L("simTimeUp") + " " : "") + fmtTime(SM.usedMs)) + ' · ' + esc(L("simSaved")) + '</p></div>' +
+    '<div class="wrap"><h3 class="sec">' + esc(L("simByMod")) + '</h3>' + rows + (wrong ? '<h3 class="sec">' + esc(L("simWrong")) + '</h3>' + wrong : "") + '</div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn" id="home">' + esc(L("path")) + '</button><button type="button" class="btn primary wide" id="again">' + esc(L("simNew")) + '</button></div></div>';
+  $("#home").onclick = function(){ go("home"); };
+  $("#again").onclick = function(){ SM = null; go("sim"); };
+}
+
+/* ---------- Editor de módulos (assuntos criados pela IA) ---------- */
+var ED = null;
+Store.putModule = async function(id, i, mod){
+  if (dbOn()) {
+    await dbReq("PUT", "modules/" + id + "/" + i, JSON.stringify(mod));
+    var c = jget("cad-cache-mod:" + id, null); if (c) { c[i] = mod; jset("cad-cache-mod:" + id, c); }
+  } else {
+    var l = jget("cad-local-mod:" + id, null); if (!l) throw new Error("não encontrado");
+    l[i] = mod; if (!jset("cad-local-mod:" + id, l)) throw new Error("sem espaço neste aparelho");
+    var c2 = jget("cad-cache-mod:" + id, null); if (c2) { c2[i] = mod; jset("cad-cache-mod:" + id, c2); }
+  }
+};
+function invalidateTr(id, i){
+  var keys = ["index", "m" + i, "qs_easy_" + i, "qs_medium_" + i, "qs_hard_" + i];
+  ["pt", "it"].forEach(function(lg){
+    keys.forEach(function(k){
+      var mk = id + "|" + lg + "|" + k; delete TRM[mk]; LS.del("cad-tr:" + mk);
+      if (dbOn()) dbReq("DELETE", "tr/" + id + "/" + lg + "/" + k).catch(function(){});
+    });
+    ["easy", "hard"].forEach(function(lv){
+      var k2 = i + "_" + lv + "_" + lg; LS.del("cad-qx:" + id + "|" + k2);
+      if (dbOn()) dbReq("DELETE", "qx/" + id + "/" + k2).catch(function(){});
+    });
+  });
+}
+function renderEdit(){
+  var head = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("edTitle")) + '</h2></div></div>';
+  if (S.built || effLang()) {
+    app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(S.built ? L("edBuilt") : L("edOrigOnly")) + '</p>' +
+      (S.built ? "" : '<button type="button" class="btn primary" id="toorig">' + esc(L("edToOrig")) + '</button>') + '</div>';
+    $("#exit").onclick = function(){ go("home"); };
+    var to = $("#toorig"); if (to) to.onclick = function(){ LANG = "orig"; jset("cad-lang", "orig"); openSubject(S.id); };
+    return;
+  }
+  app.innerHTML = head + '<div class="wrap body"><p class="lead left">' + esc(L("edHelp")) + '</p>' +
+    ORIG.map(function(m, i){ return '<button type="button" class="btn edrow" data-i="' + i + '"><b>' + (i + 1) + '</b><span>' + esc(plain(m.t)) + '</span></button>'; }).join("") + '</div>';
+  $("#exit").onclick = function(){ go("home"); };
+  app.querySelectorAll(".edrow").forEach(function(b){ b.onclick = function(){
+    var o = JSON.parse(JSON.stringify(ORIG[Number(b.getAttribute("data-i"))])); delete o.qb;
+    ED = {i: Number(b.getAttribute("data-i")), mod: o}; go("editmod");
+  }; });
+}
+function collectEdit(){
+  var m = ED.mod, root = app;
+  function keepOrEsc(oldHtml, val){ return plain(oldHtml) === val.replace(/\s+/g, " ").trim() ? oldHtml : esc(val.trim()); }
+  var t = root.querySelector("#ed-t"), tg = root.querySelector("#ed-tag");
+  if (t) m.t = keepOrEsc(m.t, t.value); if (tg) m.tag = keepOrEsc(m.tag, tg.value);
+  root.querySelectorAll(".edstep").forEach(function(b, j){
+    var s = m.steps[j]; if (!s) return;
+    s.t = keepOrEsc(s.t, b.querySelector(".est").value); s.h = clean(b.querySelector(".edbody").innerHTML);
+  });
+  root.querySelectorAll(".edq").forEach(function(b, j){
+    var q = m.qs[j]; if (!q) return;
+    q.p = keepOrEsc(q.p, b.querySelector(".eqp").value); q.e = keepOrEsc(q.e, b.querySelector(".eqe").value);
+    b.querySelectorAll(".eqo").forEach(function(inp, k){ q.o[k] = keepOrEsc(q.o[k], inp.value); });
+  });
+}
+function renderEditMod(){
+  if (!ED) { go("edit"); return; }
+  var m = ED.mod;
+  var steps = m.steps.map(function(s, j){
+    return '<div class="edstep"><label>' + esc(L("edStepT")) + ' ' + (j + 1) + '</label><input class="est" type="text" value="' + esc(plain(s.t)) + '">' +
+      '<label>' + esc(L("edStepB")) + '</label><div class="edbody stack" contenteditable="true">' + clean(s.h) + '</div>' +
+      '<button type="button" class="btn ghost" data-del-step="' + j + '">' + esc(L("edDelStep")) + '</button></div>';
+  }).join("");
+  var qs = m.qs.map(function(q, j){
+    return '<div class="edq"><label>' + esc(L("edQ")) + ' ' + (j + 1) + '</label><textarea class="eqp" rows="2">' + esc(plain(q.p)) + '</textarea>' +
+      q.o.map(function(o, k){ return '<label class="' + (k === q.c ? "okl" : "") + '">' + esc(k === q.c ? L("edCorrect") : L("edWrong")) + '</label><input class="eqo" type="text" value="' + esc(plain(o)) + '">'; }).join("") +
+      '<label>' + esc(L("edExpl")) + '</label><textarea class="eqe" rows="2">' + esc(plain(q.e)) + '</textarea>' +
+      '<button type="button" class="btn ghost" data-del-q="' + j + '">' + esc(L("edDelQ")) + '</button></div>';
+  }).join("");
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("edMod", {n: ED.i + 1})) + '</h2></div></div>' +
+    '<div class="wrap body edit"><label for="ed-t">' + esc(L("edModT")) + '</label><input id="ed-t" type="text" value="' + esc(plain(m.t)) + '">' +
+    '<label for="ed-tag">' + esc(L("edTag")) + '</label><input id="ed-tag" type="text" value="' + esc(plain(m.tag)) + '">' +
+    '<h3 class="sec">' + esc(L("edSteps")) + '</h3>' + steps + '<button type="button" class="btn" id="add-step">' + esc(L("edAddStep")) + '</button>' +
+    '<h3 class="sec">' + esc(L("edQs")) + '</h3>' + qs + '<button type="button" class="btn" id="add-q">' + esc(L("edAddQ")) + '</button>' +
+    '<p class="cnt">' + esc(L("edNote")) + '</p><p class="msg" id="ed-msg" hidden></p></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="ed-save">' + esc(L("edSave")) + '</button></div></div>';
+  var msg = $("#ed-msg");
+  $("#exit").onclick = function(){ go("edit"); };
+  app.querySelectorAll("[data-del-step]").forEach(function(b){ b.onclick = function(){
+    collectEdit();
+    if (m.steps.length <= 1) { msg.textContent = L("edLast"); msg.className = "msg err"; msg.hidden = false; return; }
+    m.steps.splice(Number(b.getAttribute("data-del-step")), 1); renderEditMod();
+  }; });
+  app.querySelectorAll("[data-del-q]").forEach(function(b){ b.onclick = function(){
+    collectEdit();
+    if (m.qs.length <= 1) { msg.textContent = L("edLast"); msg.className = "msg err"; msg.hidden = false; return; }
+    m.qs.splice(Number(b.getAttribute("data-del-q")), 1); renderEditMod();
+  }; });
+  $("#add-step").onclick = function(){ collectEdit(); m.steps.push({t: "…", h: "<p>…</p>"}); renderEditMod(); window.scrollTo(0, 0); };
+  $("#add-q").onclick = function(){ collectEdit(); m.qs.push({p: "…", o: ["…", "…", "…", "…"], c: 0, e: "…"}); renderEditMod(); };
+  $("#ed-save").onclick = async function(){
+    collectEdit();
+    var bad = m.qs.some(function(q){ return !plain(q.p) || q.o.some(function(o){ return !plain(o); }); }) || m.steps.some(function(s){ return !plain(s.t) || !plain(s.h); }) || !plain(m.t);
+    msg.className = "msg"; msg.hidden = false;
+    if (bad) { msg.textContent = L("edErr"); msg.className = "msg err"; return; }
+    msg.textContent = L("edSaving"); this.disabled = true;
+    try {
+      var clean1 = normMod(m);
+      await Store.putModule(S.id, ED.i, clean1);
+      invalidateTr(S.id, ED.i);
+      var nm = JSON.parse(JSON.stringify(clean1)); nm.qb = {medium: nm.qs.slice()};
+      ORIG[ED.i] = nm; M = ORIG.map(normMod); SIDX = null;
+      msg.textContent = L("edSaved"); setTimeout(function(){ if (st.view === "editmod") go("edit"); }, 700);
+    } catch (e) { msg.textContent = L("edErr") + " " + (e.message || ""); msg.className = "msg err"; this.disabled = false; }
+  };
+}
+
+/* ---------- Exportar PDF (impressão do navegador) ---------- */
+function exportPdf(){
+  var w = window.open("", "_blank");
+  if (!w) { window.alert(L("pdfPrint")); return; }
+  var title = plain(S.titleShown || S.title), mods = ORIG.map(normMod);
+  var body = mods.map(function(m, i){
+    return '<section class="mod"><h2>' + (i + 1) + '. ' + m.t + '</h2><p class="tag">' + m.tag + '</p>' +
+      m.steps.map(function(s){ return '<h3>' + s.t + '</h3>' + s.h; }).join("") +
+      '<h3 class="qh">' + esc(L("pdfQs")) + '</h3><ol class="qs">' + m.qs.map(function(q){
+        return '<li><p>' + q.p + '</p><ul>' + q.o.map(function(o, k){ return '<li' + (k === q.c ? ' class="ok"' : "") + '>' + o + '</li>'; }).join("") + '</ul><p class="ex"><b>' + esc(L("pdfAnswerL")) + ':</b> ' + q.o[q.c] + '. ' + q.e + '</p></li>';
+      }).join("") + '</ol></section>';
+  }).join("");
+  var css = "body{font:13px/1.55 Georgia,serif;color:#111;max-width:760px;margin:24px auto;padding:0 18px}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:0;border-bottom:2px solid #222;padding-bottom:4px}h3{font-size:14.5px;margin:14px 0 4px}.tag{color:#555;margin:4px 0 8px}.mod{page-break-before:always}.mod:first-of-type{page-break-before:avoid}.item{border:1px solid #bbb;border-radius:6px;padding:6px 10px;margin:8px 0}.item h4{margin:0 0 4px}dl{margin:4px 0}dt{font-weight:bold}dd{margin:0 0 4px 12px}.key{border-left:4px solid #d9a400;background:#fff7d1;padding:6px 10px;margin:8px 0}.key .lbl{font-weight:bold;display:block}.qs li{margin:8px 0;page-break-inside:avoid}.qs ul{list-style:upper-alpha;margin:4px 0 4px 20px;padding:0}.qs li.ok{font-weight:bold}.ex{color:#333;margin:2px 0}.qh{margin-top:20px}@media print{body{margin:0}}";
+  w.document.open();
+  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' + css + '</style></head><body><h1>' + esc(title) + '</h1>' + body + '<script>setTimeout(function(){window.print()},600)<\/script></body></html>');
+  w.document.close();
+}
+
+/* ---------- Novo assunto: PDF e link ---------- */
+var PDFLIB = null;
+function loadPdfLib(){
+  if (self.pdfjsLib && self.pdfjsLib.GlobalWorkerOptions.workerSrc) return Promise.resolve();
+  if (PDFLIB) return PDFLIB;
+  var base = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/";
+  PDFLIB = new Promise(function(res, rej){
+    var s = document.createElement("script");
+    s.src = base + "pdf.min.js";
+    s.onload = function(){
+      fetch(base + "pdf.worker.min.js").then(function(r){ if (!r.ok) throw new Error("worker"); return r.text(); }).then(function(t){
+        pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([t], {type: "text/javascript"})); res();
+      }).catch(function(e){ PDFLIB = null; rej(e); });
+    };
+    s.onerror = function(){ PDFLIB = null; rej(new Error("pdf lib")); };
+    document.head.appendChild(s);
+  });
+  return PDFLIB;
+}
+async function pdfToText(file, lang, say){
+  say(L("pdfRead", {p: 1, t: "…"}));
+  await loadPdfLib();
+  var pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+  var n = Math.min(pdf.numPages, 80), pages = [], need = [];
+  for (var p = 1; p <= n; p++) {
+    say(L("pdfRead", {p: p, t: n}));
+    var page = await pdf.getPage(p), tc = await page.getTextContent();
+    var txt = tc.items.map(function(it){ return it.str + (it.hasEOL ? "\n" : " "); }).join("").replace(/[ \t]+/g, " ");
+    if (txt.replace(/\s/g, "").length < 25) { need.push(p); txt = ""; }
+    pages.push(txt);
+  }
+  if (need.length) {
+    await loadOcrLib();
+    var code = lang === "it" ? "ita" : "por";
+    var worker = await Tesseract.createWorker(code, 1, {langPath: "https://cdn.jsdelivr.net/npm/@tesseract.js-data/" + code + "/4.0.0_best_int"});
+    try {
+      for (var k = 0; k < Math.min(need.length, 15); k++) {
+        say(L("pdfOcr", {p: need[k]}));
+        var pg = await pdf.getPage(need[k]), vp = pg.getViewport({scale: 2});
+        var cv = document.createElement("canvas"); cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+        await pg.render({canvasContext: cv.getContext("2d"), viewport: vp}).promise;
+        var r = await worker.recognize(cv);
+        pages[need[k] - 1] = (r && r.data && r.data.text) || "";
+      }
+    } finally { try { await worker.terminate(); } catch (e) {} }
+  }
+  var all = tidyOcr(pages.join("\n\n"));
+  return {text: all, pages: n};
+}
+function newExtrasHtml(){
+  return '<div class="ocr"><input type="file" id="f-pdf" accept="application/pdf,.pdf" hidden><button type="button" class="btn" id="f-pdfbtn">' + ICON.doc + '<span>' + esc(L("pdfAttach")) + '</span></button><p class="cnt" id="pdfmsg"></p></div>' +
+    '<div class="fld linkf"><label for="f-url">' + esc(L("linkLbl")) + '</label><div class="cfgrow"><input id="f-url" type="url" inputmode="url" autocomplete="off" placeholder="https://…"><button type="button" class="btn" id="f-urlbtn">' + esc(L("linkGet")) + '</button></div><p class="cnt" id="urlmsg"></p></div>';
+}
+function bindNewExtras(te, sl, upd, er){
+  function addText(t){
+    var cur = te.value.trim(), nt = (cur ? cur + "\n\n" : "") + t, cut = false;
+    if (nt.length > MAXCHARS) { nt = nt.slice(0, MAXCHARS); cut = true; }
+    te.value = nt; upd(); return cut;
+  }
+  var pf = $("#f-pdf"), pb = $("#f-pdfbtn"), pm = $("#pdfmsg"), busy = false;
+  pb.onclick = function(){ if (!busy) pf.click(); };
+  pf.onchange = async function(){
+    var f = pf.files && pf.files[0]; pf.value = "";
+    if (!f || busy) return;
+    busy = true; pb.disabled = true; er.hidden = true;
+    try {
+      var r = await pdfToText(f, sl.value, function(m){ pm.textContent = m; });
+      if (!r.text || r.text.length < 15) pm.textContent = L("pdfNone");
+      else { var cut = addText(r.text); pm.textContent = L("pdfOk", {n: r.pages}) + (cut ? L("pdfCut", {max: MAXCHARS}) : ""); }
+    } catch (e) { pm.textContent = L("pdfErr"); }
+    busy = false; pb.disabled = false;
+  };
+  var ub = $("#f-urlbtn"), ui = $("#f-url"), um = $("#urlmsg");
+  ub.onclick = async function(){
+    var u = ui.value.trim(); if (!u) return;
+    if (!/^https?:\/\//i.test(u)) u = "https://" + u;
+    ub.disabled = true; um.textContent = L("linkBusy");
+    try {
+      var d = await api("/api/fetch", {url: u});
+      var ti = $("#f-title"); if (ti && !ti.value.trim() && d.title) { ti.value = d.title.slice(0, 80); upd(); }
+      addText(d.text); um.textContent = L("linkAdded"); ui.value = "";
+    } catch (e) { um.textContent = L("linkErr", {e: e.message || ""}); }
+    ub.disabled = false;
+  };
+}
+
+var EXTRA_VIEWS = {login: renderLogin, rev: renderRev, revdone: renderRevDone, errs: renderErrs, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes, edit: renderEdit, editmod: renderEditMod};
 /* Botão Voltar do aparelho: sobe um nível em vez de sair do site */
 try { history.replaceState({r: 1}, ""); history.pushState({a: 1}, ""); } catch (e) {}
 window.addEventListener("popstate", function(){
   var v = st.view;
-  if (v === "lib") return;
+  if (v === "lib" || v === "login") return;
   try { history.pushState({a: 1}, ""); } catch (e) {}
   if (v === "gen") return;
   NAV++;
-  if (["lesson", "quiz", "level", "done", "all"].indexOf(v) >= 0 && S) { st.view = "home"; render(); window.scrollTo(0, 0); }
+  if (v === "editmod" && S) { st.view = "edit"; render(); window.scrollTo(0, 0); }
+  else if (SUBJ_VIEWS.indexOf(v) >= 0 && S) { st.view = "home"; render(); window.scrollTo(0, 0); }
   else toLib();
 });
-document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") refreshLib(true); });
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") { refreshLib(true); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); }); } });
 setInterval(function(){ if (st.view === "lib" && document.visibilityState === "visible") refreshLib(true); }, 45000);
 
 applyTheme();
 initAI(); showAI(false);
 LIB = [builtMeta()];
-renderLib();
-refreshLib(true);
+if (USER) { renderLib(); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); }); } else { st.view = "login"; render(); }
+refreshLib(true).then(function(){
+  var m = /[#&]s=([\w-]+)/.exec(location.hash || "");
+  if (USER && m && LIB.some(function(x){ return x.id === m[1]; })) openSubject(m[1]);
+});
+/* Sem modo app/offline: remove qualquer service worker antigo */
+try { if ("serviceWorker" in navigator) { navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }).catch(function(){}); if (self.caches) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); }).catch(function(){}); } } catch (e) {}
 </script>
 </body>
 </html>
