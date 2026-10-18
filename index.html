@@ -3730,6 +3730,7 @@ document.addEventListener("visibilitychange", function(){ if (document.visibilit
 setInterval(function(){ if (st.view === "lib" && document.visibilityState === "visible") refreshLib(true); }, 45000);
 
 applyTheme();
+try { fetch(CFG.API + "/health", {mode: "no-cors", cache: "no-store"}).catch(function(){}); setInterval(function(){ if (!document.hidden) fetch(CFG.API + "/health", {mode: "no-cors", cache: "no-store"}).catch(function(){}); }, 600000); } catch (e) {}
 initAI(); showAI(false);
 LIB = [builtMeta()];
 if (USER) { renderLib(); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); }); } else { st.view = "login"; render(); }
