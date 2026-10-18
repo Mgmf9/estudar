@@ -752,6 +752,41 @@ mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
 .chk{display:flex!important;align-items:center;gap:8px;color:var(--ink)!important}
 .chk input{width:22px!important;height:22px;box-shadow:none!important}
 .peb{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+/* menu de conta, avatares, amigos, flashcards IA */
+.hdr-r{display:flex;align-items:center;gap:10px}
+.menuwrap{position:relative;display:inline-flex}
+.avbtn{position:relative;background:none;border:0;padding:0;border-radius:50%;cursor:pointer;line-height:0}
+.avbtn .av{width:52px;height:52px;font-size:22px;box-shadow:3px 3px 0 var(--shadow-c)}
+.avbtn .av.em,.av.em{font-size:1.1em}
+.avbtn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.avbtn .dot,.cbadge{background:#e0392b;color:#fff;font:800 11px var(--f);border-radius:999px;padding:2px 6px;line-height:1.2}
+.avbtn .dot{position:absolute;top:-4px;right:-4px;border:2px solid var(--paper,#fff)}
+.menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;min-width:240px;background:var(--surface);border:2px solid var(--edge);border-radius:14px;box-shadow:4px 4px 0 var(--shadow-c);padding:6px;display:flex;flex-direction:column;gap:2px}
+.menu[hidden]{display:none}
+.mhead{display:flex;align-items:center;gap:10px;padding:8px 8px 10px;border-bottom:2px solid var(--edge);margin-bottom:4px}
+.mhead span{display:flex;flex-direction:column;min-width:0}
+.mhead strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mhead small{color:var(--muted);font-weight:700}
+.mi{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:9px;padding:10px;font:700 15px var(--f);color:var(--ink);cursor:pointer}
+.mi:hover,.mi:focus-visible{background:var(--soft,rgba(128,128,128,.14))}
+.mi.out{color:#d23a2c;border-top:2px solid var(--edge);border-radius:0 0 9px 9px;margin-top:4px}
+.mi select{font:700 14px var(--f);margin-left:auto}
+.ems{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 10px}
+.emb{font-size:26px;line-height:1;padding:8px 0;border:2px solid var(--edge);border-radius:12px;background:var(--surface);cursor:pointer}
+.emb.on{background:var(--accent);box-shadow:2px 2px 0 var(--shadow-c)}
+.ftabs{display:flex;width:100%;margin:6px 0 12px}.ftabs button{flex:1}
+.prow{cursor:default}
+.prow .pgo{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:none;border:0;padding:0;text-align:left;font-family:var(--f);color:var(--ink);cursor:pointer}
+.acts{display:flex;gap:6px;flex:none}
+.btn.sm{padding:6px 10px;font-size:13px;min-height:34px}
+.btn.danger{background:#d23a2c;color:#fff;border-color:var(--edge)}
+.tag{font:800 12px var(--f);color:var(--muted);border:2px solid var(--edge);border-radius:999px;padding:4px 10px}
+.fcard{cursor:default;min-height:150px}
+.fal{display:block;font-weight:800;margin:14px 0 6px}
+#fl-ans{width:100%;font:16px var(--f);border:2px solid var(--edge);border-radius:12px;padding:10px;background:var(--surface);color:var(--ink);resize:vertical}
+.verdict{margin-top:12px;border:2px solid var(--edge);border-radius:14px;padding:12px 14px;box-shadow:3px 3px 0 var(--shadow-c)}
+.verdict p{margin:6px 0 0;line-height:1.5}
+.verdict.v-right{background:rgba(46,160,90,.18)}.verdict.v-partial{background:rgba(240,180,40,.2)}.verdict.v-wrong{background:rgba(224,57,43,.16)}
 </style>
 </head>
 <body>
@@ -1830,7 +1865,7 @@ function renderLib(){
   app.innerHTML =
     '<div class="wrap libhead">' +
       '<div class="topline"><p class="kicker">' + esc(L("libKicker")) + '</p>' +
-      '<button type="button" class="plus" id="newtop" aria-label="' + esc(L("newSub")) + '">' + ICON.plus + '</button></div>' +
+      '<span class="hdr-r">' + acctBtn() + '<button type="button" class="plus" id="newtop" aria-label="' + esc(L("newSub")) + '">' + ICON.plus + '</button></span></div>' +
       '<h1>' + esc(L("app")) + '</h1>' +
       '<p class="sub">' + esc(L("libSub")) + '</p>' +
       '<div class="row2">' + langBar() + '</div>' + dashHtml() +
@@ -2597,6 +2632,18 @@ var X = {
     errsShow: "Ver resposta", errsHide: "Ocultar", errsWrong: "errou {n}x", errsSub: "Perguntas que você errou e ainda não fixou.",
     explainBtn: "Não entendi", explaining: "Pensando em um jeito mais simples…", explainErr: "Não consegui explicar agora.",
     accTxt: " · {p}% de acerto",
+    flYour: "Sua resposta", flYourPh: "Escreva com suas palavras o que você sabe…", flGrade: "Corrigir com IA", flSee: "Ver resposta", flGrading: "A IA está corrigindo…",
+    flAnswer: "Resposta correta", flCont: "Continuar", flEmptyAns: "Escreva uma resposta antes de corrigir.", flGradeErr: "Não consegui corrigir agora.",
+    flExplain: "Explique com suas palavras: {t}",
+    flV_right: "Certo!", flV_partial: "Quase lá", flV_wrong: "Ainda não",
+    meMenu: "Conta", mProf: "Meu perfil", mPeople: "Amigos e ranking", mSignedAs: "@{u}",
+    peEmoji: "Ou escolha um avatar", peVis2: "Aparecer na busca de amigos", peVisHelp2: "Se desligado, ninguém te encontra e você não aparece no ranking dos amigos.",
+    frTab: "Amigos", reqTab: "Pedidos", findTab: "Buscar", frNone: "Você ainda não tem amigos. Use a aba Buscar para adicionar alguém pelo nome ou usuário.",
+    reqNone: "Nenhum pedido pendente.", reqIn: "Pedidos recebidos", reqOut: "Pedidos enviados", accept: "Aceitar", decline: "Recusar", cancel: "Cancelar",
+    findPh: "Buscar por nome ou usuário", findHint: "Digite pelo menos 2 letras.", findNone: "Ninguém encontrado.",
+    addFr: "Adicionar", sent: "Pedido enviado", isFr: "Amigos", respond: "Responder",
+    rmFr: "Remover amigo", rmFrAsk: "Remover {n} dos seus amigos?", frOnly: "Só amigos podem ver o perfil completo.", addToSee: "Adicionar aos amigos",
+    peopleSub2: "Ranking entre você e seus amigos.",
     flashBtn: "Flashcards", simBtn: "Simulado", editBtn: "Editar", pdfBtn: "Exportar PDF", linkBtn: "Copiar link", linkOk: "Link copiado!",
     examLbl: "Data da prova", examNone: "Defina a data da prova para ver o plano de estudo.",
     examPlan: "Faltam {d} dias e {m} módulos: faça cerca de {p} por dia e use o último dia para revisar.",
@@ -2649,6 +2696,18 @@ var X = {
     errsShow: "Vedi la risposta", errsHide: "Nascondi", errsWrong: "sbagliata {n} volte", errsSub: "Domande sbagliate che non hai ancora fissato.",
     explainBtn: "Non ho capito", explaining: "Cerco un modo più semplice…", explainErr: "Non riesco a spiegare ora.",
     accTxt: " · {p}% corrette",
+    flYour: "La tua risposta", flYourPh: "Scrivi con parole tue quello che sai…", flGrade: "Correggi con IA", flSee: "Vedi risposta", flGrading: "L'IA sta correggendo…",
+    flAnswer: "Risposta corretta", flCont: "Continua", flEmptyAns: "Scrivi una risposta prima di correggere.", flGradeErr: "Non riesco a correggere ora.",
+    flExplain: "Spiega con parole tue: {t}",
+    flV_right: "Giusto!", flV_partial: "Quasi", flV_wrong: "Non ancora",
+    meMenu: "Account", mProf: "Il mio profilo", mPeople: "Amici e classifica", mSignedAs: "@{u}",
+    peEmoji: "Oppure scegli un avatar", peVis2: "Compari nella ricerca amici", peVisHelp2: "Se disattivato, nessuno ti trova e non compari nella classifica degli amici.",
+    frTab: "Amici", reqTab: "Richieste", findTab: "Cerca", frNone: "Non hai ancora amici. Usa la scheda Cerca per aggiungere qualcuno per nome o utente.",
+    reqNone: "Nessuna richiesta in sospeso.", reqIn: "Richieste ricevute", reqOut: "Richieste inviate", accept: "Accetta", decline: "Rifiuta", cancel: "Annulla",
+    findPh: "Cerca per nome o utente", findHint: "Scrivi almeno 2 lettere.", findNone: "Nessuno trovato.",
+    addFr: "Aggiungi", sent: "Richiesta inviata", isFr: "Amici", respond: "Rispondi",
+    rmFr: "Rimuovi amico", rmFrAsk: "Rimuovere {n} dagli amici?", frOnly: "Solo gli amici vedono il profilo completo.", addToSee: "Aggiungi agli amici",
+    peopleSub2: "Classifica tra te e i tuoi amici.",
     flashBtn: "Flashcard", simBtn: "Simulazione", editBtn: "Modifica", pdfBtn: "Esporta PDF", linkBtn: "Copia link", linkOk: "Link copiato!",
     examLbl: "Data della verifica", examNone: "Imposta la data della verifica per vedere il piano di studio.",
     examPlan: "Mancano {d} giorni e {m} moduli: fanne circa {p} al giorno e usa l'ultimo giorno per ripassare.",
@@ -2896,6 +2955,17 @@ function errList(){ return srsList(function(e){ return e.wrong > 0 && e.box <= 2
 
 /* ---------- Painel da biblioteca ---------- */
 var SQ = "", SR = null, SIDX = null, SIDXAT = 0, STO = null;
+function acctBtn(){
+  var me = getMe(), g = stats().goal || 10;
+  return '<span class="menuwrap"><button type="button" class="avbtn" id="me" aria-haspopup="true" aria-expanded="false" aria-label="' + esc(L("meMenu")) + '">' + avatarHtml(me, "s") + (FRN ? '<i class="dot">' + FRN + '</i>' : "") + '</button>' +
+    '<div class="menu" id="menu" hidden role="menu"><div class="mhead">' + avatarHtml(me, "m") + '<span><strong>' + esc(me.name || USER.name) + '</strong><small>' + esc(L("mSignedAs", {u: USER.slug})) + '</small></span></div>' +
+    '<button type="button" class="mi" id="m-prof" role="menuitem">' + esc(L("mProf")) + '</button>' +
+    '<button type="button" class="mi" id="m-people" role="menuitem">' + esc(L("mPeople")) + (FRN ? ' <b class="cbadge">' + FRN + '</b>' : "") + '</button>' +
+    '<label class="mi goalsel">' + esc(L("goalLbl")) + ' <select id="goal">' + [5, 10, 15, 20, 30, 50].map(function(x){ return '<option value="' + x + '"' + (x === g ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></label>' +
+    '<button type="button" class="mi out" id="logout" role="menuitem">' + esc(L("logout")) + '</button></div></span>';
+}
+var FRN = 0, MENUBOUND = false;
+function closeMenu(){ var m = $("#menu"), b = $("#me"); if (m) m.hidden = true; if (b) b.setAttribute("aria-expanded", "false"); }
 function dashHtml(){
   var n = dueList().length, er = errList().length, s = stats(), d = s.days[dayKey()] || {q: 0}, g = s.goal || 10, sk = streakDays();
   var pct = Math.min(100, Math.round(d.q / g * 100));
@@ -2907,15 +2977,22 @@ function dashHtml(){
     '<button type="button" class="btn" id="d-errs">' + esc(L("errsBtn", {n: er})) + '</button>' +
     '<button type="button" class="btn" id="d-people">' + esc(L("peopleBtn")) + '</button></div>' +
     '<div class="searchbox"><input id="sq" type="search" autocomplete="off" placeholder="' + esc(L("searchPh")) + '" value="' + esc(SQ) + '"></div><div id="sres" class="sres-list"></div>' +
-    '<div class="acct"><button type="button" class="meb" id="me" aria-label="' + esc(L("meBtn")) + '">' + avatarHtml(getMe(), "s") + '<span>' + esc(L("hello", {n: getMe().name || (USER ? USER.name : "")})) + '</span></button><label class="goalsel">' + esc(L("goalLbl")) + ' <select id="goal">' + [5, 10, 15, 20, 30, 50].map(function(x){ return '<option value="' + x + '"' + (x === g ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></label><button type="button" class="btn ghost" id="logout">' + esc(L("logout")) + '</button></div>' +
   '</div>';
+}
+async function loadReqCount(){
+  if (!dbOn() || !USER) return;
+  try { var r = await dbReq("GET", "fr/" + USER.slug), n = r ? Object.keys(r).length : 0; if (n !== FRN) { FRN = n; if (st.view === "lib" && !$("#sq:focus") && !($("#menu") && !$("#menu").hidden)) renderLib(); } } catch (e) {}
 }
 function bindDash(){
   var b;
   if ((b = $("#d-rev"))) b.onclick = function(){ var l = dueList(); if (l.length) startReview(l.slice(0, 20), "due"); else go("rev"); };
   if ((b = $("#d-errs"))) b.onclick = function(){ go("errs"); };
   if ((b = $("#d-people"))) b.onclick = function(){ go("people"); };
-  if ((b = $("#me"))) b.onclick = function(){ openProfile(USER.slug, "lib"); };
+  if ((b = $("#me"))) b.onclick = function(e){ e.stopPropagation(); var m = $("#menu"); m.hidden = !m.hidden; b.setAttribute("aria-expanded", String(!m.hidden)); };
+  if ((b = $("#m-prof"))) b.onclick = function(){ openProfile(USER.slug, "lib"); };
+  if ((b = $("#m-people"))) b.onclick = function(){ go("people"); };
+  if (!MENUBOUND) { MENUBOUND = true; document.addEventListener("click", function(e){ if (!e.target.closest || !e.target.closest(".menuwrap")) closeMenu(); }); document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeMenu(); }); }
+  loadReqCount();
   if ((b = $("#logout"))) b.onclick = logout;
   if ((b = $("#goal"))) b.onchange = function(){ var s = stats(); s.goal = Number(b.value) || 10; putStats(s); renderLib(); };
   var sq = $("#sq");
@@ -3080,45 +3157,26 @@ async function explainWrong(q, chosenIdx, modIdx, box, btn, entry){
 
 /* ---------- Ferramentas na tela do assunto ---------- */
 ICON.doc = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 3.5h8l4 4V20a1 1 0 01-1 1H6a1 1 0 01-1-1V4.5a1 1 0 011-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3.5V8h4M8.5 13h7M8.5 16.5h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-function examPlanText(){
-  var d = stats().exams[S.id];
-  if (!d) return L("examNone");
-  var days = Math.round((new Date(d + "T00:00:00") - new Date(dayKey() + "T00:00:00")) / DAY);
-  if (isNaN(days)) return L("examNone");
-  if (days < 0) return L("examPast");
-  if (days === 0) return L("examToday");
-  var rem = M.length - Math.min(st.unlocked, M.length);
-  if (rem <= 0) return L("examDone", {d: days});
-  if (days === 1) return L("examPlan1");
-  return L("examPlan", {d: days, m: rem, p: Math.ceil(rem / Math.max(1, days - 1))});
-}
 function homeTools(){
   var due = dueList(S.id).length;
   return '<div class="tools2">' +
     '<button type="button" class="btn" id="h-fl">' + esc(L("flashBtn")) + '</button>' +
     '<button type="button" class="btn" id="h-sim">' + esc(L("simBtn")) + '</button>' +
-    (S.built ? "" : '<button type="button" class="btn" id="h-ed">' + esc(L("editBtn")) + '</button>') +
     '<button type="button" class="btn" id="h-pdf">' + esc(L("pdfBtn")) + '</button>' +
     (S.built ? "" : '<button type="button" class="btn" id="h-link">' + esc(L("linkBtn")) + '</button>') +
     '</div>' +
-    (due ? '<button type="button" class="btn primary wide" id="h-due" style="margin-top:10px;width:100%">' + esc(L("dueHere", {n: due})) + '</button>' : "") +
-    '<div class="exam"><label for="exd">' + esc(L("examLbl")) + '</label><input type="date" id="exd" value="' + esc(stats().exams[S.id] || "") + '"><p class="cnt" id="exp">' + esc(examPlanText()) + '</p></div>';
+    (due ? '<button type="button" class="btn primary wide" id="h-due" style="margin-top:10px;width:100%">' + esc(L("dueHere", {n: due})) + '</button>' : "");
 }
 function bindHomeTools(){
   var b;
   if ((b = $("#h-fl"))) b.onclick = function(){ FC = null; go("flash"); };
   if ((b = $("#h-sim"))) b.onclick = function(){ SM = null; go("sim"); };
-  if ((b = $("#h-ed"))) b.onclick = function(){ go("edit"); };
   if ((b = $("#h-pdf"))) b.onclick = exportPdf;
   if ((b = $("#h-due"))) b.onclick = function(){ startReview(dueList(S.id).slice(0, 20), "due"); };
   if ((b = $("#h-link"))) b.onclick = function(){
     var url = location.href.split("#")[0] + "#s=" + S.id, btn = b;
     function ok(){ btn.textContent = L("linkOk"); setTimeout(function(){ btn.textContent = L("linkBtn"); }, 2200); }
     try { navigator.clipboard.writeText(url).then(ok, function(){ window.prompt(L("linkBtn"), url); }); } catch (e) { window.prompt(L("linkBtn"), url); }
-  };
-  if ((b = $("#exd"))) b.onchange = function(){
-    var s = stats(); if (b.value) s.exams[S.id] = b.value; else delete s.exams[S.id];
-    putStats(s); var p = $("#exp"); if (p) p.textContent = examPlanText();
   };
 }
 
@@ -3150,41 +3208,79 @@ function stopExtras(){
   try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
 }
 
-/* ---------- Flashcards ---------- */
+/* ---------- Flashcards (com correção da IA) ---------- */
 var FC = null;
 function buildFc(){
   var cards = [], idxs = FC.mi < 0 ? range(ORIG.length) : [FC.mi];
   idxs.forEach(function(i){
     var nm = (M[i] && M[i].steps) ? M[i] : normMod(ORIG[i]), mt = plain(M[i] ? M[i].t : nm.t);
-    if (FC.kind !== "q") nm.steps.forEach(function(s){ cards.push({f: '<h3>' + s.t + '</h3>', b: '<div class="stack">' + s.h + '</div>', l: mt + " · " + L("flConcepts")}); });
+    if (FC.kind !== "q") nm.steps.forEach(function(s){ cards.push({f: '<h3>' + s.t + '</h3>', fq: L("flExplain", {t: plain(s.t)}), b: '<div class="stack">' + s.h + '</div>', l: mt + " · " + L("flConcepts"), mi: i}); });
     if (FC.kind !== "c") {
       var qb = ORIG[i].qb || {}, bank = qb.medium || qb.easy || qb.hard || [];
-      bank.forEach(function(q){ cards.push({f: '<p class="fq">' + clean(q.p) + '</p>', b: '<p class="fa"><b>' + clean(q.o[q.c]) + '</b></p><p>' + clean(q.e) + '</p>', l: mt + " · " + L("flQuestions")}); });
+      bank.forEach(function(q){ cards.push({f: '<p class="fq">' + clean(q.p) + '</p>', fq: plain(q.p), b: '<p class="fa"><b>' + clean(q.o[q.c]) + '</b></p><p>' + clean(q.e) + '</p>', l: mt + " · " + L("flQuestions"), mi: i}); });
     }
   });
-  FC.deck = shuffle(cards); FC.total = FC.deck.length; FC.flip = false;
+  FC.deck = shuffle(cards); FC.total = FC.deck.length; FC.mode = "ask"; FC.ans = ""; FC.res = null;
+}
+function flNext(removeIt){
+  if (removeIt) FC.deck.shift(); else FC.deck.push(FC.deck.shift());
+  FC.mode = "ask"; FC.ans = ""; FC.res = null; renderFlash(); window.scrollTo(0, 0);
+}
+async function gradeCard(c, ans){
+  var ctx = plain(c.b).slice(0, 5000);
+  var q = "Você é um corretor de estudos. Pergunta do cartão: " + c.fq + "\nResposta do aluno: " + ans.slice(0, 600) + "\nO gabarito é o TEXTO DE LEITURA. Compare a resposta do aluno com ele (aceite palavras diferentes com o mesmo sentido). Na PRIMEIRA linha escreva apenas CERTO, PARCIAL ou ERRADO. Depois, em até 3 frases, diga o que o aluno acertou e o que faltou ou errou.";
+  var d = await api("/api/chat", {question: q, module: -1, context: ctx, lang: LANG === "it" ? "it" : "pt", subject: plain(S.titleShown || S.title)});
+  var txt = String(d.answer || "").trim(), m = /^\W*(CERTO|PARCIAL|ERRADO|GIUSTO|PARZIALE|SBAGLIATO|CORRECT|PARTIAL|WRONG)/i.exec(txt), v = "partial";
+  if (m) { var w = m[1].toUpperCase(); v = /^(CERTO|GIUSTO|CORRECT)$/.test(w) ? "right" : /^(ERRADO|SBAGLIATO|WRONG)$/.test(w) ? "wrong" : "partial"; txt = txt.slice(m[0].length).replace(/^[\s:.\-–—]+/, ""); }
+  return {v: v, fb: txt};
 }
 function renderFlash(){
   if (!FC) FC = {mi: -1, kind: "b"};
   if (!FC.deck) buildFc();
-  var c = FC.deck[0];
+  var c = FC.deck[0], mode = FC.mode;
   var mods = '<option value="-1">' + esc(L("flAll")) + '</option>' + ORIG.map(function(m, i){ return '<option value="' + i + '"' + (FC.mi === i ? " selected" : "") + '>' + esc(L("modL", {n: i + 1, t: plain(M[i] ? M[i].t : m.t)}).slice(0, 60)) + '</option>'; }).join("");
   var kinds = [["b", "flBoth"], ["c", "flConcepts"], ["q", "flQuestions"]].map(function(k){ return '<option value="' + k[0] + '"' + (FC.kind === k[0] ? " selected" : "") + '>' + esc(L(k[1])) + '</option>'; }).join("");
+  var body = "", bar = "";
+  if (c) {
+    body = '<p class="cnt">' + esc(L("flLeft", {n: FC.deck.length})) + '</p><div class="fcard"><span class="fl">' + esc(c.l) + '</span><span class="fb">' + c.f + '</span></div>';
+    if (mode === "ask") {
+      body += '<label class="fal" for="fl-ans">' + esc(L("flYour")) + '</label><textarea id="fl-ans" rows="4" placeholder="' + esc(L("flYourPh")) + '"></textarea><p class="msg err" id="fl-err" hidden></p>';
+      bar = '<button type="button" class="btn" id="fl-skip">' + esc(L("flSee")) + '</button><button type="button" class="btn primary wide" id="fl-grade">' + esc(L("flGrade")) + '</button>';
+    } else if (mode === "grading") {
+      body += '<div class="expl">' + esc(L("flGrading")) + '</div>';
+      bar = '<button type="button" class="btn wide" disabled>' + esc(L("flGrading")) + '</button>';
+    } else if (mode === "graded") {
+      body += '<div class="verdict v-' + FC.res.v + '"><strong>' + esc(L("flV_" + FC.res.v)) + '</strong><p>' + esc(FC.res.fb) + '</p></div><p class="fal">' + esc(L("flAnswer")) + '</p><div class="fcard back"><span class="fb">' + c.b + '</span></div>';
+      bar = '<button type="button" class="btn ' + (FC.res.v === "right" ? "good" : "primary") + ' wide" id="fl-cont">' + esc(L("flCont")) + '</button>';
+    } else {
+      body += '<p class="fal">' + esc(L("flAnswer")) + '</p><div class="fcard back"><span class="fb">' + c.b + '</span></div>';
+      bar = '<button type="button" class="btn" id="later">' + esc(L("flLater")) + '</button><button type="button" class="btn good wide" id="know">' + esc(L("flKnow")) + '</button>';
+    }
+  } else {
+    body = '<div class="center" style="padding-top:30px">' + sign("s") + '<h2>' + esc(FC.total ? L("flDone") : L("flEmpty")) + '</h2></div>';
+    bar = '<button type="button" class="btn primary wide" id="restart">' + esc(L("flRestart")) + '</button>';
+  }
   app.innerHTML =
     '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("flTitle")) + '</h2></div></div>' +
-    '<div class="wrap body"><div class="flf"><select id="fl-mod" aria-label="' + esc(L("flAll")) + '">' + mods + '</select><select id="fl-kind">' + kinds + '</select></div>' +
-    (c ? '<p class="cnt">' + esc(L("flLeft", {n: FC.deck.length})) + '</p>' +
-      '<button type="button" class="fcard' + (FC.flip ? " back" : "") + '" id="fc" aria-label="' + esc(L("flTap")) + '"><span class="fl">' + esc(c.l) + ' · ' + esc(L(FC.flip ? "flBack" : "flFront")) + '</span><span class="fb">' + (FC.flip ? c.b : c.f) + '</span><span class="ft">' + esc(L("flTap")) + '</span></button>'
-      : '<div class="center" style="padding-top:30px">' + sign("s") + '<h2>' + esc(FC.total ? L("flDone") : L("flEmpty")) + '</h2></div>') +
-    '</div>' +
-    '<div class="bar"><div class="wrap">' + (c ? '<button type="button" class="btn" id="later">' + esc(L("flLater")) + '</button><button type="button" class="btn good wide" id="know">' + esc(L("flKnow")) + '</button>' : '<button type="button" class="btn primary wide" id="restart">' + esc(L("flRestart")) + '</button>') + '</div></div>';
+    '<div class="wrap body"><div class="flf"><select id="fl-mod" aria-label="' + esc(L("flAll")) + '">' + mods + '</select><select id="fl-kind">' + kinds + '</select></div>' + body + '</div>' +
+    '<div class="bar"><div class="wrap">' + bar + '</div></div>';
   $("#exit").onclick = function(){ go("home"); };
   $("#fl-mod").onchange = function(){ FC.mi = Number(this.value); FC.deck = null; renderFlash(); };
   $("#fl-kind").onchange = function(){ FC.kind = this.value; FC.deck = null; renderFlash(); };
-  var f = $("#fc"); if (f) f.onclick = function(){ FC.flip = !FC.flip; renderFlash(); };
-  var kn = $("#know"); if (kn) kn.onclick = function(){ FC.deck.shift(); FC.flip = false; renderFlash(); window.scrollTo(0, 0); };
-  var lt = $("#later"); if (lt) lt.onclick = function(){ FC.deck.push(FC.deck.shift()); FC.flip = false; renderFlash(); window.scrollTo(0, 0); };
-  var rs = $("#restart"); if (rs) rs.onclick = function(){ FC.deck = null; renderFlash(); };
+  var b;
+  if ((b = $("#fl-skip"))) b.onclick = function(){ FC.mode = "show"; renderFlash(); };
+  if ((b = $("#fl-grade"))) b.onclick = async function(){
+    var ans = $("#fl-ans").value.trim();
+    if (ans.length < 2) { var e = $("#fl-err"); e.textContent = L("flEmptyAns"); e.hidden = false; return; }
+    FC.ans = ans; FC.mode = "grading"; renderFlash();
+    var cur = c;
+    try { var r = await gradeCard(cur, ans); if (FC && FC.deck && FC.deck[0] === cur) { FC.res = r; FC.mode = "graded"; try { recordAnswer(r.v === "right", S.id, cur.mi); } catch (er) {} renderFlash(); } }
+    catch (er) { if (FC && FC.deck && FC.deck[0] === cur) { FC.mode = "ask"; renderFlash(); var e2 = $("#fl-err"); if (e2) { e2.textContent = L("flGradeErr") + " " + (er.message || ""); e2.hidden = false; $("#fl-ans").value = ans; } } }
+  };
+  if ((b = $("#fl-cont"))) b.onclick = function(){ flNext(FC.res.v === "right"); };
+  if ((b = $("#know"))) b.onclick = function(){ flNext(true); };
+  if ((b = $("#later"))) b.onclick = function(){ flNext(false); };
+  if ((b = $("#restart"))) b.onclick = function(){ FC.deck = null; renderFlash(); };
 }
 
 /* ---------- Simulado ---------- */
@@ -3285,116 +3381,6 @@ function renderSimRes(){
     '<div class="bar"><div class="wrap"><button type="button" class="btn" id="home">' + esc(L("path")) + '</button><button type="button" class="btn primary wide" id="again">' + esc(L("simNew")) + '</button></div></div>';
   $("#home").onclick = function(){ go("home"); };
   $("#again").onclick = function(){ SM = null; go("sim"); };
-}
-
-/* ---------- Editor de módulos (assuntos criados pela IA) ---------- */
-var ED = null;
-Store.putModule = async function(id, i, mod){
-  if (dbOn()) {
-    await dbReq("PUT", "modules/" + id + "/" + i, JSON.stringify(mod));
-    var c = jget("cad-cache-mod:" + id, null); if (c) { c[i] = mod; jset("cad-cache-mod:" + id, c); }
-  } else {
-    var l = jget("cad-local-mod:" + id, null); if (!l) throw new Error("não encontrado");
-    l[i] = mod; if (!jset("cad-local-mod:" + id, l)) throw new Error("sem espaço neste aparelho");
-    var c2 = jget("cad-cache-mod:" + id, null); if (c2) { c2[i] = mod; jset("cad-cache-mod:" + id, c2); }
-  }
-};
-function invalidateTr(id, i){
-  var keys = ["index", "m" + i, "qs_easy_" + i, "qs_medium_" + i, "qs_hard_" + i];
-  ["pt", "it"].forEach(function(lg){
-    keys.forEach(function(k){
-      var mk = id + "|" + lg + "|" + k; delete TRM[mk]; LS.del("cad-tr:" + mk);
-      if (dbOn()) dbReq("DELETE", "tr/" + id + "/" + lg + "/" + k).catch(function(){});
-    });
-    ["easy", "hard"].forEach(function(lv){
-      var k2 = i + "_" + lv + "_" + lg; LS.del("cad-qx:" + id + "|" + k2);
-      if (dbOn()) dbReq("DELETE", "qx/" + id + "/" + k2).catch(function(){});
-    });
-  });
-}
-function renderEdit(){
-  var head = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("edTitle")) + '</h2></div></div>';
-  if (S.built || effLang()) {
-    app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(S.built ? L("edBuilt") : L("edOrigOnly")) + '</p>' +
-      (S.built ? "" : '<button type="button" class="btn primary" id="toorig">' + esc(L("edToOrig")) + '</button>') + '</div>';
-    $("#exit").onclick = function(){ go("home"); };
-    var to = $("#toorig"); if (to) to.onclick = function(){ LANG = "orig"; jset("cad-lang", "orig"); openSubject(S.id); };
-    return;
-  }
-  app.innerHTML = head + '<div class="wrap body"><p class="lead left">' + esc(L("edHelp")) + '</p>' +
-    ORIG.map(function(m, i){ return '<button type="button" class="btn edrow" data-i="' + i + '"><b>' + (i + 1) + '</b><span>' + esc(plain(m.t)) + '</span></button>'; }).join("") + '</div>';
-  $("#exit").onclick = function(){ go("home"); };
-  app.querySelectorAll(".edrow").forEach(function(b){ b.onclick = function(){
-    var o = JSON.parse(JSON.stringify(ORIG[Number(b.getAttribute("data-i"))])); delete o.qb;
-    ED = {i: Number(b.getAttribute("data-i")), mod: o}; go("editmod");
-  }; });
-}
-function collectEdit(){
-  var m = ED.mod, root = app;
-  function keepOrEsc(oldHtml, val){ return plain(oldHtml) === val.replace(/\s+/g, " ").trim() ? oldHtml : esc(val.trim()); }
-  var t = root.querySelector("#ed-t"), tg = root.querySelector("#ed-tag");
-  if (t) m.t = keepOrEsc(m.t, t.value); if (tg) m.tag = keepOrEsc(m.tag, tg.value);
-  root.querySelectorAll(".edstep").forEach(function(b, j){
-    var s = m.steps[j]; if (!s) return;
-    s.t = keepOrEsc(s.t, b.querySelector(".est").value); s.h = clean(b.querySelector(".edbody").innerHTML);
-  });
-  root.querySelectorAll(".edq").forEach(function(b, j){
-    var q = m.qs[j]; if (!q) return;
-    q.p = keepOrEsc(q.p, b.querySelector(".eqp").value); q.e = keepOrEsc(q.e, b.querySelector(".eqe").value);
-    b.querySelectorAll(".eqo").forEach(function(inp, k){ q.o[k] = keepOrEsc(q.o[k], inp.value); });
-  });
-}
-function renderEditMod(){
-  if (!ED) { go("edit"); return; }
-  var m = ED.mod;
-  var steps = m.steps.map(function(s, j){
-    return '<div class="edstep"><label>' + esc(L("edStepT")) + ' ' + (j + 1) + '</label><input class="est" type="text" value="' + esc(plain(s.t)) + '">' +
-      '<label>' + esc(L("edStepB")) + '</label><div class="edbody stack" contenteditable="true">' + clean(s.h) + '</div>' +
-      '<button type="button" class="btn ghost" data-del-step="' + j + '">' + esc(L("edDelStep")) + '</button></div>';
-  }).join("");
-  var qs = m.qs.map(function(q, j){
-    return '<div class="edq"><label>' + esc(L("edQ")) + ' ' + (j + 1) + '</label><textarea class="eqp" rows="2">' + esc(plain(q.p)) + '</textarea>' +
-      q.o.map(function(o, k){ return '<label class="' + (k === q.c ? "okl" : "") + '">' + esc(k === q.c ? L("edCorrect") : L("edWrong")) + '</label><input class="eqo" type="text" value="' + esc(plain(o)) + '">'; }).join("") +
-      '<label>' + esc(L("edExpl")) + '</label><textarea class="eqe" rows="2">' + esc(plain(q.e)) + '</textarea>' +
-      '<button type="button" class="btn ghost" data-del-q="' + j + '">' + esc(L("edDelQ")) + '</button></div>';
-  }).join("");
-  app.innerHTML =
-    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("edMod", {n: ED.i + 1})) + '</h2></div></div>' +
-    '<div class="wrap body edit"><label for="ed-t">' + esc(L("edModT")) + '</label><input id="ed-t" type="text" value="' + esc(plain(m.t)) + '">' +
-    '<label for="ed-tag">' + esc(L("edTag")) + '</label><input id="ed-tag" type="text" value="' + esc(plain(m.tag)) + '">' +
-    '<h3 class="sec">' + esc(L("edSteps")) + '</h3>' + steps + '<button type="button" class="btn" id="add-step">' + esc(L("edAddStep")) + '</button>' +
-    '<h3 class="sec">' + esc(L("edQs")) + '</h3>' + qs + '<button type="button" class="btn" id="add-q">' + esc(L("edAddQ")) + '</button>' +
-    '<p class="cnt">' + esc(L("edNote")) + '</p><p class="msg" id="ed-msg" hidden></p></div>' +
-    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="ed-save">' + esc(L("edSave")) + '</button></div></div>';
-  var msg = $("#ed-msg");
-  $("#exit").onclick = function(){ go("edit"); };
-  app.querySelectorAll("[data-del-step]").forEach(function(b){ b.onclick = function(){
-    collectEdit();
-    if (m.steps.length <= 1) { msg.textContent = L("edLast"); msg.className = "msg err"; msg.hidden = false; return; }
-    m.steps.splice(Number(b.getAttribute("data-del-step")), 1); renderEditMod();
-  }; });
-  app.querySelectorAll("[data-del-q]").forEach(function(b){ b.onclick = function(){
-    collectEdit();
-    if (m.qs.length <= 1) { msg.textContent = L("edLast"); msg.className = "msg err"; msg.hidden = false; return; }
-    m.qs.splice(Number(b.getAttribute("data-del-q")), 1); renderEditMod();
-  }; });
-  $("#add-step").onclick = function(){ collectEdit(); m.steps.push({t: "…", h: "<p>…</p>"}); renderEditMod(); window.scrollTo(0, 0); };
-  $("#add-q").onclick = function(){ collectEdit(); m.qs.push({p: "…", o: ["…", "…", "…", "…"], c: 0, e: "…"}); renderEditMod(); };
-  $("#ed-save").onclick = async function(){
-    collectEdit();
-    var bad = m.qs.some(function(q){ return !plain(q.p) || q.o.some(function(o){ return !plain(o); }); }) || m.steps.some(function(s){ return !plain(s.t) || !plain(s.h); }) || !plain(m.t);
-    msg.className = "msg"; msg.hidden = false;
-    if (bad) { msg.textContent = L("edErr"); msg.className = "msg err"; return; }
-    msg.textContent = L("edSaving"); this.disabled = true;
-    try {
-      var clean1 = normMod(m);
-      await Store.putModule(S.id, ED.i, clean1);
-      invalidateTr(S.id, ED.i);
-      var nm = JSON.parse(JSON.stringify(clean1)); nm.qb = {medium: nm.qs.slice()};
-      ORIG[ED.i] = nm; M = ORIG.map(normMod); SIDX = null;
-      msg.textContent = L("edSaved"); setTimeout(function(){ if (st.view === "editmod") go("edit"); }, 700);
-    } catch (e) { msg.textContent = L("edErr") + " " + (e.message || ""); msg.className = "msg err"; this.disabled = false; }
-  };
 }
 
 /* ---------- Exportar PDF (impressão do navegador) ---------- */
@@ -3504,7 +3490,7 @@ function bindNewExtras(te, sl, upd, er){
 /* ---------- Perfis e pessoas (estilo comunidade) ---------- */
 function meDefault(){
   var h = 0, sl = USER ? USER.slug : "x"; for (var i = 0; i < sl.length; i++) h = (h * 31 + sl.charCodeAt(i)) % PALETTE.length;
-  return {name: USER ? USER.name : "", bio: "", av: "", color: PALETTE[h], vis: true, t: 0};
+  return {name: USER ? USER.name : "", bio: "", av: "", em: "", color: PALETTE[h], vis: true, t: 0};
 }
 function getMe(){
   var m = jget(PK("cad-me"), null);
@@ -3512,10 +3498,12 @@ function getMe(){
   if (!m.name) m.name = USER ? USER.name : "";
   return m;
 }
+var EMOJIS = ["🦊","🐼","🐯","🐸","🐙","🦉","🐧","🦁","🐶","🐱","🦄","🐢","🚀","⚡","🔥","🌱","📚","🎧","🏆","🧠"];
 function avatarHtml(me, size){
   var ok = me.av && /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(me.av) && me.av.length < 60000;
   var col = /^#[0-9a-f]{6}$/i.test(me.color || "") ? me.color : "#316ee8";
-  return '<span class="av ' + size + '" style="--c:' + col + '">' + (ok ? '<img alt="" src="' + me.av + '">' : esc(String(me.name || "?").trim().charAt(0).toUpperCase())) + '</span>';
+  var em = !ok && me.em && EMOJIS.indexOf(me.em) >= 0 ? me.em : "";
+  return '<span class="av ' + size + (em ? " em" : "") + '" style="--c:' + col + '">' + (ok ? '<img alt="" src="' + me.av + '">' : em ? em : esc(String(me.name || "?").trim().charAt(0).toUpperCase())) + '</span>';
 }
 function pubStats(){
   var s = stats(), total = 0, okAll = 0, d14 = {}, i, xp = 0, mods = 0, subj = [];
@@ -3540,7 +3528,7 @@ async function pushPub(){
   try {
     await dbReq("PUT", "users/" + USER.slug + "/me", me);
     if (me.vis === false) await dbReq("DELETE", "pub/" + USER.slug);
-    else await dbReq("PUT", "pub/" + USER.slug, {me: {name: me.name, bio: me.bio, av: me.av, color: me.color}, st: pubStats()});
+    else await dbReq("PUT", "pub/" + USER.slug, {me: {name: me.name, bio: me.bio, av: me.av, em: me.em || "", color: me.color}, st: pubStats()});
   } catch (e) {}
 }
 async function avatarFromFile(file){
@@ -3564,12 +3552,14 @@ async function renderProfile(){
   var head = function(){ return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("pfTitle")) + '</h2></div></div>'; };
   var mine = VP === USER.slug, me, s1;
   function back(){ if (PFROM === "people") go("people"); else toLib(); }
+  var isFr = false;
   if (mine) { me = getMe(); s1 = pubStats(); }
   else {
     app.innerHTML = head() + '<div class="wrap body center"><div class="spin"></div><p class="lead">' + esc(L("pfLoad")) + '</p></div>';
     $("#exit").onclick = back;
-    var my = ++NAV, row;
-    try { row = await dbReq("GET", "pub/" + VP); } catch (e) { row = null; }
+    var my = ++NAV, row, fd;
+    try { fd = await friendData(); row = await dbReq("GET", "pub/" + VP); } catch (e) { row = null; fd = null; }
+    isFr = !!(fd && fd.fl[VP]);
     if (my !== NAV || st.view !== "profile") return;
     if (!row || !row.me || !row.st) { app.innerHTML = head() + '<div class="wrap body center"><p class="lead">' + esc(L("pfErr")) + '</p></div>'; $("#exit").onclick = back; return; }
     me = row.me; s1 = row.st;
@@ -3581,8 +3571,9 @@ async function renderProfile(){
     '<p class="cnt">' + esc(L("pfTotal")) + ': ' + (Number(s1.total) || 0) + '</p>' +
     (subj ? '<h3 class="sec">' + esc(L("pfSubj")) + '</h3>' + subj : "") +
     (mine && me.vis === false ? '<p class="cnt">' + esc(L("pfHidden")) + '</p>' : "") + '</div>' +
-    (mine ? '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pf-edit">' + esc(L("pfEdit")) + '</button></div></div>' : "");
+    (mine ? '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pf-edit">' + esc(L("pfEdit")) + '</button></div></div>' : isFr ? '<div class="bar"><div class="wrap"><button type="button" class="btn danger wide" id="pf-rm">' + esc(L("rmFr")) + '</button></div></div>' : "");
   $("#exit").onclick = back;
+  var rm = $("#pf-rm"); if (rm) rm.onclick = async function(){ if (!confirm(L("rmFrAsk", {n: me.name || VP}))) return; rm.disabled = true; try { await removeFriend(VP); } catch (e) {} PTAB = "fr"; go("people"); };
   var ed = $("#pf-edit"); if (ed) ed.onclick = function(){ PE = JSON.parse(JSON.stringify(getMe())); go("pedit"); };
 }
 function renderPedit(){
@@ -3593,8 +3584,9 @@ function renderPedit(){
     '<div class="wrap body edit"><div class="pedav" id="pe-av">' + avatarHtml(PE, "l") + '<div class="peb"><input type="file" id="pe-file" accept="image/*" hidden><button type="button" class="btn" id="pe-photo">' + ICON.cam + '<span>' + esc(L("pePhoto")) + '</span></button><button type="button" class="btn ghost" id="pe-rm">' + esc(L("peRemove")) + '</button></div></div>' +
     '<label for="pe-name">' + esc(L("peName")) + '</label><input id="pe-name" type="text" maxlength="24" value="' + esc(PE.name) + '">' +
     '<label for="pe-bio">' + esc(L("peBio")) + '</label><textarea id="pe-bio" rows="2" maxlength="90">' + esc(PE.bio || "") + '</textarea>' +
+    '<label>' + esc(L("peEmoji")) + '</label><div class="ems">' + EMOJIS.map(function(e){ return '<button type="button" class="emb' + (PE.em === e && !PE.av ? " on" : "") + '" data-e="' + e + '">' + e + '</button>'; }).join("") + '</div>' +
     '<label>' + esc(L("peColor")) + '</label><div class="sws">' + sws + '</div>' +
-    '<label class="chk"><input type="checkbox" id="pe-vis"' + (PE.vis !== false ? " checked" : "") + '> ' + esc(L("peVis")) + '</label><p class="cnt">' + esc(L("peVisHelp")) + '</p>' +
+    '<label class="chk"><input type="checkbox" id="pe-vis"' + (PE.vis !== false ? " checked" : "") + '> ' + esc(L("peVis2")) + '</label><p class="cnt">' + esc(L("peVisHelp2")) + '</p>' +
     '<p class="msg" id="pe-msg" hidden></p></div>' +
     '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pe-save">' + esc(L("peSave")) + '</button></div></div>';
   var msg = $("#pe-msg");
@@ -3604,48 +3596,124 @@ function renderPedit(){
   $("#pe-file").onchange = async function(){
     var f = this.files && this.files[0]; this.value = "";
     if (!f) return; keep();
-    try { PE.av = await avatarFromFile(f); renderPedit(); } catch (e) { msg.textContent = L("peErr"); msg.className = "msg err"; msg.hidden = false; }
+    try { PE.av = await avatarFromFile(f); PE.em = ""; renderPedit(); } catch (e) { msg.textContent = L("peErr"); msg.className = "msg err"; msg.hidden = false; }
   };
-  $("#pe-rm").onclick = function(){ keep(); PE.av = ""; renderPedit(); };
+  $("#pe-rm").onclick = function(){ keep(); PE.av = ""; PE.em = ""; renderPedit(); };
+  app.querySelectorAll(".emb").forEach(function(b){ b.onclick = function(){ keep(); PE.em = b.getAttribute("data-e"); PE.av = ""; renderPedit(); }; });
   app.querySelectorAll(".sw").forEach(function(b){ b.onclick = function(){ keep(); PE.color = b.getAttribute("data-c"); renderPedit(); }; });
   $("#pe-save").onclick = async function(){
     keep();
     var nm = PE.name.trim();
     msg.hidden = false; msg.className = "msg err";
     if (nm.length < 2 || nm.length > 24) { msg.textContent = L("peName0"); return; }
-    var me = {name: nm, bio: PE.bio.trim().slice(0, 90), av: PE.av || "", color: PE.color, vis: PE.vis !== false, t: Date.now()};
+    var me = {name: nm, bio: PE.bio.trim().slice(0, 90), av: PE.av || "", em: PE.av ? "" : (PE.em || ""), color: PE.color, vis: PE.vis !== false, t: Date.now()};
     jset(PK("cad-me"), me); USER.name = nm; jset("cad-user", USER); LS.set("cad-lastname", nm);
     this.disabled = true; msg.className = "msg"; msg.textContent = L("peSaved");
     await pushPub(); PE = null; go("profile");
   };
 }
 function metricOf(row, tab){ return tab === "week" ? stWeek(row.st) : tab === "streak" ? stStreak(row.st) : (Number(row.st.xp) || 0); }
+/* ---------- Amigos ---------- */
+async function friendData(){
+  var r = await Promise.all([dbReq("GET", "fl/" + USER.slug), dbReq("GET", "fr/" + USER.slug), dbReq("GET", "fo/" + USER.slug)]);
+  return {fl: r[0] || {}, fr: r[1] || {}, fo: r[2] || {}};
+}
+async function sendReq(t){
+  if (t === USER.slug) return;
+  await dbReq("PUT", "fr/" + t + "/" + USER.slug, {t: Date.now(), name: getMe().name || USER.name});
+  await dbReq("PUT", "fo/" + USER.slug + "/" + t, 1);
+}
+async function acceptReq(f){
+  await dbReq("PUT", "fl/" + USER.slug + "/" + f, 1);
+  await dbReq("PUT", "fl/" + f + "/" + USER.slug, 1);
+  await dbReq("DELETE", "fr/" + USER.slug + "/" + f);
+  await dbReq("DELETE", "fo/" + f + "/" + USER.slug);
+}
+async function declineReq(f){ await dbReq("DELETE", "fr/" + USER.slug + "/" + f); await dbReq("DELETE", "fo/" + f + "/" + USER.slug); }
+async function cancelReq(t){ await dbReq("DELETE", "fr/" + t + "/" + USER.slug); await dbReq("DELETE", "fo/" + USER.slug + "/" + t); }
+async function removeFriend(f){ await dbReq("DELETE", "fl/" + USER.slug + "/" + f); await dbReq("DELETE", "fl/" + f + "/" + USER.slug); }
+var PTAB = "fr", PQ = "", PUBC = null, PUBAT = 0;
+async function getPub(){
+  if (PUBC && Date.now() - PUBAT < 20000) return PUBC;
+  PUBC = (await dbReq("GET", "pub")) || {}; PUBAT = Date.now(); return PUBC;
+}
 async function renderPeople(){
   var head = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("peopleTitle")) + '</h2></div></div>';
   if (!dbOn()) { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleOff")) + '</p></div>'; $("#exit").onclick = toLib; return; }
   app.innerHTML = head + '<div class="wrap body center"><div class="spin"></div></div>';
   $("#exit").onclick = toLib;
-  var my = ++NAV, all;
-  try { all = await dbReq("GET", "pub"); } catch (e) { if (my === NAV && st.view === "people") { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleErr")) + '</p></div>'; $("#exit").onclick = toLib; } return; }
+  var my = ++NAV, all, fd;
+  try { fd = await friendData(); PUBAT = 0; all = await getPub(); } catch (e) { if (my === NAV && st.view === "people") { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleErr")) + '</p></div>'; $("#exit").onclick = toLib; } return; }
   if (my !== NAV || st.view !== "people") return;
-  var rows = [];
-  Object.keys(all || {}).forEach(function(k){ var r = all[k]; if (r && r.me && r.st && k !== USER.slug) rows.push({slug: k, me: r.me, st: r.st}); });
-  var mm = getMe();
-  if (mm.vis !== false) rows.push({slug: USER.slug, me: mm, st: pubStats()});
-  rows.sort(function(a, b){ return metricOf(b, PT) - metricOf(a, PT); });
-  var unit = PT === "week" ? "unitWeek" : PT === "streak" ? "unitStreak" : "unitXp";
-  app.innerHTML = head + '<div class="wrap body"><p class="lead left">' + esc(L("peopleSub")) + '</p>' +
-    '<div class="seg ptabs" role="group">' + [["week", "tabWeek"], ["streak", "tabStreak"], ["xp", "tabXp"]].map(function(t){ return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (PT === t[0]) + '">' + esc(L(t[1])) + '</button>'; }).join("") + '</div>' +
-    (rows.length ? rows.map(function(r, i){
-      return '<button type="button" class="prow' + (r.slug === USER.slug ? " mine" : "") + '" data-s="' + esc(r.slug) + '"><span class="rk r' + (i + 1) + '">' + (i + 1) + '</span>' + avatarHtml(r.me, "m") +
-        '<span class="pn"><strong>' + esc(String(r.me.name || r.slug).slice(0, 24)) + (r.slug === USER.slug ? ' <em>(' + esc(L("you")) + ')</em>' : "") + '</strong><small>' + esc(String(r.me.bio || "").slice(0, 60)) + '</small></span><b class="pv">' + esc(L(unit, {n: metricOf(r, PT)})) + '</b></button>';
-    }).join("") : '<p class="lead">' + esc(L("peopleNone")) + '</p>') + '</div>';
+  FRN = Object.keys(fd.fr).length;
+  var nameOf = function(slug){ var r = all[slug]; return (r && r.me && r.me.name) || slug; };
+  var tabs = [["fr", L("frTab")], ["req", L("reqTab") + (FRN ? " (" + FRN + ")" : "")], ["find", L("findTab")]];
+  var body = "";
+  function row(slug, me, extra, right, cls){
+    return '<div class="prow' + (cls || "") + '" data-s="' + esc(slug) + '"><button type="button" class="pgo" data-s="' + esc(slug) + '">' + (extra || "") + avatarHtml(me, "m") +
+      '<span class="pn"><strong>' + esc(String(me.name || slug).slice(0, 24)) + '</strong><small>@' + esc(slug) + (me.bio ? ' · ' + esc(String(me.bio).slice(0, 50)) : "") + '</small></span></button>' + (right || "") + '</div>';
+  }
+  if (PTAB === "fr") {
+    var rows = [], mm = getMe();
+    Object.keys(fd.fl).forEach(function(k){ var r = all[k]; if (r && r.me && r.st) rows.push({slug: k, me: r.me, st: r.st}); });
+    rows.push({slug: USER.slug, me: mm, st: pubStats()});
+    rows.sort(function(a, b){ return metricOf(b, PT) - metricOf(a, PT); });
+    var unit = PT === "week" ? "unitWeek" : PT === "streak" ? "unitStreak" : "unitXp";
+    body = '<p class="lead left">' + esc(L("peopleSub2")) + '</p>' +
+      '<div class="seg ptabs" role="group">' + [["week", "tabWeek"], ["streak", "tabStreak"], ["xp", "tabXp"]].map(function(t){ return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (PT === t[0]) + '">' + esc(L(t[1])) + '</button>'; }).join("") + '</div>' +
+      rows.map(function(r, i){ return row(r.slug, r.me, '<span class="rk r' + (i + 1) + '">' + (i + 1) + '</span>', '<b class="pv">' + esc(L(unit, {n: metricOf(r, PT)})) + '</b>', r.slug === USER.slug ? " mine" : ""); }).join("") +
+      (rows.length < 2 ? '<p class="lead">' + esc(L("frNone")) + '</p>' : "");
+  } else if (PTAB === "req") {
+    var inn = Object.keys(fd.fr), out = Object.keys(fd.fo);
+    body = '<h3 class="sec">' + esc(L("reqIn")) + '</h3>' +
+      (inn.length ? inn.map(function(k){ var r = all[k], me = (r && r.me) || {name: (fd.fr[k] && fd.fr[k].name) || k};
+        return row(k, me, "", '<span class="acts"><button type="button" class="btn primary sm" data-a="ok" data-s="' + esc(k) + '">' + esc(L("accept")) + '</button><button type="button" class="btn sm" data-a="no" data-s="' + esc(k) + '">' + esc(L("decline")) + '</button></span>'); }).join("") : '<p class="cnt">' + esc(L("reqNone")) + '</p>') +
+      (out.length ? '<h3 class="sec">' + esc(L("reqOut")) + '</h3>' + out.map(function(k){ var r = all[k], me = (r && r.me) || {name: k};
+        return row(k, me, "", '<span class="acts"><button type="button" class="btn sm" data-a="cx" data-s="' + esc(k) + '">' + esc(L("cancel")) + '</button></span>'); }).join("") : "");
+  } else {
+    body = '<div class="searchbox"><input id="pq" type="search" autocomplete="off" placeholder="' + esc(L("findPh")) + '" value="' + esc(PQ) + '"></div><div id="pres"></div>';
+  }
+  app.innerHTML = head + '<div class="wrap body"><div class="seg ftabs" role="group">' + tabs.map(function(t){ return '<button type="button" data-p="' + t[0] + '" aria-pressed="' + (PTAB === t[0]) + '">' + esc(t[1]) + '</button>'; }).join("") + '</div>' + body + '</div>';
   $("#exit").onclick = toLib;
-  app.querySelectorAll(".ptabs button").forEach(function(b){ b.onclick = function(){ PT = b.getAttribute("data-t"); renderPeople(); }; });
-  app.querySelectorAll(".prow").forEach(function(b){ b.onclick = function(){ openProfile(b.getAttribute("data-s"), "people"); }; });
+  var again = function(){ renderPeople(); };
+  app.querySelectorAll(".ftabs button").forEach(function(b){ b.onclick = function(){ PTAB = b.getAttribute("data-p"); again(); }; });
+  app.querySelectorAll(".ptabs button").forEach(function(b){ b.onclick = function(){ PT = b.getAttribute("data-t"); again(); }; });
+  app.querySelectorAll(".pgo").forEach(function(b){ b.onclick = function(){ openProfile(b.getAttribute("data-s"), "people"); }; });
+  app.querySelectorAll("[data-a]").forEach(function(b){ b.onclick = async function(){
+    var a = b.getAttribute("data-a"), k = b.getAttribute("data-s"); b.disabled = true;
+    try { if (a === "ok") await acceptReq(k); else if (a === "no") await declineReq(k); else await cancelReq(k); } catch (e) {}
+    again();
+  }; });
+  var pq = $("#pq");
+  if (pq) {
+    var paint = function(){
+      PQ = pq.value; var q = norm(PQ.trim()), box = $("#pres");
+      if (q.length < 2) { box.innerHTML = '<p class="cnt">' + esc(L("findHint")) + '</p>'; return; }
+      var res = [];
+      Object.keys(all).forEach(function(k){ var r = all[k]; if (k === USER.slug || !r || !r.me) return; if (norm(k).indexOf(q) >= 0 || norm(r.me.name).indexOf(q) >= 0) res.push({slug: k, me: r.me}); });
+      res = res.slice(0, 20);
+      box.innerHTML = res.length ? res.map(function(r){
+        var k = r.slug, btn;
+        if (fd.fl[k]) btn = '<span class="tag">' + esc(L("isFr")) + '</span>';
+        else if (fd.fr[k]) btn = '<button type="button" class="btn primary sm" data-q="ok" data-s="' + esc(k) + '">' + esc(L("accept")) + '</button>';
+        else if (fd.fo[k]) btn = '<button type="button" class="btn sm" data-q="cx" data-s="' + esc(k) + '">' + esc(L("sent")) + '</button>';
+        else btn = '<button type="button" class="btn primary sm" data-q="add" data-s="' + esc(k) + '">' + esc(L("addFr")) + '</button>';
+        return row(k, r.me, "", btn);
+      }).join("") : '<p class="cnt">' + esc(L("findNone")) + '</p>';
+      box.querySelectorAll(".pgo").forEach(function(b){ b.onclick = function(){ openProfile(b.getAttribute("data-s"), "people"); }; });
+      box.querySelectorAll("[data-q]").forEach(function(b){ b.onclick = async function(){
+        var a = b.getAttribute("data-q"), k = b.getAttribute("data-s"); b.disabled = true;
+        try {
+          if (a === "add") { await sendReq(k); fd.fo[k] = 1; } else if (a === "cx") { await cancelReq(k); delete fd.fo[k]; } else { await acceptReq(k); fd.fl[k] = 1; delete fd.fr[k]; }
+        } catch (e) {}
+        paint();
+      }; });
+    };
+    pq.oninput = paint; paint();
+  }
 }
 
-var EXTRA_VIEWS = {people: renderPeople, profile: renderProfile, pedit: renderPedit, login: renderLogin, rev: renderRev, revdone: renderRevDone, errs: renderErrs, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes, edit: renderEdit, editmod: renderEditMod};
+var EXTRA_VIEWS = {people: renderPeople, profile: renderProfile, pedit: renderPedit, login: renderLogin, rev: renderRev, revdone: renderRevDone, errs: renderErrs, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes};
 /* Botão Voltar do aparelho: sobe um nível em vez de sair do site */
 try { history.replaceState({r: 1}, ""); history.pushState({a: 1}, ""); } catch (e) {}
 window.addEventListener("popstate", function(){
