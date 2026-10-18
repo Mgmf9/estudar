@@ -727,6 +727,31 @@ mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
 .acct .goalsel{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:14px;margin-left:auto}
 .acct select{border:2px solid var(--edge);border-radius:10px;background:var(--surface);color:var(--ink);font:700 15px var(--f);padding:4px 8px}
 .acct .btn.ghost{min-height:36px;padding:2px 8px}
+.av{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--edge);border-radius:50%;background:var(--c,#316ee8);color:#fff;font:800 16px var(--f);overflow:hidden;flex:none}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.av.s{width:36px;height:36px}.av.m{width:46px;height:46px;font-size:19px}.av.l{width:96px;height:96px;font-size:40px;box-shadow:3px 3px 0 var(--shadow-c)}
+.meb{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;color:var(--ink);font:800 16px var(--f);cursor:pointer;padding:0}
+.pfhead,.pedav{display:flex;gap:14px;align-items:center;margin:6px 0 14px}
+.pfname{margin:0;font-size:26px}.pfbio{margin:4px 0;color:var(--muted);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.tile{border:2px solid var(--edge);border-radius:12px;background:var(--surface);box-shadow:2px 2px 0 var(--shadow-c);padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.tile b{font-size:22px}.tile span{font-size:12.5px;color:var(--muted);font-weight:700}
+.ptabs{margin:10px 0}
+.prow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:2px solid var(--edge);border-radius:14px;background:var(--surface);color:var(--ink);padding:8px 10px;margin:8px 0;cursor:pointer;font-family:var(--f)}
+.prow.mine{background:var(--blue-bg,#e3effb)}
+.prow .pn{flex:1;min-width:0;display:flex;flex-direction:column}
+.prow .pn strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prow .pn small{color:var(--muted);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prow .pn em{font-style:normal;color:var(--muted);font-weight:700}
+.prow .pv{font-size:14px;white-space:nowrap}
+.rk{width:26px;text-align:center;font-weight:800;color:var(--muted)}
+.rk.r1{color:#d9a400}.rk.r2{color:#8a96a3}.rk.r3{color:#b8723a}
+.sws{display:flex;gap:10px;margin:6px 0}
+.sw{width:38px;height:38px;border-radius:50%;border:3px solid var(--edge);background:var(--c);cursor:pointer;padding:0}
+.sw.on{outline:3px solid var(--ink);outline-offset:2px}
+.chk{display:flex!important;align-items:center;gap:8px;color:var(--ink)!important}
+.chk input{width:22px!important;height:22px;box-shadow:none!important}
+.peb{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
 </style>
 </head>
 <body>
@@ -2190,16 +2215,66 @@ function loadOcrLib(){
 }
 async function prepImage(file){
   var bmp = await createImageBitmap(file);
-  var w = bmp.width, h = bmp.height, big = Math.max(w, h), k = 1;
-  if (big > 2200) k = 2200 / big; else if (big < 1100) k = Math.min(2, 1400 / big);
+  var w = bmp.width, h = bmp.height, big = Math.max(w, h), k = 2600 / big;
+  if (k > 2.2) k = 2.2;
   var c = document.createElement("canvas");
   c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
   var x = c.getContext("2d");
   x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height);
-  try { x.filter = "grayscale(1) contrast(1.35)"; } catch (err) {}
   x.drawImage(bmp, 0, 0, c.width, c.height);
   if (bmp.close) bmp.close();
-  return c;
+  var ang = 0;
+  try { ang = detectSkew(c); } catch (err) {}
+  if (Math.abs(ang) >= 0.4) {
+    var rad = ang * Math.PI / 180, cs = Math.abs(Math.cos(rad)), sn = Math.abs(Math.sin(rad));
+    var r = document.createElement("canvas");
+    r.width = Math.round(c.width * cs + c.height * sn); r.height = Math.round(c.width * sn + c.height * cs);
+    var rx = r.getContext("2d");
+    rx.fillStyle = "#fff"; rx.fillRect(0, 0, r.width, r.height);
+    rx.translate(r.width / 2, r.height / 2); rx.rotate(rad); rx.drawImage(c, -c.width / 2, -c.height / 2);
+    c = r; x = rx; x.setTransform(1, 0, 0, 1, 0, 0);
+  }
+  /* contraste em tons de cinza: desenha o resultado de volta com filtro */
+  var o = document.createElement("canvas"); o.width = c.width; o.height = c.height;
+  var ox = o.getContext("2d");
+  try { ox.filter = "grayscale(1) contrast(1.3)"; } catch (err) {}
+  ox.drawImage(c, 0, 0);
+  return o;
+}
+/* Descobre a inclinação das linhas de texto (graus) pela projeção horizontal dos pixels escuros */
+function detectSkew(cv){
+  var sc = 700 / Math.max(cv.width, cv.height), w = Math.max(1, Math.round(cv.width * sc)), h = Math.max(1, Math.round(cv.height * sc));
+  var sm = document.createElement("canvas"); sm.width = w; sm.height = h;
+  var sx = sm.getContext("2d"); sx.drawImage(cv, 0, 0, w, h);
+  var d = sx.getImageData(0, 0, w, h).data, n = w * h, sum = 0, i;
+  for (i = 0; i < n; i++) sum += d[i * 4 + 1];
+  var thr = (sum / n) * 0.75, xs = [], ys = [];
+  for (i = 0; i < n; i++) if (d[i * 4 + 1] < thr) { xs.push(i % w); ys.push((i / w) | 0); }
+  if (xs.length < 400) return 0;
+  function score(a){
+    var rad = a * Math.PI / 180, cs = Math.cos(rad), sn = Math.sin(rad), off = w * 0.8, bins = new Float32Array(h + Math.ceil(w * 1.6) + 4), m;
+    for (m = 0; m < xs.length; m++) bins[Math.max(0, Math.round(xs[m] * sn + ys[m] * cs + off))]++;
+    var mean = xs.length / bins.length, v = 0;
+    for (m = 0; m < bins.length; m++) v += (bins[m] - mean) * (bins[m] - mean);
+    return v;
+  }
+  var best = 0, bs = -1, a;
+  for (a = -12; a <= 12; a += 1) { var sc1 = score(a); if (sc1 > bs) { bs = sc1; best = a; } }
+  var c0 = best;
+  for (a = c0 - 1; a <= c0 + 1; a += 0.25) { var sc2 = score(a); if (sc2 > bs) { bs = sc2; best = a; } }
+  return best;
+}
+var STOP_PT = "que não para com uma dos das por mais como são seu sua nos nas ao ou também quando foi pelo pela entre sobre".split(" ");
+var STOP_IT = "che non per con una della dei delle sono come più nel nella del il gli anche ogni essere dopo nei alla alle dal dalla suo sua tra fra".split(" ");
+function langScore(text, list){
+  var set = {}; list.forEach(function(w){ set[w] = 1; });
+  var ws = String(text || "").toLowerCase().match(/[a-zà-ú]+/g) || [], n = 0;
+  ws.forEach(function(w){ if (set[w]) n++; });
+  return n;
+}
+function textOk(text, conf){
+  var ws = String(text || "").match(/[A-Za-zÀ-ú]{3,}/g) || [];
+  return (ws.length >= 15) || (ws.length >= 6 && conf >= 45);
 }
 function tidyOcr(t){
   var lines = String(t || "").replace(/\r/g, "").replace(/-\n(?=[a-zà-ú])/g, "").split("\n").map(function(l){ return l.replace(/[ \t]+/g, " ").trim(); });
@@ -2215,22 +2290,47 @@ function tidyOcr(t){
 async function ocrFiles(files, lang, say){
   say(L("imgLoad"));
   await loadOcrLib();
-  var code = lang === "it" ? "ita" : "por", prog = 0;
-  var worker = await Tesseract.createWorker(code, 1, {
-    langPath: "https://cdn.jsdelivr.net/npm/@tesseract.js-data/" + code + "/4.0.0_best_int",
-    logger: function(m){ if (m && m.status === "recognizing text") prog = Math.round((m.progress || 0) * 100); }
-  });
-  var texts = [], timer = null, cur = 0;
+  var prog = 0, workers = {};
+  async function getW(code, psm){
+    var key = code + psm;
+    if (!workers[key]) workers[key] = await Tesseract.createWorker(code, 1, {
+      langPath: "https://cdn.jsdelivr.net/npm/@tesseract.js-data/" + code + "/4.0.0_best_int",
+      logger: function(m){ if (m && m.status === "recognizing text") prog = Math.round((m.progress || 0) * 100); }
+    }, psm ? {tessedit_pageseg_mode: psm} : {});
+    return workers[key];
+  }
+  /* roda leitura automática e leitura em bloco único; fica com a que tem mais palavras reais do idioma */
+  async function best(cv, code){
+    var cands = [];
+    for (var m = 0; m < 2; m++) {
+      var r = await (await getW(code, m ? "6" : "")).recognize(cv);
+      var t = tidyOcr(r && r.data && r.data.text), conf = (r && r.data && r.data.confidence) || 0;
+      var sc = langScore(t, code === "ita" ? STOP_IT : STOP_PT);
+      cands.push({t: t, conf: conf, sc: sc, w: (t.match(/[A-Za-zÀ-ú]{3,}/g) || []).length});
+    }
+    cands.sort(function(a, b){ return (b.sc - a.sc) || (b.w - a.w); });
+    return cands[0];
+  }
+  var primary = lang === "it" ? "ita" : "por", texts = [], timer = null, cur = 0;
   try {
     timer = setInterval(function(){ say(L("imgRead", {n: cur + 1, t: files.length, p: prog})); }, 300);
     for (cur = 0; cur < files.length; cur++) {
       prog = 0; say(L("imgRead", {n: cur + 1, t: files.length, p: 0}));
       var cv = await prepImage(files[cur]);
-      var r = await worker.recognize(cv);
-      var t = tidyOcr(r && r.data && r.data.text);
-      texts.push(t.length >= 15 ? t : "");
+      var b1 = await best(cv, primary);
+      /* idioma errado? se o outro idioma tem bem mais palavras típicas, refaz com ele */
+      var other = primary === "ita" ? "por" : "ita";
+      var so = langScore(b1.t, other === "ita" ? STOP_IT : STOP_PT);
+      if (so >= 6 && so > b1.sc * 1.5) {
+        var b2 = await best(cv, other);
+        if (b2.sc >= b1.sc) { b1 = b2; primary = other; }
+      }
+      texts.push(textOk(b1.t, b1.conf) ? b1.t : "");
     }
-  } finally { if (timer) clearInterval(timer); try { await worker.terminate(); } catch (err) {} }
+  } finally {
+    if (timer) clearInterval(timer);
+    for (var k in workers) { try { await workers[k].terminate(); } catch (err) {} }
+  }
   return texts;
 }
 
@@ -2458,7 +2558,7 @@ function updateAI(){
 }
 
 /* ---------- Roteamento ---------- */
-var GLOBAL_VIEWS = ["rev", "revdone", "errs"];
+var GLOBAL_VIEWS = ["rev", "revdone", "errs", "people", "profile", "pedit"];
 var SUBJ_VIEWS = ["lesson", "quiz", "level", "done", "all", "flash", "sim", "simq", "simres", "edit", "editmod"];
 function render(){
   var v = st.view;
@@ -2528,6 +2628,10 @@ var X = {
     loginName: "Nome de usuário", loginPass: "Senha (mínimo 4 caracteres)", loginPass2: "Repita a senha", loginBtn: "Entrar", loginNew: "Criar conta", loginNewHint: "Não existe conta com esse nome. Repita a senha para criar uma.",
     loginBadName: "Use um nome com pelo menos 2 letras ou números.", loginShort: "A senha precisa ter pelo menos 4 caracteres.", loginWrong: "Senha incorreta.", loginMismatch: "As senhas não são iguais.", loginErr: "Não consegui falar com o servidor do caderno. Tente de novo.", loginBusy: "Entrando…",
     hello: "Olá, {n}", logout: "Sair", loginAdopt: "O progresso que já estava neste aparelho foi levado para a conta.",
+    meBtn: "Meu perfil", peopleBtn: "Pessoas", peopleTitle: "Pessoas", peopleSub: "Veja o progresso de quem estuda no caderno.", tabWeek: "Semana", tabStreak: "Sequência", tabXp: "XP", peopleNone: "Ainda não há mais ninguém aqui.", peopleOff: "A lista de pessoas precisa do Firebase configurado.", peopleErr: "Não consegui carregar a lista agora.", you: "você",
+    unitWeek: "{n} perg.", unitStreak: "{n} dias", unitXp: "{n} XP",
+    pfTitle: "Perfil", pfEdit: "Editar perfil", pfStreak: "Sequência", pfXp: "XP total", pfMods: "Módulos feitos", pfToday: "Hoje", pfWeek: "Na semana", pfTotal: "Perguntas", pfAcc: "Acerto", pfSubj: "Assuntos", pfNoBio: "Sem descrição ainda.", pfActive: "Último acesso: {t}", pfToday2: "hoje", pfYest: "ontem", pfDays: "há {n} dias", pfLoad: "Carregando perfil…", pfErr: "Não consegui abrir este perfil.", pfHidden: "Seu perfil está oculto: só você vê.",
+    peName: "Nome no perfil", peBio: "Sobre você (até 90 caracteres)", peColor: "Cor do perfil", pePhoto: "Trocar foto", peRemove: "Remover foto", peVis: "Aparecer na lista de pessoas", peVisHelp: "Quando ligado, os outros veem seu perfil e seu progresso.", peSave: "Salvar perfil", peSaved: "Perfil salvo!", peErr: "Não consegui salvar. Tente de novo.", peName0: "Escreva um nome (2 a 24 caracteres).",
     pdfPrint: "Não foi possível abrir a janela de impressão. Permita pop-ups e tente de novo.",
     pdfAnswerL: "Resposta", pdfQs: "Perguntas"
   },
@@ -2576,6 +2680,10 @@ var X = {
     loginName: "Nome utente", loginPass: "Password (minimo 4 caratteri)", loginPass2: "Ripeti la password", loginBtn: "Accedi", loginNew: "Crea account", loginNewHint: "Non esiste un account con questo nome. Ripeti la password per crearne uno.",
     loginBadName: "Usa un nome con almeno 2 lettere o numeri.", loginShort: "La password deve avere almeno 4 caratteri.", loginWrong: "Password errata.", loginMismatch: "Le password non coincidono.", loginErr: "Non riesco a contattare il server del quaderno. Riprova.", loginBusy: "Accesso…",
     hello: "Ciao, {n}", logout: "Esci", loginAdopt: "I progressi già presenti su questo dispositivo sono stati portati nell'account.",
+    meBtn: "Il mio profilo", peopleBtn: "Persone", peopleTitle: "Persone", peopleSub: "Guarda i progressi di chi studia nel quaderno.", tabWeek: "Settimana", tabStreak: "Serie", tabXp: "XP", peopleNone: "Non c'è ancora nessun altro qui.", peopleOff: "L'elenco delle persone richiede Firebase configurato.", peopleErr: "Non riesco a caricare l'elenco ora.", you: "tu",
+    unitWeek: "{n} dom.", unitStreak: "{n} giorni", unitXp: "{n} XP",
+    pfTitle: "Profilo", pfEdit: "Modifica profilo", pfStreak: "Serie", pfXp: "XP totali", pfMods: "Moduli fatti", pfToday: "Oggi", pfWeek: "In settimana", pfTotal: "Domande", pfAcc: "Corrette", pfSubj: "Argomenti", pfNoBio: "Ancora nessuna descrizione.", pfActive: "Ultimo accesso: {t}", pfToday2: "oggi", pfYest: "ieri", pfDays: "{n} giorni fa", pfLoad: "Carico il profilo…", pfErr: "Non riesco ad aprire questo profilo.", pfHidden: "Il tuo profilo è nascosto: lo vedi solo tu.",
+    peName: "Nome nel profilo", peBio: "Su di te (fino a 90 caratteri)", peColor: "Colore del profilo", pePhoto: "Cambia foto", peRemove: "Rimuovi foto", peVis: "Compari nell'elenco delle persone", peVisHelp: "Se attivo, gli altri vedono il tuo profilo e i tuoi progressi.", peSave: "Salva profilo", peSaved: "Profilo salvato!", peErr: "Non sono riuscito a salvare. Riprova.", peName0: "Scrivi un nome (da 2 a 24 caratteri).",
     pdfPrint: "Impossibile aprire la finestra di stampa. Consenti i pop-up e riprova.",
     pdfAnswerL: "Risposta", pdfQs: "Domande"
   }
@@ -2630,6 +2738,7 @@ async function pushSync(){
   var blob = {};
   syncKeys().forEach(function(k){ var v = LS.get(k); if (v != null) blob[k] = {t: Number(LS.get("cad-t:" + k)) || 0, v: v}; });
   try { await dbReq("PUT", "users/" + USER.slug + "/data", blob); } catch (e) {}
+  await pushPub();
 }
 async function pullSync(){
   if (!USER || !dbOn()) return false;
@@ -2639,6 +2748,13 @@ async function pullSync(){
     var r = rem[k]; if (!r || typeof r.v !== "string" || !SYNC_RE.test(k) || k.slice(-USER.slug.length - 1) !== "@" + USER.slug) return;
     if ((Number(r.t) || 0) > (Number(LS.get("cad-t:" + k)) || 0)) { LS.set(k, r.v); LS.set("cad-t:" + k, String(r.t)); changed = true; }
   });
+  try {
+    var rm = await dbReq("GET", "users/" + USER.slug + "/me"), lm = jget(PK("cad-me"), null);
+    if (rm && typeof rm === "object" && (!lm || (Number(rm.t) || 0) > (Number(lm.t) || 0))) {
+      jset(PK("cad-me"), rm); if (rm.name) { USER.name = rm.name; jset("cad-user", USER); } changed = true;
+    }
+  } catch (e) {}
+  pushPub();
   return changed;
 }
 function adoptLocal(slug){
@@ -2788,15 +2904,18 @@ function dashHtml(){
     '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>' +
     '<p class="cnt">' + esc(d.q >= g ? L("goalDone") : L("goalLeft", {n: g - d.q})) + '</p>' +
     '<div class="tools"><button type="button" class="btn' + (n ? " primary" : "") + '" id="d-rev"' + (n ? "" : "") + '>' + esc(n ? L("dueBtn", {n: n}) : L("dueNone")) + '</button>' +
-    '<button type="button" class="btn" id="d-errs">' + esc(L("errsBtn", {n: er})) + '</button></div>' +
+    '<button type="button" class="btn" id="d-errs">' + esc(L("errsBtn", {n: er})) + '</button>' +
+    '<button type="button" class="btn" id="d-people">' + esc(L("peopleBtn")) + '</button></div>' +
     '<div class="searchbox"><input id="sq" type="search" autocomplete="off" placeholder="' + esc(L("searchPh")) + '" value="' + esc(SQ) + '"></div><div id="sres" class="sres-list"></div>' +
-    '<div class="acct"><span>' + esc(L("hello", {n: USER ? USER.name : ""})) + '</span><label class="goalsel">' + esc(L("goalLbl")) + ' <select id="goal">' + [5, 10, 15, 20, 30, 50].map(function(x){ return '<option value="' + x + '"' + (x === g ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></label><button type="button" class="btn ghost" id="logout">' + esc(L("logout")) + '</button></div>' +
+    '<div class="acct"><button type="button" class="meb" id="me" aria-label="' + esc(L("meBtn")) + '">' + avatarHtml(getMe(), "s") + '<span>' + esc(L("hello", {n: getMe().name || (USER ? USER.name : "")})) + '</span></button><label class="goalsel">' + esc(L("goalLbl")) + ' <select id="goal">' + [5, 10, 15, 20, 30, 50].map(function(x){ return '<option value="' + x + '"' + (x === g ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></label><button type="button" class="btn ghost" id="logout">' + esc(L("logout")) + '</button></div>' +
   '</div>';
 }
 function bindDash(){
   var b;
   if ((b = $("#d-rev"))) b.onclick = function(){ var l = dueList(); if (l.length) startReview(l.slice(0, 20), "due"); else go("rev"); };
   if ((b = $("#d-errs"))) b.onclick = function(){ go("errs"); };
+  if ((b = $("#d-people"))) b.onclick = function(){ go("people"); };
+  if ((b = $("#me"))) b.onclick = function(){ openProfile(USER.slug, "lib"); };
   if ((b = $("#logout"))) b.onclick = logout;
   if ((b = $("#goal"))) b.onchange = function(){ var s = stats(); s.goal = Number(b.value) || 10; putStats(s); renderLib(); };
   var sq = $("#sq");
@@ -3382,7 +3501,151 @@ function bindNewExtras(te, sl, upd, er){
   };
 }
 
-var EXTRA_VIEWS = {login: renderLogin, rev: renderRev, revdone: renderRevDone, errs: renderErrs, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes, edit: renderEdit, editmod: renderEditMod};
+/* ---------- Perfis e pessoas (estilo comunidade) ---------- */
+function meDefault(){
+  var h = 0, sl = USER ? USER.slug : "x"; for (var i = 0; i < sl.length; i++) h = (h * 31 + sl.charCodeAt(i)) % PALETTE.length;
+  return {name: USER ? USER.name : "", bio: "", av: "", color: PALETTE[h], vis: true, t: 0};
+}
+function getMe(){
+  var m = jget(PK("cad-me"), null);
+  if (!m || typeof m !== "object") m = meDefault();
+  if (!m.name) m.name = USER ? USER.name : "";
+  return m;
+}
+function avatarHtml(me, size){
+  var ok = me.av && /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(me.av) && me.av.length < 60000;
+  var col = /^#[0-9a-f]{6}$/i.test(me.color || "") ? me.color : "#316ee8";
+  return '<span class="av ' + size + '" style="--c:' + col + '">' + (ok ? '<img alt="" src="' + me.av + '">' : esc(String(me.name || "?").trim().charAt(0).toUpperCase())) + '</span>';
+}
+function pubStats(){
+  var s = stats(), total = 0, okAll = 0, d14 = {}, i, xp = 0, mods = 0, subj = [];
+  Object.keys(s.days).forEach(function(k){ total += s.days[k].q; okAll += s.days[k].ok; });
+  for (i = 0; i < 14; i++) { var k = dayKey(Date.now() - i * DAY); if (s.days[k]) d14[k] = s.days[k].q; }
+  LIB.forEach(function(m){
+    var p = readProg(m.id), n = m.n || 0, u = Math.min(Number(p.unlocked) || 0, n);
+    xp += Number(p.xp) || 0; mods += u;
+    if (subj.length < 12) subj.push({t: String(m.title).slice(0, 60), p: n ? Math.round(u / n * 100) : 0});
+  });
+  return {xp: xp, mods: mods, streak: streakDays(), d: d14, total: total, acc: total ? Math.round(okAll / total * 100) : 0, subj: subj, t: Date.now()};
+}
+function stWeek(st1){ var n = 0; for (var i = 0; i < 7; i++) n += Number((st1.d || {})[dayKey(Date.now() - i * DAY)]) || 0; return n; }
+function stToday(st1){ return Number((st1.d || {})[dayKey()]) || 0; }
+function stStreak(st1){
+  var ld = dayKey(Number(st1.t) || 0);
+  return (ld === dayKey() || ld === dayKey(Date.now() - DAY)) ? (Number(st1.streak) || 0) : 0;
+}
+async function pushPub(){
+  if (!USER || !dbOn()) return;
+  var me = getMe();
+  try {
+    await dbReq("PUT", "users/" + USER.slug + "/me", me);
+    if (me.vis === false) await dbReq("DELETE", "pub/" + USER.slug);
+    else await dbReq("PUT", "pub/" + USER.slug, {me: {name: me.name, bio: me.bio, av: me.av, color: me.color}, st: pubStats()});
+  } catch (e) {}
+}
+async function avatarFromFile(file){
+  var bmp = await createImageBitmap(file), side = Math.min(bmp.width, bmp.height);
+  var c = document.createElement("canvas"); c.width = c.height = 128;
+  var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 128, 128);
+  x.drawImage(bmp, (bmp.width - side) / 2, (bmp.height - side) / 2, side, side, 0, 0, 128, 128);
+  if (bmp.close) bmp.close();
+  return c.toDataURL("image/jpeg", 0.82);
+}
+var VP = null, PFROM = "lib", PT = "week", PE = null;
+function openProfile(slug, from){ VP = slug; PFROM = from || "lib"; go("profile"); }
+function agoText(t){
+  var ld = dayKey(Number(t) || 0);
+  if (ld === dayKey()) return L("pfToday2");
+  if (ld === dayKey(Date.now() - DAY)) return L("pfYest");
+  return L("pfDays", {n: Math.max(2, Math.round((Date.now() - t) / DAY))});
+}
+function tile(label, val){ return '<div class="tile"><b>' + esc(val) + '</b><span>' + esc(label) + '</span></div>'; }
+async function renderProfile(){
+  var head = function(){ return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("pfTitle")) + '</h2></div></div>'; };
+  var mine = VP === USER.slug, me, s1;
+  function back(){ if (PFROM === "people") go("people"); else toLib(); }
+  if (mine) { me = getMe(); s1 = pubStats(); }
+  else {
+    app.innerHTML = head() + '<div class="wrap body center"><div class="spin"></div><p class="lead">' + esc(L("pfLoad")) + '</p></div>';
+    $("#exit").onclick = back;
+    var my = ++NAV, row;
+    try { row = await dbReq("GET", "pub/" + VP); } catch (e) { row = null; }
+    if (my !== NAV || st.view !== "profile") return;
+    if (!row || !row.me || !row.st) { app.innerHTML = head() + '<div class="wrap body center"><p class="lead">' + esc(L("pfErr")) + '</p></div>'; $("#exit").onclick = back; return; }
+    me = row.me; s1 = row.st;
+  }
+  var subj = (s1.subj || []).map(function(x){ return '<div class="byrow"><span>' + esc(String(x.t || "").slice(0, 60)) + '</span><b>' + (Number(x.p) || 0) + '%</b><span class="mb"><i style="width:' + Math.max(0, Math.min(100, Number(x.p) || 0)) + '%"></i></span></div>'; }).join("");
+  app.innerHTML = head() +
+    '<div class="wrap body"><div class="pfhead">' + avatarHtml(me, "l") + '<div><h2 class="pfname">' + esc(me.name || "") + '</h2><p class="pfbio">' + esc(me.bio || L("pfNoBio")) + '</p><p class="cnt">' + esc(L("pfActive", {t: agoText(s1.t)})) + '</p></div></div>' +
+    '<div class="tiles">' + tile(L("pfStreak"), stStreak(s1)) + tile(L("pfXp"), Number(s1.xp) || 0) + tile(L("pfMods"), Number(s1.mods) || 0) + tile(L("pfToday"), stToday(s1)) + tile(L("pfWeek"), stWeek(s1)) + tile(L("pfAcc"), (Number(s1.acc) || 0) + "%") + '</div>' +
+    '<p class="cnt">' + esc(L("pfTotal")) + ': ' + (Number(s1.total) || 0) + '</p>' +
+    (subj ? '<h3 class="sec">' + esc(L("pfSubj")) + '</h3>' + subj : "") +
+    (mine && me.vis === false ? '<p class="cnt">' + esc(L("pfHidden")) + '</p>' : "") + '</div>' +
+    (mine ? '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pf-edit">' + esc(L("pfEdit")) + '</button></div></div>' : "");
+  $("#exit").onclick = back;
+  var ed = $("#pf-edit"); if (ed) ed.onclick = function(){ PE = JSON.parse(JSON.stringify(getMe())); go("pedit"); };
+}
+function renderPedit(){
+  if (!PE) PE = JSON.parse(JSON.stringify(getMe()));
+  var sws = PALETTE.map(function(c){ return '<button type="button" class="sw' + (c === PE.color ? " on" : "") + '" data-c="' + c + '" style="--c:' + c + '" aria-label="' + c + '"></button>'; }).join("");
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("pfEdit")) + '</h2></div></div>' +
+    '<div class="wrap body edit"><div class="pedav" id="pe-av">' + avatarHtml(PE, "l") + '<div class="peb"><input type="file" id="pe-file" accept="image/*" hidden><button type="button" class="btn" id="pe-photo">' + ICON.cam + '<span>' + esc(L("pePhoto")) + '</span></button><button type="button" class="btn ghost" id="pe-rm">' + esc(L("peRemove")) + '</button></div></div>' +
+    '<label for="pe-name">' + esc(L("peName")) + '</label><input id="pe-name" type="text" maxlength="24" value="' + esc(PE.name) + '">' +
+    '<label for="pe-bio">' + esc(L("peBio")) + '</label><textarea id="pe-bio" rows="2" maxlength="90">' + esc(PE.bio || "") + '</textarea>' +
+    '<label>' + esc(L("peColor")) + '</label><div class="sws">' + sws + '</div>' +
+    '<label class="chk"><input type="checkbox" id="pe-vis"' + (PE.vis !== false ? " checked" : "") + '> ' + esc(L("peVis")) + '</label><p class="cnt">' + esc(L("peVisHelp")) + '</p>' +
+    '<p class="msg" id="pe-msg" hidden></p></div>' +
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pe-save">' + esc(L("peSave")) + '</button></div></div>';
+  var msg = $("#pe-msg");
+  function keep(){ PE.name = $("#pe-name").value; PE.bio = $("#pe-bio").value; PE.vis = $("#pe-vis").checked; }
+  $("#exit").onclick = function(){ PE = null; go("profile"); };
+  $("#pe-photo").onclick = function(){ $("#pe-file").click(); };
+  $("#pe-file").onchange = async function(){
+    var f = this.files && this.files[0]; this.value = "";
+    if (!f) return; keep();
+    try { PE.av = await avatarFromFile(f); renderPedit(); } catch (e) { msg.textContent = L("peErr"); msg.className = "msg err"; msg.hidden = false; }
+  };
+  $("#pe-rm").onclick = function(){ keep(); PE.av = ""; renderPedit(); };
+  app.querySelectorAll(".sw").forEach(function(b){ b.onclick = function(){ keep(); PE.color = b.getAttribute("data-c"); renderPedit(); }; });
+  $("#pe-save").onclick = async function(){
+    keep();
+    var nm = PE.name.trim();
+    msg.hidden = false; msg.className = "msg err";
+    if (nm.length < 2 || nm.length > 24) { msg.textContent = L("peName0"); return; }
+    var me = {name: nm, bio: PE.bio.trim().slice(0, 90), av: PE.av || "", color: PE.color, vis: PE.vis !== false, t: Date.now()};
+    jset(PK("cad-me"), me); USER.name = nm; jset("cad-user", USER); LS.set("cad-lastname", nm);
+    this.disabled = true; msg.className = "msg"; msg.textContent = L("peSaved");
+    await pushPub(); PE = null; go("profile");
+  };
+}
+function metricOf(row, tab){ return tab === "week" ? stWeek(row.st) : tab === "streak" ? stStreak(row.st) : (Number(row.st.xp) || 0); }
+async function renderPeople(){
+  var head = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("peopleTitle")) + '</h2></div></div>';
+  if (!dbOn()) { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleOff")) + '</p></div>'; $("#exit").onclick = toLib; return; }
+  app.innerHTML = head + '<div class="wrap body center"><div class="spin"></div></div>';
+  $("#exit").onclick = toLib;
+  var my = ++NAV, all;
+  try { all = await dbReq("GET", "pub"); } catch (e) { if (my === NAV && st.view === "people") { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleErr")) + '</p></div>'; $("#exit").onclick = toLib; } return; }
+  if (my !== NAV || st.view !== "people") return;
+  var rows = [];
+  Object.keys(all || {}).forEach(function(k){ var r = all[k]; if (r && r.me && r.st && k !== USER.slug) rows.push({slug: k, me: r.me, st: r.st}); });
+  var mm = getMe();
+  if (mm.vis !== false) rows.push({slug: USER.slug, me: mm, st: pubStats()});
+  rows.sort(function(a, b){ return metricOf(b, PT) - metricOf(a, PT); });
+  var unit = PT === "week" ? "unitWeek" : PT === "streak" ? "unitStreak" : "unitXp";
+  app.innerHTML = head + '<div class="wrap body"><p class="lead left">' + esc(L("peopleSub")) + '</p>' +
+    '<div class="seg ptabs" role="group">' + [["week", "tabWeek"], ["streak", "tabStreak"], ["xp", "tabXp"]].map(function(t){ return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (PT === t[0]) + '">' + esc(L(t[1])) + '</button>'; }).join("") + '</div>' +
+    (rows.length ? rows.map(function(r, i){
+      return '<button type="button" class="prow' + (r.slug === USER.slug ? " mine" : "") + '" data-s="' + esc(r.slug) + '"><span class="rk r' + (i + 1) + '">' + (i + 1) + '</span>' + avatarHtml(r.me, "m") +
+        '<span class="pn"><strong>' + esc(String(r.me.name || r.slug).slice(0, 24)) + (r.slug === USER.slug ? ' <em>(' + esc(L("you")) + ')</em>' : "") + '</strong><small>' + esc(String(r.me.bio || "").slice(0, 60)) + '</small></span><b class="pv">' + esc(L(unit, {n: metricOf(r, PT)})) + '</b></button>';
+    }).join("") : '<p class="lead">' + esc(L("peopleNone")) + '</p>') + '</div>';
+  $("#exit").onclick = toLib;
+  app.querySelectorAll(".ptabs button").forEach(function(b){ b.onclick = function(){ PT = b.getAttribute("data-t"); renderPeople(); }; });
+  app.querySelectorAll(".prow").forEach(function(b){ b.onclick = function(){ openProfile(b.getAttribute("data-s"), "people"); }; });
+}
+
+var EXTRA_VIEWS = {people: renderPeople, profile: renderProfile, pedit: renderPedit, login: renderLogin, rev: renderRev, revdone: renderRevDone, errs: renderErrs, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes, edit: renderEdit, editmod: renderEditMod};
 /* Botão Voltar do aparelho: sobe um nível em vez de sair do site */
 try { history.replaceState({r: 1}, ""); history.pushState({a: 1}, ""); } catch (e) {}
 window.addEventListener("popstate", function(){
