@@ -1,8 +1,8 @@
 {
-  "name": "estudo-seguranca-laboratorio",
+  "name": "caderno-de-estudos",
   "version": "1.0.0",
   "private": true,
-  "description": "Site educacional com progresso persistente e assistente Groq",
+  "description": "Caderno de estudos com trilhas de módulos, perguntas e assistente de IA (Groq)",
   "scripts": {
     "start": "node server.js"
   },
