@@ -3,6 +3,8 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const dns = require('node:dns').promises;
+const net = require('node:net');
 
 const PORT = Number(process.env.PORT || 3000);
 const API_KEY = process.env.GROQ_API_KEY;
@@ -13,10 +15,36 @@ const MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const ALLOWED = (process.env.ALLOWED_ORIGIN || '').split(',').map(s => s.trim().replace(/\/+$/, '')).filter(Boolean);
 const HTML = path.join(__dirname, 'index.html');
 const MAX_BODY = 96 * 1024;
-const LIMIT_PER_MIN = 90;
+const LIMIT_PER_MIN = 90;      // todos os visitantes juntos (protege a cota da Groq)
+const LIMIT_PER_IP = 40;       // cada visitante; gerar um assunto inteiro usa uns 15 pedidos
 const LANGS = { pt: 'português do Brasil', it: 'italiano' };
 
 let windowStart = Date.now(), requestCount = 0;
+const perIp = new Map();
+
+// IP do visitante. No Render o pedido passa por proxies que acrescentam o IP real ao fim de
+// X-Forwarded-For; o começo da lista pode ser inventado pelo cliente, então usamos o fim.
+function clientIp(req) {
+  const cf = String(req.headers['cf-connecting-ip'] || '').trim();
+  if (cf) return cf;
+  const xff = String(req.headers['x-forwarded-for'] || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (xff.length >= 2) return xff[xff.length - 2];
+  if (xff.length === 1) return xff[0];
+  return req.socket.remoteAddress || '?';
+}
+
+// Devolve quantos segundos esperar, ou 0 se o pedido pode seguir.
+function rateLimit(req) {
+  const now = Date.now();
+  if (now - windowStart > 60_000) { windowStart = now; requestCount = 0; }
+  if (++requestCount > LIMIT_PER_MIN) return Math.ceil((windowStart + 60_000 - now) / 1000) || 1;
+  const ip = clientIp(req);
+  let e = perIp.get(ip);
+  if (!e || now - e.start > 60_000) { e = { start: now, n: 0 }; perIp.set(ip, e); }
+  if (++e.n > LIMIT_PER_IP) return Math.ceil((e.start + 60_000 - now) / 1000) || 1;
+  if (perIp.size > 5000) for (const [k, v] of perIp) if (now - v.start > 60_000) perIp.delete(k);
+  return 0;
+}
 
 class HttpError extends Error {
   constructor(status, message, retryAfter) { super(message); this.status = status; this.retryAfter = retryAfter || 0; }
@@ -35,7 +63,10 @@ function cors(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
-  return !ALLOWED.length || !origin || ALLOWED.includes(origin);
+  if (!ALLOWED.length) return true;
+  // Navegadores sempre mandam Origin num POST; sem ele, é script chamando a API direto.
+  if (!origin) return req.method !== 'POST';
+  return ALLOWED.includes(origin);
 }
 
 function readBody(req) {
@@ -109,7 +140,7 @@ async function chat(body) {
   const answer = await groq([
     { role: 'system', content: sys },
     { role: 'user', content: `TEXTO DE LEITURA:\n${context}\n\nPERGUNTA DO ESTUDANTE:\n${question}` }
-  ], 700, false);
+  ], 1500, false);
   return { answer: answer.slice(0, 9000), model: MODEL };
 }
 
@@ -165,11 +196,8 @@ const QRULES = {
   * TODO fato necessário para acertar tem de estar explicado nas etapas do módulo: o aluno precisa conseguir acertar só estudando o módulo, sem chute e sem conhecimento externo. Por isso, em módulo difícil as etapas trazem mais detalhe (datas, nomes, números, relações de causa e efeito, comparações).
   * "why" explica o raciocínio e por que a alternativa mais tentadora está errada.`
 };
-const DEPTH = {
-  easy: 'Etapas: 2 a 3, com explicações simples e curtas.',
-  medium: 'Etapas: 3 a 5, com explicação clara e DETALHES CONCRETOS (datas, nomes, números, causas e consequências, comparações entre conceitos parecidos), pois as perguntas dos níveis médio e difícil vão cobrar esses detalhes.',
-  hard: 'Etapas: 3 a 5, densas: inclua datas, nomes, números, causas e consequências, e comparações entre conceitos parecidos, pois as perguntas vão cobrar esses detalhes.'
-};
+// O módulo nasce no nível médio; perguntas fáceis e difíceis são geradas depois, em /api/questions.
+const MODULE_DEPTH = 'Etapas: 3 a 5, com explicação clara e DETALHES CONCRETOS (datas, nomes, números, causas e consequências, comparações entre conceitos parecidos), pois as perguntas dos níveis médio e difícil vão cobrar esses detalhes.';
 
 async function genModule(body) {
   const lang = needLang(body.lang);
@@ -181,7 +209,6 @@ async function genModule(body) {
   const total = Math.max(1, Math.min(Number(body.total) || 1, 50));
   const prev = (Array.isArray(body.prev) ? body.prev : []).slice(0, 14).map(x => str(x, 80)).filter(Boolean);
   if (!outline && text.length < 120) throw new HttpError(400, 'Texto curto demais para gerar um módulo.');
-  const level = 'medium';
   const memo = lang === 'it' ? 'Da ricordare' : 'Decorar';
   const sys = `Você cria material de estudo a partir de um texto fornecido pelo estudante. Responda SOMENTE com um objeto JSON válido, sem comentários e sem texto fora do JSON.
 Regras:
@@ -218,15 +245,15 @@ Regras do formato:
 - "kind": m = conceito ou definição; s = procedimento ou prática; w = ponto de atenção; p = erro comum ou o que evitar. Escolha o que melhor descreve o módulo.
 - "steps": de 2 a 4 etapas, cada uma com 1 a 3 blocos. Use os tipos de bloco que fizerem sentido (não é preciso usar todos). Inclua pelo menos um bloco "key" no módulo.
 - Cubra os pontos importantes do trecho, sem copiar o texto inteiro.
-- ${DEPTH[level]}
-${QRULES[level]}
+- ${MODULE_DEPTH}
+${QRULES.medium}
 - Em qualquer nível: as 4 alternativas têm tamanho e estrutura de frase quase iguais (diferença de poucas palavras) e a certa NÃO pode ser sempre a mais longa ou a mais detalhada; em várias perguntas a certa deve ser a mais curta. Proibido "todas as anteriores" e "nenhuma das anteriores".`;
   let lastErr = '';
   for (let i = 0; i < 2; i++) {
     const out = await groq([
       { role: 'system', content: sys },
       { role: 'user', content: usr + (lastErr ? `\n\nA tentativa anterior falhou (${lastErr}). Refaça com o JSON completo e válido.` : '') }
-    ], level === 'hard' ? 4200 : 3000, true, level === 'hard' ? 'medium' : 'low');
+    ], 3000, true, 'low');
     try {
       const mod = normModule(parseJson(out));
       const longest = mod.questions.filter(q => { const m = Math.max(...q.wrong.map(w => w.length)); return q.correct.length >= m * 1.15 + 3; }).length;
@@ -351,7 +378,106 @@ Responda SOMENTE com JSON no formato {"items": {"chave": "texto traduzido"}}.`;
   return { items: res };
 }
 
-const routes = { '/api/chat': chat, '/api/module': genModule, '/api/plan': planSubject, '/api/questions': genQuestions, '/api/translate': translate };
+// ---------- Texto de um link ----------
+// Bloqueia endereços internos para ninguém usar o servidor para espiar a rede do Render.
+function isPrivateIp(ip) {
+  if (net.isIPv4(ip)) {
+    const [a, b] = ip.split('.').map(Number);
+    return a === 0 || a === 10 || a === 127 || a >= 224 || (a === 100 && b >= 64 && b <= 127) ||
+      (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) ||
+      (a === 192 && b === 0) || (a === 198 && (b === 18 || b === 19));
+  }
+  const v = ip.toLowerCase();
+  if (v.startsWith('::ffff:')) return isPrivateIp(v.slice(7));
+  return v === '::' || v === '::1' || v.startsWith('fc') || v.startsWith('fd') || v.startsWith('fe8') ||
+    v.startsWith('fe9') || v.startsWith('fea') || v.startsWith('feb') || v.startsWith('ff');
+}
+
+const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', laquo: '«', raquo: '»', ndash: '–', mdash: '—',
+  hellip: '…', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', deg: '°', ordm: 'º', ordf: 'ª', middot: '·', bull: '•', euro: '€', copy: '©' };
+// Letras acentuadas: &aacute; &Ccedil; &otilde; ...
+for (const [mark, pairs] of Object.entries({ acute: 'aáeéiíoóuúyý', grave: 'aàeèiìoòuù', circ: 'aâeêiîoôuû', tilde: 'aãoõnñ', uml: 'aäeëiïoöuü', cedil: 'cç' })) {
+  for (let i = 0; i < pairs.length; i += 2) { ENT[pairs[i] + mark] = pairs[i + 1]; ENT[pairs[i].toUpperCase() + mark] = pairs[i + 1].toUpperCase(); }
+}
+function decodeEntities(t) {
+  return t.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
+    if (e[0] === '#') {
+      const n = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return n > 0 && n < 0x110000 ? String.fromCodePoint(n) : m;
+    }
+    return ENT[e] !== undefined ? ENT[e] : m;
+  });
+}
+
+function htmlToText(html) {
+  const tm = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html);
+  const title = tm ? decodeEntities(tm[1]).replace(/\s+/g, ' ').trim() : '';
+  let h = html.replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<(script|style|noscript|svg|template|iframe|head|nav|footer|aside|form|button|select)\b[\s\S]*?<\/\1\s*>/gi, ' ');
+  // Se a página marca o conteúdo principal, fica só com ele (tira menus e rodapés).
+  const main = /<(article|main)\b[^>]*>([\s\S]*?)<\/\1\s*>/i.exec(h);
+  if (main && main[2].replace(/<[^>]+>/g, '').trim().length > 400) h = main[2];
+  const text = decodeEntities(h
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<li\b[^>]*>/gi, '\n• ')
+    .replace(/<\/?(p|div|section|article|main|header|h[1-6]|ul|ol|li|tr|table|blockquote|pre|dl|dt|dd|figcaption)\b[^>]*>/gi, '\n')
+    .replace(/<[^>]+>/g, ' '))
+    .replace(/[ \t ]+/g, ' ')
+    .split('\n').map(l => l.trim()).filter(l => l && l !== '•').join('\n')
+    .replace(/\n{3,}/g, '\n\n');
+  return { title, text };
+}
+
+async function readLimited(r, max) {
+  const reader = r.body && r.body.getReader();
+  if (!reader) return Buffer.from(await r.arrayBuffer()).subarray(0, max);
+  const parts = []; let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    parts.push(value); size += value.length;
+    if (size >= max) { try { await reader.cancel(); } catch (e) { /* ok */ } break; }
+  }
+  return Buffer.concat(parts.map(p => Buffer.from(p))).subarray(0, max);
+}
+
+async function fetchPage(body) {
+  let url;
+  try { url = new URL(str(body.url, 2000)); } catch (e) { throw new HttpError(400, 'Link inválido.'); }
+  for (let hop = 0; hop < 5; hop++) {
+    if (!/^https?:$/.test(url.protocol) || url.username || url.password) throw new HttpError(400, 'Use um link que comece com http:// ou https://.');
+    if (url.port && !['80', '443', '8080'].includes(url.port)) throw new HttpError(400, 'Esse endereço não é permitido.');
+    const host = url.hostname.replace(/^\[|\]$/g, '');
+    let addrs;
+    try { addrs = net.isIP(host) ? [{ address: host }] : await dns.lookup(host, { all: true }); }
+    catch (e) { throw new HttpError(400, 'Não encontrei esse site. Confira o link.'); }
+    if (!addrs.length || addrs.some(a => isPrivateIp(a.address))) throw new HttpError(400, 'Esse endereço não é permitido.');
+    let r;
+    try {
+      r = await fetch(url, {
+        redirect: 'manual', signal: AbortSignal.timeout(15000),
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; CadernoDeEstudos/1.0)', Accept: 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.5', 'Accept-Language': 'pt-BR,pt;q=0.9,it;q=0.8,en;q=0.5' }
+      });
+    } catch (e) { throw new HttpError(400, 'O site não respondeu. Tente de novo ou copie o texto da página.'); }
+    const loc = r.headers.get('location');
+    if (r.status >= 300 && r.status < 400 && loc) { url = new URL(loc, url); continue; }
+    if (!r.ok) throw new HttpError(400, `O site respondeu com erro (HTTP ${r.status}).`);
+    const type = (r.headers.get('content-type') || '').toLowerCase();
+    if (type.includes('pdf')) throw new HttpError(400, 'Esse link é um PDF. Baixe o arquivo e use "Anexar PDF".');
+    if (type && !/text\/html|application\/xhtml|text\/plain/.test(type)) throw new HttpError(400, 'Esse link não é uma página de texto.');
+    const buf = await readLimited(r, 2 * 1024 * 1024);
+    let cs = (/charset=([\w-]+)/.exec(type) || [])[1];
+    if (!cs) cs = (/<meta[^>]+charset=["']?([\w-]+)/i.exec(buf.subarray(0, 4096).toString('latin1')) || [])[1];
+    let raw;
+    try { raw = new TextDecoder(cs || 'utf-8').decode(buf); } catch (e) { raw = buf.toString('utf8'); }
+    const out = type.includes('text/plain') ? { title: '', text: raw.replace(/\r/g, '').trim() } : htmlToText(raw);
+    if (out.text.length < 200) throw new HttpError(400, 'Não encontrei texto suficiente nessa página (ela pode exigir login ou JavaScript). Copie e cole o texto.');
+    return { title: out.title.slice(0, 120), text: out.text.slice(0, 30000) };
+  }
+  throw new HttpError(400, 'O link redireciona demais.');
+}
+
+const routes = { '/api/chat': chat, '/api/fetch': fetchPage, '/api/module': genModule, '/api/plan': planSubject, '/api/questions': genQuestions, '/api/translate': translate };
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
@@ -369,8 +495,8 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && handler) {
     if (!cors(req, res)) return send(res, 403, { error: 'Origem não autorizada.' });
     if (!API_KEY) return send(res, 503, { error: 'API não configurada. Defina GROQ_API_KEY nas variáveis do serviço.' });
-    if (Date.now() - windowStart > 60_000) { windowStart = Date.now(); requestCount = 0; }
-    if (++requestCount > LIMIT_PER_MIN) return send(res, 429, { error: 'Muitos pedidos por minuto. Aguarde um pouco.', retryAfter: 20 });
+    const wait = rateLimit(req);
+    if (wait) return send(res, 429, { error: 'Muitos pedidos por minuto. Aguarde um pouco.', retryAfter: Math.min(Math.max(wait, 5), 60) });
     try {
       const body = await readBody(req);
       return send(res, 200, await handler(body));
@@ -384,4 +510,5 @@ const server = http.createServer(async (req, res) => {
   return send(res, 404, { error: 'Rota não encontrada' });
 });
 
-server.listen(PORT, '0.0.0.0', () => console.log(`Backend do caderno iniciado na porta ${PORT}`));
+if (require.main === module) server.listen(PORT, '0.0.0.0', () => console.log(`Backend do caderno iniciado na porta ${PORT}`));
+module.exports = { server, htmlToText, isPrivateIp, clientIp, fetchPage };
