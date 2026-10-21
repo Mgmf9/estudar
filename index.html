@@ -678,24 +678,18 @@ h1{font-size:clamp(32px,8.4vw,46px)}
 
 /* ===== Extras ===== */
 .dash{margin-top:14px}
-.dash .stats{margin-bottom:10px}
 .dash .cnt{margin:6px 0 0;font-size:14px;color:var(--muted);font-weight:600}
-.tools,.tools2{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.tools .btn,.tools2 .btn{flex:1 1 auto;min-height:46px;padding:10px 14px;font-size:15px}
+.tools2{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tools2 .btn{flex:1 1 auto;min-height:46px;padding:10px 14px;font-size:15px}
 .searchbox{margin-top:14px}
-.searchbox input,.cfg select,.cfg input,.exam input,.flf select,.linkf input,.edit input,.edit textarea{width:100%;border:2px solid var(--edge);border-radius:12px;background:var(--surface);color:var(--ink);font:500 16px var(--f);padding:11px 13px;box-shadow:2px 2px 0 var(--shadow-c);min-width:0}
+.searchbox input,.flf select,.linkf input{width:100%;border:2px solid var(--edge);border-radius:12px;background:var(--surface);color:var(--ink);font:500 16px var(--f);padding:11px 13px;box-shadow:2px 2px 0 var(--shadow-c);min-width:0}
 .sres-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .sres{text-align:left;border:2px solid var(--edge);border-radius:12px;background:var(--surface);color:var(--ink);padding:10px 12px;display:flex;flex-direction:column;gap:3px;cursor:pointer;font-family:var(--f)}
 .sres small{color:var(--muted);font-weight:700}
 .sres span{font-size:14px;color:var(--ink)}
 mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
-.cfg{margin-top:12px;border:2px dashed var(--line-dark);border-radius:12px;padding:8px 12px}
-.cfg summary{cursor:pointer;font-weight:800}
-.cfg label,.exam label{display:block;margin:10px 0 4px;font-weight:700;color:var(--muted)}
 .cfgrow{display:flex;gap:8px;align-items:center}
 .cfgrow .btn{flex:none;min-height:44px;padding:8px 12px;font-size:14px}
-.exam{margin-top:14px}
-.exam .cnt{margin-top:6px;font-size:14px;color:var(--muted);font-weight:600}
 .flf{display:flex;gap:8px;flex-wrap:wrap}
 .flf select{flex:1 1 140px}
 .fcard{display:flex;flex-direction:column;justify-content:space-between;gap:10px;width:100%;min-height:300px;margin-top:10px;text-align:left;border:2px solid var(--edge);border-radius:18px;background:var(--surface);color:var(--ink);box-shadow:4px 4px 0 var(--shadow-c);padding:18px;cursor:pointer;font-family:var(--f)}
@@ -703,7 +697,6 @@ mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
 .fcard .fl{font-size:13px;font-weight:800;color:var(--muted)}
 .fcard .fb{flex:1;font-size:17px;line-height:1.55}
 .fcard .fb h3{font-size:22px;margin:0}
-.fcard .ft{font-size:13px;color:var(--muted);text-align:center}
 .fq{font-size:19px;font-weight:700}
 .tmr{margin-left:auto;font:800 16px var(--f);border:2px solid var(--edge);border-radius:10px;padding:4px 10px;background:var(--surface)}
 .tmr.low{background:var(--bad);color:#fff}
@@ -714,73 +707,14 @@ mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
 .errc{border:2px solid var(--edge);border-radius:14px;background:var(--surface);padding:12px 14px;margin:12px 0;box-shadow:3px 3px 0 var(--shadow-c)}
 .errc .eq{font-size:18px;margin:6px 0}
 .errc .row{display:flex;gap:8px;margin-top:8px}
-.errc .ea{margin-top:8px}
 .expl{margin-top:10px;padding:10px 12px;border:2px dashed var(--edge);border-radius:12px;background:var(--surface);font-weight:600;white-space:pre-wrap}
-.edit label{display:block;margin:12px 0 4px;font-weight:800;color:var(--muted)}
-.edit label.okl{color:var(--ok)}
-.edstep,.edq{border:2px solid var(--edge);border-radius:14px;padding:4px 14px 12px;margin:12px 0;background:var(--surface)}
-.edbody{border:2px solid var(--edge);border-radius:12px;padding:10px 12px;min-height:80px;background:var(--bg)}
-.edrow{display:flex;gap:12px;width:100%;margin:8px 0;text-align:left;justify-content:flex-start}
-.edrow b{flex:none}
 .chlv#speak{display:inline-flex;align-items:center;gap:6px;margin:0 0 10px}
-.acct{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:12px;font-weight:700}
-.acct .goalsel{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:14px;margin-left:auto}
-.acct select{border:2px solid var(--edge);border-radius:10px;background:var(--surface);color:var(--ink);font:700 15px var(--f);padding:4px 8px}
-.acct .btn.ghost{min-height:36px;padding:2px 8px}
-.av{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--edge);border-radius:50%;background:var(--c,#316ee8);color:#fff;font:800 16px var(--f);overflow:hidden;flex:none}
-.av img{width:100%;height:100%;object-fit:cover;display:block}
-.av.s{width:36px;height:36px}.av.m{width:46px;height:46px;font-size:19px}.av.l{width:96px;height:96px;font-size:40px;box-shadow:3px 3px 0 var(--shadow-c)}
-.meb{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;color:var(--ink);font:800 16px var(--f);cursor:pointer;padding:0}
-.pfhead,.pedav{display:flex;gap:14px;align-items:center;margin:6px 0 14px}
-.pfname{margin:0;font-size:26px}.pfbio{margin:4px 0;color:var(--muted);font-weight:600}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
-.tile{border:2px solid var(--edge);border-radius:12px;background:var(--surface);box-shadow:2px 2px 0 var(--shadow-c);padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:2px}
-.tile b{font-size:22px}.tile span{font-size:12.5px;color:var(--muted);font-weight:700}
-.ptabs{margin:10px 0}
-.prow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:2px solid var(--edge);border-radius:14px;background:var(--surface);color:var(--ink);padding:8px 10px;margin:8px 0;cursor:pointer;font-family:var(--f)}
-.prow.mine{background:var(--blue-bg,#e3effb)}
-.prow .pn{flex:1;min-width:0;display:flex;flex-direction:column}
-.prow .pn strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.prow .pn small{color:var(--muted);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.prow .pn em{font-style:normal;color:var(--muted);font-weight:700}
-.prow .pv{font-size:14px;white-space:nowrap}
-.rk{width:26px;text-align:center;font-weight:800;color:var(--muted)}
-.rk.r1{color:#d9a400}.rk.r2{color:#8a96a3}.rk.r3{color:#b8723a}
-.sws{display:flex;gap:10px;margin:6px 0}
-.sw{width:38px;height:38px;border-radius:50%;border:3px solid var(--edge);background:var(--c);cursor:pointer;padding:0}
-.sw.on{outline:3px solid var(--ink);outline-offset:2px}
-.chk{display:flex!important;align-items:center;gap:8px;color:var(--ink)!important}
-.chk input{width:22px!important;height:22px;box-shadow:none!important}
-.peb{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
-/* menu de conta, avatares, amigos, flashcards IA */
+/* cabeçalho e flashcards IA */
 .hdr-r{display:flex;align-items:center;gap:10px}
-.menuwrap{position:relative;display:inline-flex}
-.avbtn{position:relative;background:none;border:0;padding:0;border-radius:50%;cursor:pointer;line-height:0}
-.avbtn .av{width:52px;height:52px;font-size:22px;box-shadow:3px 3px 0 var(--shadow-c)}
-.avbtn .av.em,.av.em{font-size:1.1em}
-.avbtn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
-.avbtn .dot,.cbadge{background:#e0392b;color:#fff;font:800 11px var(--f);border-radius:999px;padding:2px 6px;line-height:1.2}
-.avbtn .dot{position:absolute;top:-4px;right:-4px;border:2px solid var(--paper,#fff)}
-.menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;min-width:240px;background:var(--surface);border:2px solid var(--edge);border-radius:14px;box-shadow:4px 4px 0 var(--shadow-c);padding:6px;display:flex;flex-direction:column;gap:2px}
-.menu[hidden]{display:none}
-.mhead{display:flex;align-items:center;gap:10px;padding:8px 8px 10px;border-bottom:2px solid var(--edge);margin-bottom:4px}
-.mhead span{display:flex;flex-direction:column;min-width:0}
-.mhead strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mhead small{color:var(--muted);font-weight:700}
-.mi{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:9px;padding:10px;font:700 15px var(--f);color:var(--ink);cursor:pointer}
-.mi:hover,.mi:focus-visible{background:var(--soft,rgba(128,128,128,.14))}
-.mi.out{color:#d23a2c;border-top:2px solid var(--edge);border-radius:0 0 9px 9px;margin-top:4px}
-.mi select{font:700 14px var(--f);margin-left:auto}
-.ems{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 10px}
-.emb{font-size:26px;line-height:1;padding:8px 0;border:2px solid var(--edge);border-radius:12px;background:var(--surface);cursor:pointer}
-.emb.on{background:var(--accent);box-shadow:2px 2px 0 var(--shadow-c)}
-.ftabs{display:flex;width:100%;margin:6px 0 12px}.ftabs button{flex:1}
-.prow{cursor:default}
-.prow .pgo{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:none;border:0;padding:0;text-align:left;font-family:var(--f);color:var(--ink);cursor:pointer}
-.acts{display:flex;gap:6px;flex:none}
-.btn.sm{padding:6px 10px;font-size:13px;min-height:34px}
-.btn.danger{background:#d23a2c;color:#fff;border-color:var(--edge)}
-.tag{font:800 12px var(--f);color:var(--muted);border:2px solid var(--edge);border-radius:999px;padding:4px 10px}
+.libfoot{display:flex;flex-direction:column;align-items:center;gap:2px;padding-block:0 36px;text-align:center}
+.libfoot .cnt{margin:0;max-width:46ch;line-height:1.45}
+.libfoot .row{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 8px}
+.libfoot .btn{min-height:44px;padding:8px 10px;font-size:15px}
 .fcard{cursor:default;min-height:150px}
 .fal{display:block;font-weight:800;margin:14px 0 6px}
 #fl-ans{width:100%;font:16px var(--f);border:2px solid var(--edge);border-radius:12px;padding:10px;background:var(--surface);color:var(--ink);resize:vertical}
@@ -1368,7 +1302,7 @@ var LS = {
   del: function(k){ try { localStorage.removeItem(k); } catch (e) {} }
 };
 function jget(k, d){ var v = LS.get(k); if (!v) return d; try { return JSON.parse(v); } catch (e) { return d; } }
-function jset(k, v){ var r = LS.set(k, JSON.stringify(v)); if (typeof syncTouch === "function") syncTouch(k); return r; }
+function jset(k, v){ return LS.set(k, JSON.stringify(v)); }
 function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
 function rid(){ return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -1497,28 +1431,34 @@ function relevantText(pieces, c){
 
 /* ---------- Backend (IA) ---------- */
 var WAITCB = null;
+/* O Render gratuito "dorme" sem uso. Enquanto o servidor ainda não respondeu nesta visita,
+   um pedido demorado mostra que ele está acordando, em vez de parecer travado. */
+var AWAKE = false, HIDDENAT = 0;
+function pingServer(){
+  try { fetch(CFG.API.replace(/\/$/, "") + "/health", {mode: "no-cors", cache: "no-store"}).then(function(){ AWAKE = true; }, function(){}); } catch (e) {}
+}
 async function api(path, body){
   var tries = 0;
   for (;;) {
-    var r, data;
+    var r, data, slow = AWAKE ? null : setTimeout(function(){ if (!AWAKE && WAITCB) WAITCB(L("wakeNow")); }, 4000);
     try {
       r = await fetch(CFG.API.replace(/\/$/, "") + path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+      AWAKE = true;
       data = await r.json().catch(function(){ return {}; });
     } catch (e) {
       if (++tries > 2) throw new Error(L("errNet"));
       await sleep(3000); continue;
-    }
+    } finally { clearTimeout(slow); }
     if (r.status === 429 && tries < 6) {
       tries++;
       var w = Math.min(Math.max(Number(data.retryAfter) || 15, 5), 60);
-      if (WAITCB) WAITCB(w);
+      if (WAITCB) WAITCB(L("waiting", {s: w}));
       await sleep(w * 1000); continue;
     }
     if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
     return data;
   }
 }
-try { fetch(CFG.API.replace(/\/$/, "") + "/health", {mode: "no-cors"}).catch(function(){}); } catch (e) {}
 
 async function translateBatch(obj, lang){
   var keys = Object.keys(obj);
@@ -1792,7 +1732,7 @@ function renderLoading(title, sub, back){
     '<p class="lead" id="lsub">' + esc(sub || "") + '</p>' +
     '<div class="pbar" id="lbar" hidden><i style="width:0%"></i></div></div>' +
     '<div class="bar"><div class="wrap"><button type="button" class="btn wide" id="lback">' + esc(L("cancel")) + '</button></div></div>';
-  WAITCB = function(w){ var e = document.getElementById("lsub"); if (e) e.textContent = L("waiting", {s: w}); };
+  WAITCB = function(t){ var e = document.getElementById("lsub"); if (e) e.textContent = t; };
   $("#lback").onclick = function(){ NAV++; (back || toLib)(); };
 }
 function setLoadProg(done, total){
@@ -1848,8 +1788,7 @@ async function ensureTitleTr(){
   if (st.view === "lib") renderLib();
 }
 function toLib(){
-  if (!USER) { S = null; M = []; ORIG = []; st.view = "login"; render(); return; }
-  S = null; M = []; ORIG = []; st.view = "lib"; showAI(false); WAITCB = null;
+  S = null; M = []; ORIG = []; st.view = "lib"; showAI(false); WAITCB = null; BKMSG = "";
   renderLib(); window.scrollTo(0, 0); refreshLib(true);
 }
 function renderLib(){
@@ -1865,7 +1804,7 @@ function renderLib(){
   app.innerHTML =
     '<div class="wrap libhead">' +
       '<div class="topline"><p class="kicker">' + esc(L("libKicker")) + '</p>' +
-      '<span class="hdr-r">' + acctBtn() + '<button type="button" class="plus" id="newtop" aria-label="' + esc(L("newSub")) + '">' + ICON.plus + '</button></span></div>' +
+      '<span class="hdr-r"><button type="button" class="plus" id="newtop" aria-label="' + esc(L("newSub")) + '">' + ICON.plus + '</button></span></div>' +
       '<h1>' + esc(L("app")) + '</h1>' +
       '<p class="sub">' + esc(L("libSub")) + '</p>' +
       '<div class="row2">' + langBar() + '</div>' + dashHtml() +
@@ -1873,8 +1812,12 @@ function renderLib(){
       (LIBOFF ? '<div class="banner warn">' + esc(L("offline")) + '</div>' : "") +
     '</div>' +
     '<div class="wrap shelf">' + cards +
-      '<button type="button" class="nb add" id="newcard">' + ICON.plus + '<span>' + esc(L("newSub")) + '</span></button></div>';
-  bindLang(); bindDash();
+      '<button type="button" class="nb add" id="newcard">' + ICON.plus + '<span>' + esc(L("newSub")) + '</span></button></div>' +
+    '<div class="wrap libfoot"><p class="cnt" id="bkmsg" role="status">' + esc(BKMSG || L("bkHelp")) + '</p>' +
+      '<div class="row"><button type="button" class="btn ghost" id="bk-out">' + esc(L("bkOut")) + '</button>' +
+      '<button type="button" class="btn ghost" id="bk-in">' + esc(L("bkIn")) + '</button></div>' +
+      '<input type="file" id="bk-file" accept=".json,application/json" hidden></div>';
+  bindLang(); bindDash(); bindBackup();
   app.querySelectorAll(".nb[data-id]").forEach(function(b){ b.onclick = function(){ openSubject(b.getAttribute("data-id")); }; });
   $("#newtop").onclick = $("#newcard").onclick = function(){ st.form = st.form || {title: "", text: "", lang: LANG === "it" ? "it" : "pt"}; go("new"); };
 }
@@ -2440,7 +2383,7 @@ function renderGen(){
     var ic = s === "ok" ? ICON.check : s === "run" ? '<span class="spin sm"></span>' : s === "err" ? "!" : "";
     return '<li class="gi ' + s + '"><span class="gdot">' + ic + '</span><span class="gtxt">' + label + '<small>' + esc(L("modN", {n: i + 1})) + '</small></span></li>';
   }).join("");
-  var note = G.saving ? L("saving") : G.err ? G.err : G.wait ? L("waiting", {s: G.wait}) : L("wake");
+  var note = G.saving ? L("saving") : G.err ? G.err : G.wait ? G.wait : L("wake");
   var canRetry = !!G.err;
   app.innerHTML =
     '<div class="wrap hero"><p class="kicker">' + esc(L("genKick")) + '</p><h1>' + esc(G.title) + '</h1><p class="sub">' + esc(L("genSub")) + '</p>' +
@@ -2459,7 +2402,7 @@ async function runGen(){
   G.run = my; G.err = ""; G.saveFail = false;
   if (!G.chunks.length) {
     if (st.view === "gen") renderGen();
-    WAITCB = function(w){ if (G && my === NAV) { G.wait = w; var m = document.getElementById("gmsg"); if (m) m.textContent = L("waiting", {s: w}); } };
+    WAITCB = function(t){ if (G && my === NAV) { G.wait = t; var m = document.getElementById("gmsg"); if (m) m.textContent = t; } };
     try {
       var pl = await api("/api/plan", {title: G.title, lang: G.lang, text: G.text, count: G.count});
       if (my !== NAV) return;
@@ -2475,7 +2418,7 @@ async function runGen(){
     if (G.status[i] === "ok") continue;
     G.status[i] = "run"; G.wait = 0;
     if (st.view === "gen") renderGen();
-    WAITCB = function(w){ if (G && my === NAV) { G.wait = w; if (st.view === "gen") { var m = document.getElementById("gmsg"); if (m) m.textContent = L("waiting", {s: w}); } } };
+    WAITCB = function(t){ if (G && my === NAV) { G.wait = t; if (st.view === "gen") { var m = document.getElementById("gmsg"); if (m) m.textContent = t; } } };
     try {
       var out = await api("/api/module", {
         title: G.title, lang: G.lang, index: i, total: G.chunks.length,
@@ -2559,7 +2502,7 @@ function initAI(){
     var mod = parseInt(AIUI.select.value, 10);
     aiMsg(question, "user"); AIUI.input.value = ""; AIUI.send.disabled = true;
     var pending = aiMsg(L("aiThink"), "bot");
-    WAITCB = function(w){ pending.textContent = L("waiting", {s: w}); };
+    WAITCB = function(t){ pending.textContent = t; };
     try {
       var data = await api("/api/chat", {question: question, module: mod, context: readingText(mod, question), lang: LANG, subject: plain(S.titleShown || S.title)});
       pending.textContent = data.answer || "";
@@ -2593,8 +2536,7 @@ function updateAI(){
 }
 
 /* ---------- Roteamento ---------- */
-var GLOBAL_VIEWS = ["rev", "revdone", "errs", "people", "profile", "pedit"];
-var SUBJ_VIEWS = ["lesson", "quiz", "level", "done", "all", "flash", "sim", "simq", "simres", "edit", "editmod"];
+var SUBJ_VIEWS = ["lesson", "quiz", "level", "done", "all", "flash", "sim", "simq", "simres", "rev", "revdone"];
 function render(){
   var v = st.view;
   stopExtras();
@@ -2613,301 +2555,159 @@ function render(){
 
 
 /* ====================================================================
-   Extras: perfis, metas, revisão espaçada, caderno de erros, busca,
-   flashcards, simulado, editor, voz, PDF/link, exportar e compartilhar
+   Extras: revisão espaçada, busca, flashcards, simulado, voz,
+   PDF/link, exportar e compartilhar
    ==================================================================== */
 
 var X = {
   pt: {
-    streakN: "{n} dias seguidos", streak1: "1 dia seguido", todayG: "Hoje: {a}/{g}",
-    dueBtn: "Revisar ({n})", dueNone: "Revisão", errsBtn: "Erros ({n})",
-    goalLeft: "Faltam {n} perguntas para a meta de hoje.", goalDone: "Meta de hoje cumprida. Bom trabalho!",
+    wakeNow: "O servidor está acordando (ele dorme quando fica sem uso). Isso pode levar até 1 minuto…",
+    bkHelp: "Seu progresso fica salvo só neste navegador. Exporte um backup para guardar ou levar para outro aparelho.",
+    bkOut: "Exportar progresso", bkIn: "Importar progresso", bkDone: "Backup salvo: {f}",
+    bkAsk: "Importar este backup? O progresso dos assuntos que estão no arquivo vai substituir o deste aparelho.",
+    bkOk: "Progresso importado.", bkBad: "Esse arquivo não é um backup do caderno.",
     searchPh: "Buscar em todos os assuntos…", searching: "Procurando…", noRes: "Nada encontrado.", resStep: "Conteúdo", resQ: "Pergunta",
-    cfg: "Ajustes", profLbl: "Perfil", profDef: "Padrão", profNew: "Novo perfil", profAsk: "Nome do novo perfil:", goalLbl: "Meta diária (perguntas)",
-    cfgHelp: "Cada perfil tem progresso, revisões e metas próprios neste aparelho.",
     revTitle: "Revisão", revNone: "Nada para revisar agora. Responda mais perguntas nos módulos e elas voltam aqui no momento certo.",
     revDoneT: "Revisão concluída", revScore: "Você acertou {a} de {n}.", revBack: "Voltar ao caderno", revNext: "Próxima", revFinish: "Concluir",
     revHint: "Estas perguntas voltam quando é a hora certa de lembrar: quanto mais você acerta, mais espaçadas ficam.",
-    errsTitle: "Caderno de erros", errsNone: "Nenhum erro pendente. Bom trabalho!", errsRedo: "Refazer estes ({n})", errsKnow: "Já sei",
-    errsShow: "Ver resposta", errsHide: "Ocultar", errsWrong: "errou {n}x", errsSub: "Perguntas que você errou e ainda não fixou.",
     explainBtn: "Não entendi", explaining: "Pensando em um jeito mais simples…", explainErr: "Não consegui explicar agora.",
     accTxt: " · {p}% de acerto",
     flYour: "Sua resposta", flYourPh: "Escreva com suas palavras o que você sabe…", flGrade: "Corrigir com IA", flSee: "Ver resposta", flGrading: "A IA está corrigindo…",
     flAnswer: "Resposta correta", flCont: "Continuar", flEmptyAns: "Escreva uma resposta antes de corrigir.", flGradeErr: "Não consegui corrigir agora.",
     flExplain: "Explique com suas palavras: {t}",
     flV_right: "Certo!", flV_partial: "Quase lá", flV_wrong: "Ainda não",
-    meMenu: "Conta", mProf: "Meu perfil", mPeople: "Amigos e ranking", mSignedAs: "@{u}",
-    peEmoji: "Ou escolha um avatar", peVis2: "Aparecer na busca de amigos", peVisHelp2: "Se desligado, ninguém te encontra e você não aparece no ranking dos amigos.",
-    frTab: "Amigos", reqTab: "Pedidos", findTab: "Buscar", frNone: "Você ainda não tem amigos. Use a aba Buscar para adicionar alguém pelo nome ou usuário.",
-    reqNone: "Nenhum pedido pendente.", reqIn: "Pedidos recebidos", reqOut: "Pedidos enviados", accept: "Aceitar", decline: "Recusar", cancel: "Cancelar",
-    findPh: "Buscar por nome ou usuário", findHint: "Digite pelo menos 2 letras.", findNone: "Ninguém encontrado.",
-    addFr: "Adicionar", sent: "Pedido enviado", isFr: "Amigos", respond: "Responder",
-    rmFr: "Remover amigo", rmFrAsk: "Remover {n} dos seus amigos?", frOnly: "Só amigos podem ver o perfil completo.", addToSee: "Adicionar aos amigos",
-    peopleSub2: "Ranking entre você e seus amigos.",
-    flashBtn: "Flashcards", simBtn: "Simulado", editBtn: "Editar", pdfBtn: "Exportar PDF", linkBtn: "Copiar link", linkOk: "Link copiado!",
-    examLbl: "Data da prova", examNone: "Defina a data da prova para ver o plano de estudo.",
-    examPlan: "Faltam {d} dias e {m} módulos: faça cerca de {p} por dia e use o último dia para revisar.",
-    examPlan1: "Falta 1 dia. Revise com Revisão e Simulado.", examToday: "A prova é hoje. Faça uma Revisão e um Simulado rápidos.",
-    examPast: "A data da prova já passou.", examDone: "Todos os módulos concluídos. Use Revisão e Simulado até a prova (faltam {d} dias).",
+    cancel: "Cancelar",
+    flashBtn: "Flashcards", simBtn: "Simulado", pdfBtn: "Exportar PDF", linkBtn: "Copiar link", linkOk: "Link copiado!",
     dueHere: "{n} perguntas deste assunto para revisar",
     speak: "Ouvir", speakStop: "Parar",
-    flTitle: "Flashcards", flAll: "Todos os módulos", flConcepts: "Conceitos", flQuestions: "Perguntas", flBoth: "Tudo", flTap: "Toque para virar",
-    flKnow: "Já sei", flLater: "Rever depois", flLeft: "{n} restantes", flDone: "Deck concluído!", flRestart: "Recomeçar", flEmpty: "Sem cartões neste filtro.", flFront: "Frente", flBack: "Verso",
+    flTitle: "Flashcards", flAll: "Todos os módulos", flConcepts: "Conceitos", flQuestions: "Perguntas", flBoth: "Tudo",
+    flKnow: "Já sei", flLater: "Rever depois", flLeft: "{n} restantes", flDone: "Deck concluído!", flRestart: "Recomeçar", flEmpty: "Sem cartões neste filtro.",
     simTitle: "Simulado", simCount: "Quantidade de perguntas", simLevel: "Dificuldade", simMix: "Misto", simStart: "Começar simulado",
     simNote: "O simulado usa o material no idioma original e só mostra o resultado no final, como numa prova.",
-    simTime: "Tempo: {m} min", simPrev: "Anterior", simNext: "Próxima", simFinish: "Finalizar", simQ: "Pergunta {i} de {n}",
+    simPrev: "Anterior", simNext: "Próxima", simFinish: "Finalizar", simQ: "Pergunta {i} de {n}",
     simUnans: "Há {n} sem resposta. Finalizar mesmo assim?", simResT: "Resultado do simulado", simScore: "{a} de {n} ({p}%)",
-    simTimeUp: "O tempo acabou.", simByMod: "Por módulo", simWrong: "Para revisar", simSaved: "Seus erros foram salvos no Caderno de erros.",
+    simTimeUp: "O tempo acabou.", simByMod: "Por módulo", simWrong: "Para revisar", simSaved: "As que você errou vão voltar na revisão deste assunto.",
     simNew: "Novo simulado", simYours: "Sua resposta:", simNoAns: "sem resposta", simTooFew: "Este assunto ainda tem poucas perguntas para um simulado.", simRight: "Gabarito:",
-    edTitle: "Editar assunto", edHelp: "Corrija textos e perguntas. As mudanças valem em todos os aparelhos.",
-    edOrigOnly: "Para editar, volte ao idioma Original.", edToOrig: "Ir para Original", edBuilt: "Este assunto é fixo e não pode ser editado.",
-    edSave: "Salvar alterações", edSaved: "Salvo!", edSaving: "Salvando…", edErr: "Não consegui salvar.",
-    edModT: "Título do módulo", edTag: "Resumo curto", edSteps: "Etapas de leitura", edStepT: "Título da etapa", edStepB: "Texto da etapa",
-    edQs: "Perguntas", edQ: "Pergunta", edCorrect: "Alternativa correta", edWrong: "Alternativa errada", edExpl: "Explicação",
-    edDelQ: "Excluir pergunta", edDelStep: "Excluir etapa", edAddQ: "Adicionar pergunta", edAddStep: "Adicionar etapa",
-    edLast: "É preciso manter pelo menos um item.", edNote: "Ao salvar, traduções e perguntas Fácil/Difícil deste módulo serão recriadas quando precisar.",
-    edMod: "Módulo {n}",
     pdfAttach: "Anexar PDF", pdfRead: "Lendo o PDF… página {p} de {t}", pdfOcr: "Página {p} sem texto: lendo como imagem…",
     pdfNone: "Não encontrei texto nesse PDF.", pdfErr: "Não consegui ler o PDF. Verifique a internet e tente de novo.", pdfOk: "PDF lido ({n} páginas). Confira o texto abaixo.", pdfCut: " O texto foi cortado no limite de {max} caracteres.",
     linkLbl: "Ou cole o link de uma página", linkGet: "Buscar texto", linkBusy: "Buscando…", linkAdded: "Texto do link adicionado. Confira abaixo.", linkErr: "Não consegui ler o link: {e}",
-    loginAsk: "Você já tem uma conta?", loginHas: "Já tenho conta", loginHasD: "Entrar com meu nome e senha.", loginMk: "Criar conta", loginMkD: "Primeira vez aqui: escolher nome e senha.", loginTaken: "Esse nome já está em uso. Escolha outro ou entre na conta existente.", loginNone: "Não existe conta com esse nome. Confira ou crie uma conta.",
-    loginTitle: "Entrar no caderno", loginHelp: "Use seu nome e uma senha. Seu progresso, revisões e metas ficam salvos na conta e acompanham você em qualquer aparelho.",
-    loginName: "Nome de usuário", loginPass: "Senha (mínimo 4 caracteres)", loginPass2: "Repita a senha", loginBtn: "Entrar", loginNew: "Criar conta", loginNewHint: "Não existe conta com esse nome. Repita a senha para criar uma.",
-    loginBadName: "Use um nome com pelo menos 2 letras ou números.", loginShort: "A senha precisa ter pelo menos 4 caracteres.", loginWrong: "Senha incorreta.", loginMismatch: "As senhas não são iguais.", loginErr: "Não consegui falar com o servidor do caderno. Tente de novo.", loginBusy: "Entrando…",
-    hello: "Olá, {n}", logout: "Sair", loginAdopt: "O progresso que já estava neste aparelho foi levado para a conta.",
-    meBtn: "Meu perfil", peopleBtn: "Pessoas", peopleTitle: "Pessoas", peopleSub: "Veja o progresso de quem estuda no caderno.", tabWeek: "Semana", tabStreak: "Sequência", tabXp: "XP", peopleNone: "Ainda não há mais ninguém aqui.", peopleOff: "A lista de pessoas precisa do Firebase configurado.", peopleErr: "Não consegui carregar a lista agora.", you: "você",
-    unitWeek: "{n} perg.", unitStreak: "{n} dias", unitXp: "{n} XP",
-    pfTitle: "Perfil", pfEdit: "Editar perfil", pfStreak: "Sequência", pfXp: "XP total", pfMods: "Módulos feitos", pfToday: "Hoje", pfWeek: "Na semana", pfTotal: "Perguntas", pfAcc: "Acerto", pfSubj: "Assuntos", pfNoBio: "Sem descrição ainda.", pfActive: "Último acesso: {t}", pfToday2: "hoje", pfYest: "ontem", pfDays: "há {n} dias", pfLoad: "Carregando perfil…", pfErr: "Não consegui abrir este perfil.", pfHidden: "Seu perfil está oculto: só você vê.",
-    peName: "Nome no perfil", peBio: "Sobre você (até 90 caracteres)", peColor: "Cor do perfil", pePhoto: "Trocar foto", peRemove: "Remover foto", peVis: "Aparecer na lista de pessoas", peVisHelp: "Quando ligado, os outros veem seu perfil e seu progresso.", peSave: "Salvar perfil", peSaved: "Perfil salvo!", peErr: "Não consegui salvar. Tente de novo.", peName0: "Escreva um nome (2 a 24 caracteres).",
     pdfPrint: "Não foi possível abrir a janela de impressão. Permita pop-ups e tente de novo.",
     pdfAnswerL: "Resposta", pdfQs: "Perguntas"
   },
   it: {
-    streakN: "{n} giorni di fila", streak1: "1 giorno di fila", todayG: "Oggi: {a}/{g}",
-    dueBtn: "Ripassa ({n})", dueNone: "Ripasso", errsBtn: "Errori ({n})",
-    goalLeft: "Mancano {n} domande all'obiettivo di oggi.", goalDone: "Obiettivo di oggi raggiunto. Ottimo lavoro!",
+    wakeNow: "Il server si sta svegliando (si ferma quando non viene usato). Può richiedere fino a 1 minuto…",
+    bkHelp: "I tuoi progressi restano salvati solo in questo browser. Esporta un backup per conservarli o portarli su un altro dispositivo.",
+    bkOut: "Esporta progressi", bkIn: "Importa progressi", bkDone: "Backup salvato: {f}",
+    bkAsk: "Importare questo backup? I progressi degli argomenti presenti nel file sostituiranno quelli di questo dispositivo.",
+    bkOk: "Progressi importati.", bkBad: "Questo file non è un backup del quaderno.",
     searchPh: "Cerca in tutti gli argomenti…", searching: "Cerco…", noRes: "Nessun risultato.", resStep: "Contenuto", resQ: "Domanda",
-    cfg: "Impostazioni", profLbl: "Profilo", profDef: "Predefinito", profNew: "Nuovo profilo", profAsk: "Nome del nuovo profilo:", goalLbl: "Obiettivo giornaliero (domande)",
-    cfgHelp: "Ogni profilo ha progressi, ripassi e obiettivi propri su questo dispositivo.",
     revTitle: "Ripasso", revNone: "Niente da ripassare ora. Rispondi ad altre domande nei moduli e torneranno qui al momento giusto.",
     revDoneT: "Ripasso completato", revScore: "Hai risposto bene a {a} su {n}.", revBack: "Torna al quaderno", revNext: "Successiva", revFinish: "Concludi",
     revHint: "Queste domande tornano quando è il momento giusto per ricordarle: più rispondi bene, più si distanziano.",
-    errsTitle: "Quaderno degli errori", errsNone: "Nessun errore in sospeso. Ottimo lavoro!", errsRedo: "Rifai questi ({n})", errsKnow: "Lo so",
-    errsShow: "Vedi la risposta", errsHide: "Nascondi", errsWrong: "sbagliata {n} volte", errsSub: "Domande sbagliate che non hai ancora fissato.",
     explainBtn: "Non ho capito", explaining: "Cerco un modo più semplice…", explainErr: "Non riesco a spiegare ora.",
     accTxt: " · {p}% corrette",
     flYour: "La tua risposta", flYourPh: "Scrivi con parole tue quello che sai…", flGrade: "Correggi con IA", flSee: "Vedi risposta", flGrading: "L'IA sta correggendo…",
     flAnswer: "Risposta corretta", flCont: "Continua", flEmptyAns: "Scrivi una risposta prima di correggere.", flGradeErr: "Non riesco a correggere ora.",
     flExplain: "Spiega con parole tue: {t}",
     flV_right: "Giusto!", flV_partial: "Quasi", flV_wrong: "Non ancora",
-    meMenu: "Account", mProf: "Il mio profilo", mPeople: "Amici e classifica", mSignedAs: "@{u}",
-    peEmoji: "Oppure scegli un avatar", peVis2: "Compari nella ricerca amici", peVisHelp2: "Se disattivato, nessuno ti trova e non compari nella classifica degli amici.",
-    frTab: "Amici", reqTab: "Richieste", findTab: "Cerca", frNone: "Non hai ancora amici. Usa la scheda Cerca per aggiungere qualcuno per nome o utente.",
-    reqNone: "Nessuna richiesta in sospeso.", reqIn: "Richieste ricevute", reqOut: "Richieste inviate", accept: "Accetta", decline: "Rifiuta", cancel: "Annulla",
-    findPh: "Cerca per nome o utente", findHint: "Scrivi almeno 2 lettere.", findNone: "Nessuno trovato.",
-    addFr: "Aggiungi", sent: "Richiesta inviata", isFr: "Amici", respond: "Rispondi",
-    rmFr: "Rimuovi amico", rmFrAsk: "Rimuovere {n} dagli amici?", frOnly: "Solo gli amici vedono il profilo completo.", addToSee: "Aggiungi agli amici",
-    peopleSub2: "Classifica tra te e i tuoi amici.",
-    flashBtn: "Flashcard", simBtn: "Simulazione", editBtn: "Modifica", pdfBtn: "Esporta PDF", linkBtn: "Copia link", linkOk: "Link copiato!",
-    examLbl: "Data della verifica", examNone: "Imposta la data della verifica per vedere il piano di studio.",
-    examPlan: "Mancano {d} giorni e {m} moduli: fanne circa {p} al giorno e usa l'ultimo giorno per ripassare.",
-    examPlan1: "Manca 1 giorno. Ripassa con Ripasso e Simulazione.", examToday: "La verifica è oggi. Fai un Ripasso e una Simulazione veloci.",
-    examPast: "La data della verifica è passata.", examDone: "Tutti i moduli completati. Usa Ripasso e Simulazione fino alla verifica (mancano {d} giorni).",
+    cancel: "Annulla",
+    flashBtn: "Flashcard", simBtn: "Simulazione", pdfBtn: "Esporta PDF", linkBtn: "Copia link", linkOk: "Link copiato!",
     dueHere: "{n} domande di questo argomento da ripassare",
     speak: "Ascolta", speakStop: "Ferma",
-    flTitle: "Flashcard", flAll: "Tutti i moduli", flConcepts: "Concetti", flQuestions: "Domande", flBoth: "Tutto", flTap: "Tocca per girare",
-    flKnow: "Lo so", flLater: "Rivedi dopo", flLeft: "{n} rimaste", flDone: "Mazzo completato!", flRestart: "Ricomincia", flEmpty: "Nessuna carta con questo filtro.", flFront: "Fronte", flBack: "Retro",
+    flTitle: "Flashcard", flAll: "Tutti i moduli", flConcepts: "Concetti", flQuestions: "Domande", flBoth: "Tutto",
+    flKnow: "Lo so", flLater: "Rivedi dopo", flLeft: "{n} rimaste", flDone: "Mazzo completato!", flRestart: "Ricomincia", flEmpty: "Nessuna carta con questo filtro.",
     simTitle: "Simulazione", simCount: "Numero di domande", simLevel: "Difficoltà", simMix: "Misto", simStart: "Inizia la simulazione",
     simNote: "La simulazione usa il materiale nella lingua originale e mostra il risultato solo alla fine, come in una verifica.",
-    simTime: "Tempo: {m} min", simPrev: "Precedente", simNext: "Successiva", simFinish: "Termina", simQ: "Domanda {i} di {n}",
+    simPrev: "Precedente", simNext: "Successiva", simFinish: "Termina", simQ: "Domanda {i} di {n}",
     simUnans: "Ci sono {n} domande senza risposta. Terminare comunque?", simResT: "Risultato della simulazione", simScore: "{a} su {n} ({p}%)",
-    simTimeUp: "Il tempo è scaduto.", simByMod: "Per modulo", simWrong: "Da ripassare", simSaved: "I tuoi errori sono stati salvati nel Quaderno degli errori.",
+    simTimeUp: "Il tempo è scaduto.", simByMod: "Per modulo", simWrong: "Da ripassare", simSaved: "Quelle sbagliate torneranno nel ripasso di questo argomento.",
     simNew: "Nuova simulazione", simYours: "La tua risposta:", simNoAns: "senza risposta", simTooFew: "Questo argomento ha ancora poche domande per una simulazione.", simRight: "Risposta corretta:",
-    edTitle: "Modifica argomento", edHelp: "Correggi testi e domande. Le modifiche valgono su tutti i dispositivi.",
-    edOrigOnly: "Per modificare, torna alla lingua Originale.", edToOrig: "Vai a Originale", edBuilt: "Questo argomento è fisso e non si può modificare.",
-    edSave: "Salva modifiche", edSaved: "Salvato!", edSaving: "Salvataggio…", edErr: "Non sono riuscito a salvare.",
-    edModT: "Titolo del modulo", edTag: "Breve descrizione", edSteps: "Passi di lettura", edStepT: "Titolo del passo", edStepB: "Testo del passo",
-    edQs: "Domande", edQ: "Domanda", edCorrect: "Risposta corretta", edWrong: "Risposta sbagliata", edExpl: "Spiegazione",
-    edDelQ: "Elimina domanda", edDelStep: "Elimina passo", edAddQ: "Aggiungi domanda", edAddStep: "Aggiungi passo",
-    edLast: "Devi mantenere almeno un elemento.", edNote: "Salvando, traduzioni e domande Facile/Difficile di questo modulo verranno ricreate quando servono.",
-    edMod: "Modulo {n}",
     pdfAttach: "Allega PDF", pdfRead: "Leggo il PDF… pagina {p} di {t}", pdfOcr: "Pagina {p} senza testo: la leggo come immagine…",
     pdfNone: "Non ho trovato testo in questo PDF.", pdfErr: "Non sono riuscito a leggere il PDF. Controlla la connessione e riprova.", pdfOk: "PDF letto ({n} pagine). Controlla il testo qui sotto.", pdfCut: " Il testo è stato tagliato al limite di {max} caratteri.",
     linkLbl: "Oppure incolla il link di una pagina", linkGet: "Cerca testo", linkBusy: "Cerco…", linkAdded: "Testo del link aggiunto. Controlla qui sotto.", linkErr: "Non sono riuscito a leggere il link: {e}",
-    loginAsk: "Hai già un account?", loginHas: "Ho già un account", loginHasD: "Accedi con nome e password.", loginMk: "Crea account", loginMkD: "Prima volta qui: scegli nome e password.", loginTaken: "Questo nome è già in uso. Scegline un altro o accedi all'account esistente.", loginNone: "Non esiste un account con questo nome. Controlla o crea un account.",
-    loginTitle: "Accedi al quaderno", loginHelp: "Usa il tuo nome e una password. Progressi, ripassi e obiettivi restano salvati nell'account e ti seguono su ogni dispositivo.",
-    loginName: "Nome utente", loginPass: "Password (minimo 4 caratteri)", loginPass2: "Ripeti la password", loginBtn: "Accedi", loginNew: "Crea account", loginNewHint: "Non esiste un account con questo nome. Ripeti la password per crearne uno.",
-    loginBadName: "Usa un nome con almeno 2 lettere o numeri.", loginShort: "La password deve avere almeno 4 caratteri.", loginWrong: "Password errata.", loginMismatch: "Le password non coincidono.", loginErr: "Non riesco a contattare il server del quaderno. Riprova.", loginBusy: "Accesso…",
-    hello: "Ciao, {n}", logout: "Esci", loginAdopt: "I progressi già presenti su questo dispositivo sono stati portati nell'account.",
-    meBtn: "Il mio profilo", peopleBtn: "Persone", peopleTitle: "Persone", peopleSub: "Guarda i progressi di chi studia nel quaderno.", tabWeek: "Settimana", tabStreak: "Serie", tabXp: "XP", peopleNone: "Non c'è ancora nessun altro qui.", peopleOff: "L'elenco delle persone richiede Firebase configurato.", peopleErr: "Non riesco a caricare l'elenco ora.", you: "tu",
-    unitWeek: "{n} dom.", unitStreak: "{n} giorni", unitXp: "{n} XP",
-    pfTitle: "Profilo", pfEdit: "Modifica profilo", pfStreak: "Serie", pfXp: "XP totali", pfMods: "Moduli fatti", pfToday: "Oggi", pfWeek: "In settimana", pfTotal: "Domande", pfAcc: "Corrette", pfSubj: "Argomenti", pfNoBio: "Ancora nessuna descrizione.", pfActive: "Ultimo accesso: {t}", pfToday2: "oggi", pfYest: "ieri", pfDays: "{n} giorni fa", pfLoad: "Carico il profilo…", pfErr: "Non riesco ad aprire questo profilo.", pfHidden: "Il tuo profilo è nascosto: lo vedi solo tu.",
-    peName: "Nome nel profilo", peBio: "Su di te (fino a 90 caratteri)", peColor: "Colore del profilo", pePhoto: "Cambia foto", peRemove: "Rimuovi foto", peVis: "Compari nell'elenco delle persone", peVisHelp: "Se attivo, gli altri vedono il tuo profilo e i tuoi progressi.", peSave: "Salva profilo", peSaved: "Profilo salvato!", peErr: "Non sono riuscito a salvare. Riprova.", peName0: "Scrivi un nome (da 2 a 24 caratteri).",
     pdfPrint: "Impossibile aprire la finestra di stampa. Consenti i pop-up e riprova.",
     pdfAnswerL: "Risposta", pdfQs: "Domande"
   }
 };
 Object.keys(X.pt).forEach(function(k){ T.pt[k] = X.pt[k]; });
 Object.keys(X.it).forEach(function(k){ T.it[k] = X.it[k]; });
-ICON.flame = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5c.6 3.2-2.2 4.6-3.6 7C7 12 7.2 15 9 16.8c-.4-1.9.6-3.2 1.7-4 .3 1.7 1.3 2.4 2 3.4.9 1.3.6 2.8-.3 3.7 3.2-.3 5.9-2.6 5.9-6 0-3.6-2.7-4.8-3.4-7.3-.4-1.4-.3-3-.9-4.1z" fill="currentColor"/></svg>';
 ICON.vol = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 
-/* ---------- Conta (nome + senha), com progresso sincronizado ---------- */
-var USER = jget("cad-user", null);
-if (USER && !USER.slug) USER = null;
-function PK(k){ return USER ? k + "@" + USER.slug : k; }
-var SYNC_RE = /^(cad-prog-|sicurezza-lab-progress-v2|cad-srs|cad-stats)/;
-function slugOf(n){ return norm(n).replace(/[^a-z0-9_-]+/g, "").slice(0, 24); }
-async function hashPass(slug, pass){
-  var str = "caderno:" + slug + ":" + pass;
-  try {
-    var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-    return Array.prototype.map.call(new Uint8Array(buf), function(b){ return (b < 16 ? "0" : "") + b.toString(16); }).join("");
-  } catch (e) {
-    var h1 = 5381, h2 = 52711;
-    for (var i = 0; i < str.length; i++) { var c = str.charCodeAt(i); h1 = ((h1 * 33) ^ c) >>> 0; h2 = ((h2 * 31) + c) >>> 0; }
-    return "f" + h1.toString(16) + h2.toString(16);
+/* ---------- Progresso neste aparelho ---------- */
+/* As chaves de progresso terminam em "@nome", herança das antigas contas.
+   Manter o mesmo sufixo preserva o progresso de quem já usava o site. */
+var PROG_RE = /^(cad-prog-|sicurezza-lab-progress-v2|cad-srs|cad-stats)/;
+var PSLUG = (function(){
+  var v = LS.get("cad-pslug");
+  if (v) return v;
+  var u = jget("cad-user", null);
+  if (u && u.slug) v = String(u.slug);
+  if (!v) {
+    var best = 0;
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i), at = k.lastIndexOf("@");
+        if (at < 0 || !PROG_RE.test(k)) continue;
+        var t = Number(LS.get("cad-t:" + k)) || 1;
+        if (t > best) { best = t; v = k.slice(at + 1); }
+      }
+    } catch (e) {}
   }
-}
-/* Contas já criadas (entram no banco no primeiro login) */
-var SEED_ACCOUNTS = {pietra: {name: "Pietra", h: "7e1e16b5da3aa22944e6fee02178b5fd7155c53df136762a5a58d821afc982cc", c: 1760000000000}};
-async function userGet(slug){
-  var acc = dbOn() ? await dbReq("GET", "users/" + slug + "/acc") : (jget("cad-users-local", {})[slug] || null);
-  if (!acc && SEED_ACCOUNTS[slug]) { acc = SEED_ACCOUNTS[slug]; try { await userPut(slug, acc); } catch (e) {} }
-  return acc;
-}
-async function userPut(slug, acc){
-  if (dbOn()) { await dbReq("PUT", "users/" + slug + "/acc", acc); return; }
-  var u = jget("cad-users-local", {}); u[slug] = acc; jset("cad-users-local", u);
-}
-var PUSHT = null;
-function syncTouch(k){
-  if (!USER || k.slice(-USER.slug.length - 1) !== "@" + USER.slug || !SYNC_RE.test(k)) return;
-  LS.set("cad-t:" + k, String(Date.now()));
-  clearTimeout(PUSHT); PUSHT = setTimeout(pushSync, 1500);
-}
-function syncKeys(){
-  var out = [];
-  if (!USER) return out;
-  try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (SYNC_RE.test(k) && k.slice(-USER.slug.length - 1) === "@" + USER.slug) out.push(k); } } catch (e) {}
-  return out;
-}
-async function pushSync(){
-  if (!USER || !dbOn()) return;
-  var blob = {};
-  syncKeys().forEach(function(k){ var v = LS.get(k); if (v != null) blob[k] = {t: Number(LS.get("cad-t:" + k)) || 0, v: v}; });
-  try { await dbReq("PUT", "users/" + USER.slug + "/data", blob); } catch (e) {}
-  await pushPub();
-}
-async function pullSync(){
-  if (!USER || !dbOn()) return false;
-  var rem; try { rem = await dbReq("GET", "users/" + USER.slug + "/data"); } catch (e) { return false; }
-  var changed = false;
-  Object.keys(rem || {}).forEach(function(k){
-    var r = rem[k]; if (!r || typeof r.v !== "string" || !SYNC_RE.test(k) || k.slice(-USER.slug.length - 1) !== "@" + USER.slug) return;
-    if ((Number(r.t) || 0) > (Number(LS.get("cad-t:" + k)) || 0)) { LS.set(k, r.v); LS.set("cad-t:" + k, String(r.t)); changed = true; }
-  });
+  v = v || "local";
+  LS.set("cad-pslug", v);
+  return v;
+})();
+function PK(k){ return k + "@" + PSLUG; }
+
+/* ---------- Backup do progresso (para guardar ou levar a outro aparelho) ---------- */
+var BKMSG = "";
+function exportProgress(){
+  var data = {}, suf = "@" + PSLUG;
   try {
-    var rm = await dbReq("GET", "users/" + USER.slug + "/me"), lm = jget(PK("cad-me"), null);
-    if (rm && typeof rm === "object" && (!lm || (Number(rm.t) || 0) > (Number(lm.t) || 0))) {
-      jset(PK("cad-me"), rm); if (rm.name) { USER.name = rm.name; jset("cad-user", USER); } changed = true;
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (PROG_RE.test(k) && k.slice(-suf.length) === suf) data[k.slice(0, -suf.length)] = LS.get(k);
     }
   } catch (e) {}
-  pushPub();
-  return changed;
+  var d = new Date(), name = "caderno-progresso-" + d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + ".json";
+  var blob = new Blob([JSON.stringify({app: "caderno-de-estudos", v: 1, at: d.toISOString(), data: data})], {type: "application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  BKMSG = L("bkDone", {f: name}); renderLib();
 }
-function adoptLocal(slug){
-  var n = 0;
-  try {
-    var keys = []; for (var i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
-    keys.forEach(function(k){ if (SYNC_RE.test(k) && k.indexOf("@") < 0) { var v = LS.get(k); if (v != null && LS.get(k + "@" + slug) == null) { LS.set(k + "@" + slug, v); LS.set("cad-t:" + k + "@" + slug, String(Date.now())); n++; } } });
-  } catch (e) {}
-  return n;
+async function importProgress(file){
+  var o = null;
+  try { o = JSON.parse(await file.text()); } catch (e) {}
+  if (!o || o.app !== "caderno-de-estudos" || !o.data || typeof o.data !== "object") { BKMSG = L("bkBad"); renderLib(); return; }
+  var keys = Object.keys(o.data).filter(function(k){ return PROG_RE.test(k) && k.indexOf("@") < 0 && typeof o.data[k] === "string"; });
+  if (!keys.length) { BKMSG = L("bkBad"); renderLib(); return; }
+  if (!window.confirm(L("bkAsk"))) return;
+  keys.forEach(function(k){ LS.set(k + "@" + PSLUG, o.data[k]); });
+  BKMSG = L("bkOk"); renderLib();
 }
-function logout(){
-  LGMODE = null; USER = null; LS.del("cad-user"); S = null; M = []; ORIG = []; SR = null; SQ = ""; SIDX = null;
-  st.form = null; G = null; NAV++; go("login");
-}
-var LGMODE = null;
-function renderLogin(){
-  if (!LGMODE) {
-    app.innerHTML =
-      '<div class="wrap hero"><p class="kicker">' + esc(L("app")) + '</p><h1>' + esc(L("loginAsk")) + '</h1><p class="sub">' + esc(L("loginHelp")) + '</p></div>' +
-      '<div class="wrap body"><div class="opts"><button type="button" class="opt lv" id="lg-has"><span class="l">1</span><span><strong>' + esc(L("loginHas")) + '</strong><small>' + esc(L("loginHasD")) + '</small></span></button>' +
-      '<button type="button" class="opt lv" id="lg-mk"><span class="l">2</span><span><strong>' + esc(L("loginMk")) + '</strong><small>' + esc(L("loginMkD")) + '</small></span></button></div></div>';
-    $("#lg-has").onclick = function(){ LGMODE = "in"; renderLogin(); };
-    $("#lg-mk").onclick = function(){ LGMODE = "new"; renderLogin(); };
-    return;
-  }
-  var isNew = LGMODE === "new";
-  app.innerHTML =
-    '<div class="wrap hero"><p class="kicker">' + esc(L("app")) + '</p><h1>' + esc(L(isNew ? "loginMk" : "loginHas")) + '</h1></div>' +
-    '<div class="wrap body"><div class="fld"><label for="lg-n">' + esc(L("loginName")) + '</label><input id="lg-n" type="text" autocomplete="username" autocapitalize="none" maxlength="24"></div>' +
-    '<div class="fld"><label for="lg-p">' + esc(L("loginPass")) + '</label><input id="lg-p" type="password" autocomplete="' + (isNew ? "new-password" : "current-password") + '" maxlength="64"></div>' +
-    (isNew ? '<div class="fld"><label for="lg-c">' + esc(L("loginPass2")) + '</label><input id="lg-c" type="password" autocomplete="new-password" maxlength="64"></div>' : "") +
-    '<p class="msg err" id="lg-m" hidden></p></div>' +
-    '<div class="bar"><div class="wrap"><button type="button" class="btn" id="lg-back">' + esc(L("back")) + '</button><button type="button" class="btn primary wide" id="lg-go">' + esc(L(isNew ? "loginNew" : "loginBtn")) + '</button></div></div>';
-  var n = $("#lg-n"), p = $("#lg-p"), c = $("#lg-c"), m = $("#lg-m"), go1 = $("#lg-go");
-  if (!isNew) { var last = LS.get("cad-lastname"); if (last) n.value = last; }
-  function say(t, hint){ m.textContent = t; m.hidden = !t; m.className = "msg" + (hint ? "" : " err"); }
-  async function submit(){
-    var name = n.value.trim(), slug = slugOf(name), pass = p.value;
-    if (slug.length < 2) return say(L("loginBadName"));
-    if (pass.length < 4) return say(L("loginShort"));
-    if (isNew && c.value !== pass) return say(L("loginMismatch"));
-    go1.disabled = true; say(L("loginBusy"), true);
-    try {
-      var h = await hashPass(slug, pass), acc = await userGet(slug), adopted = 0;
-      if (isNew) {
-        if (acc) { say(L("loginTaken")); go1.disabled = false; return; }
-        await userPut(slug, {name: name, h: h, c: Date.now()});
-        USER = {slug: slug, name: name}; adopted = adoptLocal(slug);
-      } else {
-        if (!acc) { say(L("loginNone")); go1.disabled = false; return; }
-        if (acc.h !== h) { say(L("loginWrong")); go1.disabled = false; return; }
-        USER = {slug: slug, name: acc.name || name};
-      }
-      jset("cad-user", USER); LS.set("cad-lastname", USER.name);
-      LGMODE = null;
-      if (adopted) pushSync(); else await pullSync();
-      toLib();
-    } catch (e) { say(L("loginErr")); go1.disabled = false; }
-  }
-  go1.onclick = submit;
-  $("#lg-back").onclick = function(){ LGMODE = null; renderLogin(); };
-  [n, p, c].forEach(function(x){ if (x) x.onkeydown = function(e){ if (e.key === "Enter") submit(); }; });
-  n.oninput = p.oninput = function(){ say(""); };
-  n.focus();
+function bindBackup(){
+  var f = $("#bk-file");
+  $("#bk-out").onclick = exportProgress;
+  $("#bk-in").onclick = function(){ f.click(); };
+  f.onchange = function(){ var x = f.files && f.files[0]; f.value = ""; if (x) importProgress(x); };
 }
 
-/* ---------- Estatísticas e metas ---------- */
+/* ---------- Estatísticas (acerto por módulo) ---------- */
 var DAY = 864e5;
 function pad2(n){ return (n < 10 ? "0" : "") + n; }
-function dayKey(t){ var d = new Date(t == null ? Date.now() : t); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
 function stats(){
   var s = jget(PK("cad-stats"), null);
   if (!s || typeof s !== "object") s = {};
-  if (!s.days) s.days = {}; if (!s.mods) s.mods = {}; if (!s.exams) s.exams = {}; if (!s.goal) s.goal = 10;
+  if (!s.mods) s.mods = {};
   return s;
 }
-function putStats(s){
-  var keys = Object.keys(s.days).sort();
-  while (keys.length > 400) delete s.days[keys.shift()];
-  jset(PK("cad-stats"), s);
-}
 function recordAnswer(ok, sid, mi){
-  var s = stats(), k = dayKey(), d = s.days[k] || (s.days[k] = {q: 0, ok: 0});
-  d.q++; if (ok) d.ok++;
-  var mk = sid + "|" + mi, m = s.mods[mk] || (s.mods[mk] = {q: 0, ok: 0});
+  var s = stats(), mk = sid + "|" + mi, m = s.mods[mk] || (s.mods[mk] = {q: 0, ok: 0});
   m.q++; if (ok) m.ok++;
-  putStats(s);
-}
-function streakDays(){
-  var s = stats(), t = Date.now();
-  if (!(s.days[dayKey(t)] && s.days[dayKey(t)].q > 0)) t -= DAY;
-  var n = 0;
-  while (s.days[dayKey(t)] && s.days[dayKey(t)].q > 0) { n++; t -= DAY; }
-  return n;
+  delete s.days; delete s.goal; delete s.exams;
+  jset(PK("cad-stats"), s);
 }
 function accBadge(i){
   if (!S) return "";
@@ -2951,50 +2751,13 @@ function srsList(filter){
   return out;
 }
 function dueList(sid){ var n = Date.now(); return srsList(function(e){ return e.due <= n && (!sid || e.sid === sid); }).sort(function(x, y){ return x.e.due - y.e.due; }); }
-function errList(){ return srsList(function(e){ return e.wrong > 0 && e.box <= 2; }).sort(function(x, y){ return (y.e.lw || 0) - (x.e.lw || 0); }); }
 
 /* ---------- Painel da biblioteca ---------- */
 var SQ = "", SR = null, SIDX = null, SIDXAT = 0, STO = null;
-function acctBtn(){
-  var me = getMe(), g = stats().goal || 10;
-  return '<span class="menuwrap"><button type="button" class="avbtn" id="me" aria-haspopup="true" aria-expanded="false" aria-label="' + esc(L("meMenu")) + '">' + avatarHtml(me, "s") + (FRN ? '<i class="dot">' + FRN + '</i>' : "") + '</button>' +
-    '<div class="menu" id="menu" hidden role="menu"><div class="mhead">' + avatarHtml(me, "m") + '<span><strong>' + esc(me.name || USER.name) + '</strong><small>' + esc(L("mSignedAs", {u: USER.slug})) + '</small></span></div>' +
-    '<button type="button" class="mi" id="m-prof" role="menuitem">' + esc(L("mProf")) + '</button>' +
-    '<button type="button" class="mi" id="m-people" role="menuitem">' + esc(L("mPeople")) + (FRN ? ' <b class="cbadge">' + FRN + '</b>' : "") + '</button>' +
-    '<label class="mi goalsel">' + esc(L("goalLbl")) + ' <select id="goal">' + [5, 10, 15, 20, 30, 50].map(function(x){ return '<option value="' + x + '"' + (x === g ? " selected" : "") + '>' + x + '</option>'; }).join("") + '</select></label>' +
-    '<button type="button" class="mi out" id="logout" role="menuitem">' + esc(L("logout")) + '</button></div></span>';
-}
-var FRN = 0, MENUBOUND = false;
-function closeMenu(){ var m = $("#menu"), b = $("#me"); if (m) m.hidden = true; if (b) b.setAttribute("aria-expanded", "false"); }
 function dashHtml(){
-  var n = dueList().length, er = errList().length, s = stats(), d = s.days[dayKey()] || {q: 0}, g = s.goal || 10, sk = streakDays();
-  var pct = Math.min(100, Math.round(d.q / g * 100));
-  return '<div class="dash">' +
-    '<div class="stats"><span class="pill">' + ICON.flame + esc(sk === 1 ? L("streak1") : L("streakN", {n: sk})) + '</span><span class="pill">' + esc(L("todayG", {a: d.q, g: g})) + '</span></div>' +
-    '<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>' +
-    '<p class="cnt">' + esc(d.q >= g ? L("goalDone") : L("goalLeft", {n: g - d.q})) + '</p>' +
-    '<div class="tools"><button type="button" class="btn' + (n ? " primary" : "") + '" id="d-rev"' + (n ? "" : "") + '>' + esc(n ? L("dueBtn", {n: n}) : L("dueNone")) + '</button>' +
-    '<button type="button" class="btn" id="d-errs">' + esc(L("errsBtn", {n: er})) + '</button>' +
-    '<button type="button" class="btn" id="d-people">' + esc(L("peopleBtn")) + '</button></div>' +
-    '<div class="searchbox"><input id="sq" type="search" autocomplete="off" placeholder="' + esc(L("searchPh")) + '" value="' + esc(SQ) + '"></div><div id="sres" class="sres-list"></div>' +
-  '</div>';
-}
-async function loadReqCount(){
-  if (!dbOn() || !USER) return;
-  try { var r = await dbReq("GET", "fr/" + USER.slug), n = r ? Object.keys(r).length : 0; if (n !== FRN) { FRN = n; if (st.view === "lib" && !$("#sq:focus") && !($("#menu") && !$("#menu").hidden)) renderLib(); } } catch (e) {}
+  return '<div class="dash"><div class="searchbox"><input id="sq" type="search" autocomplete="off" placeholder="' + esc(L("searchPh")) + '" value="' + esc(SQ) + '"></div><div id="sres" class="sres-list"></div></div>';
 }
 function bindDash(){
-  var b;
-  if ((b = $("#d-rev"))) b.onclick = function(){ var l = dueList(); if (l.length) startReview(l.slice(0, 20), "due"); else go("rev"); };
-  if ((b = $("#d-errs"))) b.onclick = function(){ go("errs"); };
-  if ((b = $("#d-people"))) b.onclick = function(){ go("people"); };
-  if ((b = $("#me"))) b.onclick = function(e){ e.stopPropagation(); var m = $("#menu"); m.hidden = !m.hidden; b.setAttribute("aria-expanded", String(!m.hidden)); };
-  if ((b = $("#m-prof"))) b.onclick = function(){ openProfile(USER.slug, "lib"); };
-  if ((b = $("#m-people"))) b.onclick = function(){ go("people"); };
-  if (!MENUBOUND) { MENUBOUND = true; document.addEventListener("click", function(e){ if (!e.target.closest || !e.target.closest(".menuwrap")) closeMenu(); }); document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeMenu(); }); }
-  loadReqCount();
-  if ((b = $("#logout"))) b.onclick = logout;
-  if ((b = $("#goal"))) b.onchange = function(){ var s = stats(); s.goal = Number(b.value) || 10; putStats(s); renderLib(); };
   var sq = $("#sq");
   if (sq) {
     sq.oninput = function(){ SQ = sq.value; clearTimeout(STO); STO = setTimeout(runSearch, 250); };
@@ -3072,7 +2835,7 @@ function renderRev(){
   if (!RV || !RV.list.length) {
     app.innerHTML = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("cancel")) + '">' + ICON.x + '</button><h2 class="tt">' + esc(L("revTitle")) + '</h2></div></div>' +
       '<div class="wrap body center"><p class="lead">' + esc(L("revNone")) + '</p></div>';
-    $("#exit").onclick = toLib; return;
+    $("#exit").onclick = revExit; return;
   }
   var it = RV.list[RV.i], e = it.e, q = e.q, n = RV.list.length;
   var opts = RV.order.map(function(oi, pos){
@@ -3083,7 +2846,7 @@ function renderRev(){
     '<div class="wrap body"><p class="crumb"><span>' + esc(e.st + " · " + L("modL", {n: e.mi + 1, t: e.mt})) + '</span></p>' +
     '<h2 class="q">' + clean(q.p) + '</h2><div class="opts" role="group">' + opts + '</div></div>' +
     '<div class="bar" id="bar"><div class="wrap"><button type="button" class="btn primary wide" id="verify" disabled>' + esc(L("verify")) + '</button></div></div>';
-  $("#exit").onclick = toLib;
+  $("#exit").onclick = revExit;
   var btns = app.querySelectorAll(".opt"), verify = $("#verify");
   btns.forEach(function(b){
     b.onclick = function(){
@@ -3115,29 +2878,10 @@ function renderRev(){
 function renderRevDone(){
   var n = RV ? RV.list.length : 0, a = RV ? RV.right : 0;
   app.innerHTML = '<div class="wrap body center">' + sign("s") + '<h2>' + esc(L("revDoneT")) + '</h2><span class="xp">' + ICON.star + esc(L("revScore", {a: a, n: n})) + '</span><p class="lead">' + esc(L("revHint")) + '</p></div>' +
-    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="back">' + esc(L("revBack")) + '</button></div></div>';
-  $("#back").onclick = toLib;
+    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="back">' + esc(L(S ? "path" : "revBack")) + '</button></div></div>';
+  $("#back").onclick = revExit;
 }
-function renderErrs(){
-  var list = errList();
-  app.innerHTML = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("errsTitle")) + '</h2></div></div>' +
-    '<div class="wrap body"><p class="lead left">' + esc(L("errsSub")) + '</p>' +
-    (list.length ? list.map(function(it, i){
-      var e = it.e, q = e.q;
-      return '<div class="errc" data-i="' + i + '"><p class="crumb"><span>' + esc(e.st + " · " + L("modL", {n: e.mi + 1, t: e.mt})) + ' · ' + esc(L("errsWrong", {n: e.wrong})) + '</span></p>' +
-        '<h3 class="eq">' + clean(q.p) + '</h3><div class="ea" hidden><p><b>' + esc(L("rightAns")) + '</b> ' + clean(q.o[q.c]) + '</p><p>' + clean(q.e) + '</p></div>' +
-        '<div class="row"><button type="button" class="btn" data-a="show">' + esc(L("errsShow")) + '</button><button type="button" class="btn ghost" data-a="know">' + esc(L("errsKnow")) + '</button></div></div>';
-    }).join("") : '<p class="lead">' + esc(L("errsNone")) + '</p>') +
-    '</div>' + (list.length ? '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="redo">' + esc(L("errsRedo", {n: Math.min(list.length, 20)})) + '</button></div></div>' : "");
-  $("#exit").onclick = toLib;
-  var rd = $("#redo"); if (rd) rd.onclick = function(){ startReview(list.slice(0, 20), "errs"); };
-  app.querySelectorAll(".errc").forEach(function(c){
-    var it = list[Number(c.getAttribute("data-i"))];
-    c.querySelector('[data-a="show"]').onclick = function(){ var a = c.querySelector(".ea"); a.hidden = !a.hidden; this.textContent = L(a.hidden ? "errsShow" : "errsHide"); };
-    c.querySelector('[data-a="know"]').onclick = function(){ var all = srsAll(); if (all[it.key]) { all[it.key].box = 6; all[it.key].due = Date.now() + 32 * DAY; srsPut(all); } renderErrs(); };
-  });
-}
-
+function revExit(){ RV = null; if (S) go("home"); else toLib(); }
 /* ---------- "Não entendi": explicação alternativa pela IA ---------- */
 async function explainWrong(q, chosenIdx, modIdx, box, btn, entry){
   btn.disabled = true; box.hidden = false; box.textContent = L("explaining");
@@ -3148,7 +2892,7 @@ async function explainWrong(q, chosenIdx, modIdx, box, btn, entry){
     "\n\nExplique com palavras simples, em no máximo 5 frases, por que a resposta correta está certa e a minha está errada. Use um exemplo curto do dia a dia.";
   if (!ctx) ctx = plain(q.p) + "\n" + q.o.map(plain).join("\n") + "\n" + plain(q.e);
   try {
-    WAITCB = function(w){ box.textContent = L("waiting", {s: w}); };
+    WAITCB = function(t){ box.textContent = t; };
     var d = await api("/api/chat", {question: qt, module: modIdx, context: ctx, lang: LANG === "it" ? "it" : "pt", subject: entry ? entry.st : plain(S ? (S.titleShown || S.title) : "")});
     box.textContent = d.answer || "";
   } catch (e) { box.textContent = L("explainErr") + " " + (e.message || ""); }
@@ -3487,256 +3231,34 @@ function bindNewExtras(te, sl, upd, er){
   };
 }
 
-/* ---------- Perfis e pessoas (estilo comunidade) ---------- */
-function meDefault(){
-  var h = 0, sl = USER ? USER.slug : "x"; for (var i = 0; i < sl.length; i++) h = (h * 31 + sl.charCodeAt(i)) % PALETTE.length;
-  return {name: USER ? USER.name : "", bio: "", av: "", em: "", color: PALETTE[h], vis: true, t: 0};
-}
-function getMe(){
-  var m = jget(PK("cad-me"), null);
-  if (!m || typeof m !== "object") m = meDefault();
-  if (!m.name) m.name = USER ? USER.name : "";
-  return m;
-}
-var EMOJIS = ["🦊","🐼","🐯","🐸","🐙","🦉","🐧","🦁","🐶","🐱","🦄","🐢","🚀","⚡","🔥","🌱","📚","🎧","🏆","🧠"];
-function avatarHtml(me, size){
-  var ok = me.av && /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(me.av) && me.av.length < 60000;
-  var col = /^#[0-9a-f]{6}$/i.test(me.color || "") ? me.color : "#316ee8";
-  var em = !ok && me.em && EMOJIS.indexOf(me.em) >= 0 ? me.em : "";
-  return '<span class="av ' + size + (em ? " em" : "") + '" style="--c:' + col + '">' + (ok ? '<img alt="" src="' + me.av + '">' : em ? em : esc(String(me.name || "?").trim().charAt(0).toUpperCase())) + '</span>';
-}
-function pubStats(){
-  var s = stats(), total = 0, okAll = 0, d14 = {}, i, xp = 0, mods = 0, subj = [];
-  Object.keys(s.days).forEach(function(k){ total += s.days[k].q; okAll += s.days[k].ok; });
-  for (i = 0; i < 14; i++) { var k = dayKey(Date.now() - i * DAY); if (s.days[k]) d14[k] = s.days[k].q; }
-  LIB.forEach(function(m){
-    var p = readProg(m.id), n = m.n || 0, u = Math.min(Number(p.unlocked) || 0, n);
-    xp += Number(p.xp) || 0; mods += u;
-    if (subj.length < 12) subj.push({t: String(m.title).slice(0, 60), p: n ? Math.round(u / n * 100) : 0});
-  });
-  return {xp: xp, mods: mods, streak: streakDays(), d: d14, total: total, acc: total ? Math.round(okAll / total * 100) : 0, subj: subj, t: Date.now()};
-}
-function stWeek(st1){ var n = 0; for (var i = 0; i < 7; i++) n += Number((st1.d || {})[dayKey(Date.now() - i * DAY)]) || 0; return n; }
-function stToday(st1){ return Number((st1.d || {})[dayKey()]) || 0; }
-function stStreak(st1){
-  var ld = dayKey(Number(st1.t) || 0);
-  return (ld === dayKey() || ld === dayKey(Date.now() - DAY)) ? (Number(st1.streak) || 0) : 0;
-}
-async function pushPub(){
-  if (!USER || !dbOn()) return;
-  var me = getMe();
-  try {
-    await dbReq("PUT", "users/" + USER.slug + "/me", me);
-    if (me.vis === false) await dbReq("DELETE", "pub/" + USER.slug);
-    else await dbReq("PUT", "pub/" + USER.slug, {me: {name: me.name, bio: me.bio, av: me.av, em: me.em || "", color: me.color}, st: pubStats()});
-  } catch (e) {}
-}
-async function avatarFromFile(file){
-  var bmp = await createImageBitmap(file), side = Math.min(bmp.width, bmp.height);
-  var c = document.createElement("canvas"); c.width = c.height = 128;
-  var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 128, 128);
-  x.drawImage(bmp, (bmp.width - side) / 2, (bmp.height - side) / 2, side, side, 0, 0, 128, 128);
-  if (bmp.close) bmp.close();
-  return c.toDataURL("image/jpeg", 0.82);
-}
-var VP = null, PFROM = "lib", PT = "week", PE = null;
-function openProfile(slug, from){ VP = slug; PFROM = from || "lib"; go("profile"); }
-function agoText(t){
-  var ld = dayKey(Number(t) || 0);
-  if (ld === dayKey()) return L("pfToday2");
-  if (ld === dayKey(Date.now() - DAY)) return L("pfYest");
-  return L("pfDays", {n: Math.max(2, Math.round((Date.now() - t) / DAY))});
-}
-function tile(label, val){ return '<div class="tile"><b>' + esc(val) + '</b><span>' + esc(label) + '</span></div>'; }
-async function renderProfile(){
-  var head = function(){ return '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("pfTitle")) + '</h2></div></div>'; };
-  var mine = VP === USER.slug, me, s1;
-  function back(){ if (PFROM === "people") go("people"); else toLib(); }
-  var isFr = false;
-  if (mine) { me = getMe(); s1 = pubStats(); }
-  else {
-    app.innerHTML = head() + '<div class="wrap body center"><div class="spin"></div><p class="lead">' + esc(L("pfLoad")) + '</p></div>';
-    $("#exit").onclick = back;
-    var my = ++NAV, row, fd;
-    try { fd = await friendData(); row = await dbReq("GET", "pub/" + VP); } catch (e) { row = null; fd = null; }
-    isFr = !!(fd && fd.fl[VP]);
-    if (my !== NAV || st.view !== "profile") return;
-    if (!row || !row.me || !row.st) { app.innerHTML = head() + '<div class="wrap body center"><p class="lead">' + esc(L("pfErr")) + '</p></div>'; $("#exit").onclick = back; return; }
-    me = row.me; s1 = row.st;
-  }
-  var subj = (s1.subj || []).map(function(x){ return '<div class="byrow"><span>' + esc(String(x.t || "").slice(0, 60)) + '</span><b>' + (Number(x.p) || 0) + '%</b><span class="mb"><i style="width:' + Math.max(0, Math.min(100, Number(x.p) || 0)) + '%"></i></span></div>'; }).join("");
-  app.innerHTML = head() +
-    '<div class="wrap body"><div class="pfhead">' + avatarHtml(me, "l") + '<div><h2 class="pfname">' + esc(me.name || "") + '</h2><p class="pfbio">' + esc(me.bio || L("pfNoBio")) + '</p><p class="cnt">' + esc(L("pfActive", {t: agoText(s1.t)})) + '</p></div></div>' +
-    '<div class="tiles">' + tile(L("pfStreak"), stStreak(s1)) + tile(L("pfXp"), Number(s1.xp) || 0) + tile(L("pfMods"), Number(s1.mods) || 0) + tile(L("pfToday"), stToday(s1)) + tile(L("pfWeek"), stWeek(s1)) + tile(L("pfAcc"), (Number(s1.acc) || 0) + "%") + '</div>' +
-    '<p class="cnt">' + esc(L("pfTotal")) + ': ' + (Number(s1.total) || 0) + '</p>' +
-    (subj ? '<h3 class="sec">' + esc(L("pfSubj")) + '</h3>' + subj : "") +
-    (mine && me.vis === false ? '<p class="cnt">' + esc(L("pfHidden")) + '</p>' : "") + '</div>' +
-    (mine ? '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pf-edit">' + esc(L("pfEdit")) + '</button></div></div>' : isFr ? '<div class="bar"><div class="wrap"><button type="button" class="btn danger wide" id="pf-rm">' + esc(L("rmFr")) + '</button></div></div>' : "");
-  $("#exit").onclick = back;
-  var rm = $("#pf-rm"); if (rm) rm.onclick = async function(){ if (!confirm(L("rmFrAsk", {n: me.name || VP}))) return; rm.disabled = true; try { await removeFriend(VP); } catch (e) {} PTAB = "fr"; go("people"); };
-  var ed = $("#pf-edit"); if (ed) ed.onclick = function(){ PE = JSON.parse(JSON.stringify(getMe())); go("pedit"); };
-}
-function renderPedit(){
-  if (!PE) PE = JSON.parse(JSON.stringify(getMe()));
-  var sws = PALETTE.map(function(c){ return '<button type="button" class="sw' + (c === PE.color ? " on" : "") + '" data-c="' + c + '" style="--c:' + c + '" aria-label="' + c + '"></button>'; }).join("");
-  app.innerHTML =
-    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("pfEdit")) + '</h2></div></div>' +
-    '<div class="wrap body edit"><div class="pedav" id="pe-av">' + avatarHtml(PE, "l") + '<div class="peb"><input type="file" id="pe-file" accept="image/*" hidden><button type="button" class="btn" id="pe-photo">' + ICON.cam + '<span>' + esc(L("pePhoto")) + '</span></button><button type="button" class="btn ghost" id="pe-rm">' + esc(L("peRemove")) + '</button></div></div>' +
-    '<label for="pe-name">' + esc(L("peName")) + '</label><input id="pe-name" type="text" maxlength="24" value="' + esc(PE.name) + '">' +
-    '<label for="pe-bio">' + esc(L("peBio")) + '</label><textarea id="pe-bio" rows="2" maxlength="90">' + esc(PE.bio || "") + '</textarea>' +
-    '<label>' + esc(L("peEmoji")) + '</label><div class="ems">' + EMOJIS.map(function(e){ return '<button type="button" class="emb' + (PE.em === e && !PE.av ? " on" : "") + '" data-e="' + e + '">' + e + '</button>'; }).join("") + '</div>' +
-    '<label>' + esc(L("peColor")) + '</label><div class="sws">' + sws + '</div>' +
-    '<label class="chk"><input type="checkbox" id="pe-vis"' + (PE.vis !== false ? " checked" : "") + '> ' + esc(L("peVis2")) + '</label><p class="cnt">' + esc(L("peVisHelp2")) + '</p>' +
-    '<p class="msg" id="pe-msg" hidden></p></div>' +
-    '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="pe-save">' + esc(L("peSave")) + '</button></div></div>';
-  var msg = $("#pe-msg");
-  function keep(){ PE.name = $("#pe-name").value; PE.bio = $("#pe-bio").value; PE.vis = $("#pe-vis").checked; }
-  $("#exit").onclick = function(){ PE = null; go("profile"); };
-  $("#pe-photo").onclick = function(){ $("#pe-file").click(); };
-  $("#pe-file").onchange = async function(){
-    var f = this.files && this.files[0]; this.value = "";
-    if (!f) return; keep();
-    try { PE.av = await avatarFromFile(f); PE.em = ""; renderPedit(); } catch (e) { msg.textContent = L("peErr"); msg.className = "msg err"; msg.hidden = false; }
-  };
-  $("#pe-rm").onclick = function(){ keep(); PE.av = ""; PE.em = ""; renderPedit(); };
-  app.querySelectorAll(".emb").forEach(function(b){ b.onclick = function(){ keep(); PE.em = b.getAttribute("data-e"); PE.av = ""; renderPedit(); }; });
-  app.querySelectorAll(".sw").forEach(function(b){ b.onclick = function(){ keep(); PE.color = b.getAttribute("data-c"); renderPedit(); }; });
-  $("#pe-save").onclick = async function(){
-    keep();
-    var nm = PE.name.trim();
-    msg.hidden = false; msg.className = "msg err";
-    if (nm.length < 2 || nm.length > 24) { msg.textContent = L("peName0"); return; }
-    var me = {name: nm, bio: PE.bio.trim().slice(0, 90), av: PE.av || "", em: PE.av ? "" : (PE.em || ""), color: PE.color, vis: PE.vis !== false, t: Date.now()};
-    jset(PK("cad-me"), me); USER.name = nm; jset("cad-user", USER); LS.set("cad-lastname", nm);
-    this.disabled = true; msg.className = "msg"; msg.textContent = L("peSaved");
-    await pushPub(); PE = null; go("profile");
-  };
-}
-function metricOf(row, tab){ return tab === "week" ? stWeek(row.st) : tab === "streak" ? stStreak(row.st) : (Number(row.st.xp) || 0); }
-/* ---------- Amigos ---------- */
-async function friendData(){
-  var r = await Promise.all([dbReq("GET", "fl/" + USER.slug), dbReq("GET", "fr/" + USER.slug), dbReq("GET", "fo/" + USER.slug)]);
-  return {fl: r[0] || {}, fr: r[1] || {}, fo: r[2] || {}};
-}
-async function sendReq(t){
-  if (t === USER.slug) return;
-  await dbReq("PUT", "fr/" + t + "/" + USER.slug, {t: Date.now(), name: getMe().name || USER.name});
-  await dbReq("PUT", "fo/" + USER.slug + "/" + t, 1);
-}
-async function acceptReq(f){
-  await dbReq("PUT", "fl/" + USER.slug + "/" + f, 1);
-  await dbReq("PUT", "fl/" + f + "/" + USER.slug, 1);
-  await dbReq("DELETE", "fr/" + USER.slug + "/" + f);
-  await dbReq("DELETE", "fo/" + f + "/" + USER.slug);
-}
-async function declineReq(f){ await dbReq("DELETE", "fr/" + USER.slug + "/" + f); await dbReq("DELETE", "fo/" + f + "/" + USER.slug); }
-async function cancelReq(t){ await dbReq("DELETE", "fr/" + t + "/" + USER.slug); await dbReq("DELETE", "fo/" + USER.slug + "/" + t); }
-async function removeFriend(f){ await dbReq("DELETE", "fl/" + USER.slug + "/" + f); await dbReq("DELETE", "fl/" + f + "/" + USER.slug); }
-var PTAB = "fr", PQ = "", PUBC = null, PUBAT = 0;
-async function getPub(){
-  if (PUBC && Date.now() - PUBAT < 20000) return PUBC;
-  PUBC = (await dbReq("GET", "pub")) || {}; PUBAT = Date.now(); return PUBC;
-}
-async function renderPeople(){
-  var head = '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("peopleTitle")) + '</h2></div></div>';
-  if (!dbOn()) { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleOff")) + '</p></div>'; $("#exit").onclick = toLib; return; }
-  app.innerHTML = head + '<div class="wrap body center"><div class="spin"></div></div>';
-  $("#exit").onclick = toLib;
-  var my = ++NAV, all, fd;
-  try { fd = await friendData(); PUBAT = 0; all = await getPub(); } catch (e) { if (my === NAV && st.view === "people") { app.innerHTML = head + '<div class="wrap body center"><p class="lead">' + esc(L("peopleErr")) + '</p></div>'; $("#exit").onclick = toLib; } return; }
-  if (my !== NAV || st.view !== "people") return;
-  FRN = Object.keys(fd.fr).length;
-  var nameOf = function(slug){ var r = all[slug]; return (r && r.me && r.me.name) || slug; };
-  var tabs = [["fr", L("frTab")], ["req", L("reqTab") + (FRN ? " (" + FRN + ")" : "")], ["find", L("findTab")]];
-  var body = "";
-  function row(slug, me, extra, right, cls){
-    return '<div class="prow' + (cls || "") + '" data-s="' + esc(slug) + '"><button type="button" class="pgo" data-s="' + esc(slug) + '">' + (extra || "") + avatarHtml(me, "m") +
-      '<span class="pn"><strong>' + esc(String(me.name || slug).slice(0, 24)) + '</strong><small>@' + esc(slug) + (me.bio ? ' · ' + esc(String(me.bio).slice(0, 50)) : "") + '</small></span></button>' + (right || "") + '</div>';
-  }
-  if (PTAB === "fr") {
-    var rows = [], mm = getMe();
-    Object.keys(fd.fl).forEach(function(k){ var r = all[k]; if (r && r.me && r.st) rows.push({slug: k, me: r.me, st: r.st}); });
-    rows.push({slug: USER.slug, me: mm, st: pubStats()});
-    rows.sort(function(a, b){ return metricOf(b, PT) - metricOf(a, PT); });
-    var unit = PT === "week" ? "unitWeek" : PT === "streak" ? "unitStreak" : "unitXp";
-    body = '<p class="lead left">' + esc(L("peopleSub2")) + '</p>' +
-      '<div class="seg ptabs" role="group">' + [["week", "tabWeek"], ["streak", "tabStreak"], ["xp", "tabXp"]].map(function(t){ return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (PT === t[0]) + '">' + esc(L(t[1])) + '</button>'; }).join("") + '</div>' +
-      rows.map(function(r, i){ return row(r.slug, r.me, '<span class="rk r' + (i + 1) + '">' + (i + 1) + '</span>', '<b class="pv">' + esc(L(unit, {n: metricOf(r, PT)})) + '</b>', r.slug === USER.slug ? " mine" : ""); }).join("") +
-      (rows.length < 2 ? '<p class="lead">' + esc(L("frNone")) + '</p>' : "");
-  } else if (PTAB === "req") {
-    var inn = Object.keys(fd.fr), out = Object.keys(fd.fo);
-    body = '<h3 class="sec">' + esc(L("reqIn")) + '</h3>' +
-      (inn.length ? inn.map(function(k){ var r = all[k], me = (r && r.me) || {name: (fd.fr[k] && fd.fr[k].name) || k};
-        return row(k, me, "", '<span class="acts"><button type="button" class="btn primary sm" data-a="ok" data-s="' + esc(k) + '">' + esc(L("accept")) + '</button><button type="button" class="btn sm" data-a="no" data-s="' + esc(k) + '">' + esc(L("decline")) + '</button></span>'); }).join("") : '<p class="cnt">' + esc(L("reqNone")) + '</p>') +
-      (out.length ? '<h3 class="sec">' + esc(L("reqOut")) + '</h3>' + out.map(function(k){ var r = all[k], me = (r && r.me) || {name: k};
-        return row(k, me, "", '<span class="acts"><button type="button" class="btn sm" data-a="cx" data-s="' + esc(k) + '">' + esc(L("cancel")) + '</button></span>'); }).join("") : "");
-  } else {
-    body = '<div class="searchbox"><input id="pq" type="search" autocomplete="off" placeholder="' + esc(L("findPh")) + '" value="' + esc(PQ) + '"></div><div id="pres"></div>';
-  }
-  app.innerHTML = head + '<div class="wrap body"><div class="seg ftabs" role="group">' + tabs.map(function(t){ return '<button type="button" data-p="' + t[0] + '" aria-pressed="' + (PTAB === t[0]) + '">' + esc(t[1]) + '</button>'; }).join("") + '</div>' + body + '</div>';
-  $("#exit").onclick = toLib;
-  var again = function(){ renderPeople(); };
-  app.querySelectorAll(".ftabs button").forEach(function(b){ b.onclick = function(){ PTAB = b.getAttribute("data-p"); again(); }; });
-  app.querySelectorAll(".ptabs button").forEach(function(b){ b.onclick = function(){ PT = b.getAttribute("data-t"); again(); }; });
-  app.querySelectorAll(".pgo").forEach(function(b){ b.onclick = function(){ openProfile(b.getAttribute("data-s"), "people"); }; });
-  app.querySelectorAll("[data-a]").forEach(function(b){ b.onclick = async function(){
-    var a = b.getAttribute("data-a"), k = b.getAttribute("data-s"); b.disabled = true;
-    try { if (a === "ok") await acceptReq(k); else if (a === "no") await declineReq(k); else await cancelReq(k); } catch (e) {}
-    again();
-  }; });
-  var pq = $("#pq");
-  if (pq) {
-    var paint = function(){
-      PQ = pq.value; var q = norm(PQ.trim()), box = $("#pres");
-      if (q.length < 2) { box.innerHTML = '<p class="cnt">' + esc(L("findHint")) + '</p>'; return; }
-      var res = [];
-      Object.keys(all).forEach(function(k){ var r = all[k]; if (k === USER.slug || !r || !r.me) return; if (norm(k).indexOf(q) >= 0 || norm(r.me.name).indexOf(q) >= 0) res.push({slug: k, me: r.me}); });
-      res = res.slice(0, 20);
-      box.innerHTML = res.length ? res.map(function(r){
-        var k = r.slug, btn;
-        if (fd.fl[k]) btn = '<span class="tag">' + esc(L("isFr")) + '</span>';
-        else if (fd.fr[k]) btn = '<button type="button" class="btn primary sm" data-q="ok" data-s="' + esc(k) + '">' + esc(L("accept")) + '</button>';
-        else if (fd.fo[k]) btn = '<button type="button" class="btn sm" data-q="cx" data-s="' + esc(k) + '">' + esc(L("sent")) + '</button>';
-        else btn = '<button type="button" class="btn primary sm" data-q="add" data-s="' + esc(k) + '">' + esc(L("addFr")) + '</button>';
-        return row(k, r.me, "", btn);
-      }).join("") : '<p class="cnt">' + esc(L("findNone")) + '</p>';
-      box.querySelectorAll(".pgo").forEach(function(b){ b.onclick = function(){ openProfile(b.getAttribute("data-s"), "people"); }; });
-      box.querySelectorAll("[data-q]").forEach(function(b){ b.onclick = async function(){
-        var a = b.getAttribute("data-q"), k = b.getAttribute("data-s"); b.disabled = true;
-        try {
-          if (a === "add") { await sendReq(k); fd.fo[k] = 1; } else if (a === "cx") { await cancelReq(k); delete fd.fo[k]; } else { await acceptReq(k); fd.fl[k] = 1; delete fd.fr[k]; }
-        } catch (e) {}
-        paint();
-      }; });
-    };
-    pq.oninput = paint; paint();
-  }
-}
-
-var EXTRA_VIEWS = {people: renderPeople, profile: renderProfile, pedit: renderPedit, login: renderLogin, rev: renderRev, revdone: renderRevDone, errs: renderErrs, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes};
+var EXTRA_VIEWS = {rev: renderRev, revdone: renderRevDone, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes};
 /* Botão Voltar do aparelho: sobe um nível em vez de sair do site */
 try { history.replaceState({r: 1}, ""); history.pushState({a: 1}, ""); } catch (e) {}
 window.addEventListener("popstate", function(){
   var v = st.view;
-  if (v === "lib" || v === "login") return;
+  if (v === "lib") return;
   try { history.pushState({a: 1}, ""); } catch (e) {}
   if (v === "gen") return;
   NAV++;
-  if (v === "editmod" && S) { st.view = "edit"; render(); window.scrollTo(0, 0); }
-  else if (SUBJ_VIEWS.indexOf(v) >= 0 && S) { st.view = "home"; render(); window.scrollTo(0, 0); }
+  if (SUBJ_VIEWS.indexOf(v) >= 0 && S) { st.view = "home"; render(); window.scrollTo(0, 0); }
   else toLib();
 });
-document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") { refreshLib(true); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); }); } });
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") refreshLib(true); });
 setInterval(function(){ if (st.view === "lib" && document.visibilityState === "visible") refreshLib(true); }, 45000);
 
 applyTheme();
-try { fetch(CFG.API + "/health", {mode: "no-cors", cache: "no-store"}).catch(function(){}); setInterval(function(){ if (!document.hidden) fetch(CFG.API + "/health", {mode: "no-cors", cache: "no-store"}).catch(function(){}); }, 600000); } catch (e) {}
+pingServer();
+setInterval(function(){ if (!document.hidden) pingServer(); }, 600000);
+document.addEventListener("visibilitychange", function(){
+  if (document.hidden) { HIDDENAT = Date.now(); return; }
+  if (HIDDENAT && Date.now() - HIDDENAT > 14 * 60000) { AWAKE = false; pingServer(); }
+});
 initAI(); showAI(false);
 LIB = [builtMeta()];
-if (USER) { renderLib(); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); }); } else { st.view = "login"; render(); }
+renderLib();
 refreshLib(true).then(function(){
   var m = /[#&]s=([\w-]+)/.exec(location.hash || "");
-  if (USER && m && LIB.some(function(x){ return x.id === m[1]; })) openSubject(m[1]);
+  if (m && LIB.some(function(x){ return x.id === m[1]; })) openSubject(m[1]);
 });
 /* Sem modo app/offline: remove qualquer service worker antigo */
 try { if ("serviceWorker" in navigator) { navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }).catch(function(){}); if (self.caches) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); }).catch(function(){}); } } catch (e) {}
