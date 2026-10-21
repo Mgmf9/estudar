@@ -1302,7 +1302,7 @@ var LS = {
   del: function(k){ try { localStorage.removeItem(k); } catch (e) {} }
 };
 function jget(k, d){ var v = LS.get(k); if (!v) return d; try { return JSON.parse(v); } catch (e) { return d; } }
-function jset(k, v){ return LS.set(k, JSON.stringify(v)); }
+function jset(k, v){ var r = LS.set(k, JSON.stringify(v)); if (typeof syncTouch === "function") syncTouch(k); return r; }
 function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
 function rid(){ return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -2562,7 +2562,7 @@ function render(){
 var X = {
   pt: {
     wakeNow: "O servidor está acordando (ele dorme quando fica sem uso). Isso pode levar até 1 minuto…",
-    bkHelp: "Seu progresso fica salvo só neste navegador. Exporte um backup para guardar ou levar para outro aparelho.",
+    bkHelp: "Seu progresso é sincronizado sozinho entre os seus aparelhos. Se quiser, guarde também uma cópia.",
     bkOut: "Exportar progresso", bkIn: "Importar progresso", bkDone: "Backup salvo: {f}",
     bkAsk: "Importar este backup? O progresso dos assuntos que estão no arquivo vai substituir o deste aparelho.",
     bkOk: "Progresso importado.", bkBad: "Esse arquivo não é um backup do caderno.",
@@ -2596,7 +2596,7 @@ var X = {
   },
   it: {
     wakeNow: "Il server si sta svegliando (si ferma quando non viene usato). Può richiedere fino a 1 minuto…",
-    bkHelp: "I tuoi progressi restano salvati solo in questo browser. Esporta un backup per conservarli o portarli su un altro dispositivo.",
+    bkHelp: "I tuoi progressi si sincronizzano da soli tra i tuoi dispositivi. Se vuoi, conservane anche una copia.",
     bkOut: "Esporta progressi", bkIn: "Importa progressi", bkDone: "Backup salvato: {f}",
     bkAsk: "Importare questo backup? I progressi degli argomenti presenti nel file sostituiranno quelli di questo dispositivo.",
     bkOk: "Progressi importati.", bkBad: "Questo file non è un backup del quaderno.",
@@ -2659,6 +2659,44 @@ var PSLUG = (function(){
 })();
 function PK(k){ return k + "@" + PSLUG; }
 
+/* ---------- Sincronização do progresso entre aparelhos (Firebase, sem login) ---------- */
+/* Uma pessoa só usa o caderno: o progresso vai para "progresso" no Firebase e cada aparelho
+   fica com a versão mais nova de cada item (data em "cad-t:"). */
+var SYNC_PATH = "progresso", PUSHT = null, PENDING = {};
+function baseKey(k){ var suf = "@" + PSLUG; return (PROG_RE.test(k) && k.slice(-suf.length) === suf) ? k.slice(0, -suf.length) : null; }
+function localProgKeys(){
+  var out = [];
+  try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (baseKey(k)) out.push(k); } } catch (e) {}
+  return out;
+}
+function syncTouch(k){
+  var b = baseKey(k); if (!b) return;
+  LS.set("cad-t:" + k, String(Date.now()));
+  PENDING[b] = 1; clearTimeout(PUSHT); PUSHT = setTimeout(pushSync, 1500);
+}
+async function pushSync(){
+  if (!dbOn()) return;
+  var body = {};
+  Object.keys(PENDING).forEach(function(b){ var k = b + "@" + PSLUG, v = LS.get(k); if (v != null) body[b] = {t: Number(LS.get("cad-t:" + k)) || 0, v: v}; });
+  PENDING = {};
+  if (!Object.keys(body).length) return;
+  try { await dbReq("PATCH", SYNC_PATH, body); } catch (e) { Object.keys(body).forEach(function(b){ PENDING[b] = 1; }); }
+}
+async function pullSync(){
+  if (!dbOn()) return false;
+  var rem; try { rem = await dbReq("GET", SYNC_PATH); } catch (e) { return false; }
+  rem = rem || {};
+  var changed = false, up = false;
+  Object.keys(rem).forEach(function(b){
+    var r = rem[b]; if (!r || typeof r.v !== "string" || !PROG_RE.test(b) || b.indexOf("@") >= 0) return;
+    var k = b + "@" + PSLUG;
+    if (LS.get(k) == null || (Number(r.t) || 0) > (Number(LS.get("cad-t:" + k)) || 0)) { LS.set(k, r.v); LS.set("cad-t:" + k, String(r.t)); changed = true; }
+  });
+  localProgKeys().forEach(function(k){ var b = baseKey(k), r = rem[b]; if (!r || (Number(LS.get("cad-t:" + k)) || 0) > (Number(r.t) || 0)) { PENDING[b] = 1; up = true; } });
+  if (up) pushSync();
+  return changed;
+}
+
 /* ---------- Backup do progresso (para guardar ou levar a outro aparelho) ---------- */
 var BKMSG = "";
 function exportProgress(){
@@ -2684,7 +2722,7 @@ async function importProgress(file){
   var keys = Object.keys(o.data).filter(function(k){ return PROG_RE.test(k) && k.indexOf("@") < 0 && typeof o.data[k] === "string"; });
   if (!keys.length) { BKMSG = L("bkBad"); renderLib(); return; }
   if (!window.confirm(L("bkAsk"))) return;
-  keys.forEach(function(k){ LS.set(k + "@" + PSLUG, o.data[k]); });
+  keys.forEach(function(k){ LS.set(k + "@" + PSLUG, o.data[k]); syncTouch(k + "@" + PSLUG); });
   BKMSG = L("bkOk"); renderLib();
 }
 function bindBackup(){
@@ -3243,7 +3281,7 @@ window.addEventListener("popstate", function(){
   if (SUBJ_VIEWS.indexOf(v) >= 0 && S) { st.view = "home"; render(); window.scrollTo(0, 0); }
   else toLib();
 });
-document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && st.view === "lib") refreshLib(true); });
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState !== "visible") return; pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); }); if (st.view === "lib") refreshLib(true); });
 setInterval(function(){ if (st.view === "lib" && document.visibilityState === "visible") refreshLib(true); }, 45000);
 
 applyTheme();
@@ -3255,7 +3293,7 @@ document.addEventListener("visibilitychange", function(){
 });
 initAI(); showAI(false);
 LIB = [builtMeta()];
-renderLib();
+renderLib(); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); });
 refreshLib(true).then(function(){
   var m = /[#&]s=([\w-]+)/.exec(location.hash || "");
   if (m && LIB.some(function(x){ return x.id === m[1]; })) openSubject(m[1]);
