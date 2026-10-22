@@ -413,10 +413,10 @@ async function fetchPage(body) {
 
 
 // ---------- Resolver questões por foto (API compatível com a da Anthropic) ----------
-// Variáveis do serviço: ANTHROPIC_API_KEY, ANTHROPIC_BASE_URL (ex.: https://api.kpalabz.com/), MODEL (ex.: claude-opus-5-5).
+// Só ANTHROPIC_API_KEY é obrigatória (variável do serviço, nunca no código). Opcionais: ANTHROPIC_BASE_URL (padrão https://api.kpalabz.com) e MODEL (padrão claude-sonnet-5).
 const SOLVE_KEY = process.env.ANTHROPIC_API_KEY;
-const SOLVE_BASE = (process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com').replace(/\/+$/, '');
-const SOLVE_MODEL = process.env.MODEL || 'claude-opus-5-5';
+const SOLVE_BASE = (process.env.ANTHROPIC_BASE_URL || 'https://api.kpalabz.com').replace(/\/+$/, '');
+const SOLVE_MODEL = process.env.MODEL || 'claude-sonnet-5';
 const SOLVE_MAX_BODY = 28 * 1024 * 1024;
 const SOLVE_SYSTEM = `You read photos of school exercises, worksheets or exams and solve every question visible.
 Reply with ONE JSON object and nothing else (no markdown fences, no commentary).
@@ -495,7 +495,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && handler) {
     if (!cors(req, res)) return send(res, 403, { error: 'Origem não autorizada.' });
     const isSolve = url.pathname === '/api/solve';
-    if (isSolve && !SOLVE_KEY) return send(res, 503, { error: 'Falta ANTHROPIC_API_KEY (e ANTHROPIC_BASE_URL, MODEL) nas variáveis do serviço para resolver questões por foto.' });
+    if (isSolve && !SOLVE_KEY) return send(res, 503, { error: 'Falta a variável ANTHROPIC_API_KEY no serviço (Render > Environment) para resolver questões por foto.' });
     if (!isSolve && !API_KEY) return send(res, 503, { error: 'API não configurada. Defina GROQ_API_KEY nas variáveis do serviço.' });
     if (Date.now() - windowStart > 60_000) { windowStart = Date.now(); requestCount = 0; }
     if (++requestCount > LIMIT_PER_MIN) return send(res, 429, { error: 'Muitos pedidos por minuto. Aguarde um pouco.', retryAfter: 20 });
