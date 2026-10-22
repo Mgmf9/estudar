@@ -771,6 +771,27 @@ mark{background:#ffe27a;color:#1b2631;border-radius:3px;padding:0 2px}
 .dlbtns .btn{min-width:110px}
 @keyframes dlf{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.dlback{animation:none}.agcard{transition:none}}
+
+/* ===== Resolver questões ===== */
+.solve .drop{display:block;border:2px dashed var(--edge);border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;background:var(--surface)}
+.solve .drop strong{display:block;font-size:17px}
+.solve .drop small{color:var(--muted);font-weight:600}
+.ths{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.th{position:relative;width:76px;height:76px;border-radius:10px;overflow:hidden;border:2px solid var(--edge)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th button{position:absolute;top:2px;right:2px;border:0;border-radius:6px;background:rgba(0,0,0,.65);color:#fff;font-size:15px;line-height:20px;padding:0 6px;cursor:pointer}
+.sqbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 4px}
+.cmp{font-size:13.5px;color:var(--muted);font-weight:600}
+.sq{border:2px solid var(--edge);border-radius:14px;background:var(--surface);padding:12px 14px;margin:10px 0;box-shadow:2px 2px 0 var(--shadow-c)}
+.sq.low{background:color-mix(in srgb,var(--accent) 18%,var(--surface))}
+.sqp{margin:0 0 8px;color:var(--muted);font-size:14.5px;line-height:1.45}
+.sqp b{color:var(--ink)}
+.sqa{margin:0;font-weight:800;font-size:17px;line-height:1.45;overflow-wrap:anywhere;white-space:pre-wrap}
+.sqa small{display:block;font:800 12px var(--f);color:var(--blue);margin-bottom:2px}
+.sq details{margin-top:8px}.sq summary{cursor:pointer;font-weight:800;font-size:14px;color:var(--blue)}
+.sq details p{margin:6px 0 0;line-height:1.55}
+.sqn{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.sbadge{display:inline-block;font:800 11.5px var(--f);padding:1px 8px;border-radius:99px;background:var(--accent);color:var(--on-accent);margin-left:6px}
 </style>
 </head>
 <body>
@@ -2629,6 +2650,10 @@ var X = {
     agLateN: "Atrasada há {n} dia(s)", agToday: "Hoje", agTom: "Amanhã", agIn: "Em {n} dias", agEmpty: "Sem tarefas. Adicione uma com prazo e o site avisa você antes de vencer.",
     agDone: "Marcar como concluída", agUndo: "Reabrir", agDel: "Excluir tarefa", agClear: "Limpar concluídas",
     dlTitle: "Atenção aos prazos", dlLead: "Você tem tarefas para resolver:", dlOpen: "Abrir agenda", dlClose: "Fechar", mAgenda: "Agenda",
+    solveBtn: "Resolver questões", solveSub: "Fotos de exercícios, listas ou provas", solveTitle: "Resolver questões", solveDrop: "Escolher fotos das questões", solveDropSub: "Pode anexar várias (até 12). Fotos retas e nítidas funcionam melhor.",
+    solveGo: "Resolver", solveBusy: "Lendo as questões e resolvendo… pode levar cerca de um minuto.", solveNone: "Anexe pelo menos uma foto.", solveEmpty: "Não encontrei questões nas fotos. Tente fotos mais nítidas.",
+    solvePrep: "Preparando as fotos…", solveDone: "Pronto. Confira as respostas marcadas com «conferir».", solveCheck: "conferir", solveWhy: "Ver explicação", solveCopy: "Copiar respostas", solveCopied: "Copiadas!", solveCopyErr: "Não deu para copiar.",
+    solveNew: "Novo envio", solveAns: "Resposta", solveRm: "Remover foto", solveDup: "Há números de questão repetidos: duas listas podem ter se misturado. Mande uma por vez.", solveCompact: "Copiar só número e letra nas de marcar",
     flashBtn: "Flashcards", simBtn: "Simulado", pdfBtn: "Exportar PDF", linkBtn: "Copiar link", linkOk: "Link copiado!",
     dueHere: "{n} perguntas deste assunto para revisar",
     speak: "Ouvir", speakStop: "Parar",
@@ -2669,6 +2694,10 @@ var X = {
     agLateN: "In ritardo di {n} giorno/i", agToday: "Oggi", agTom: "Domani", agIn: "Tra {n} giorni", agEmpty: "Nessun compito. Aggiungine uno con scadenza e il sito ti avvisa prima.",
     agDone: "Segna come completato", agUndo: "Riapri", agDel: "Elimina compito", agClear: "Cancella completati",
     dlTitle: "Attenzione alle scadenze", dlLead: "Hai compiti da sbrigare:", dlOpen: "Apri agenda", dlClose: "Chiudi", mAgenda: "Agenda",
+    solveBtn: "Risolvi domande", solveSub: "Foto di esercizi, schede o verifiche", solveTitle: "Risolvi domande", solveDrop: "Scegli le foto delle domande", solveDropSub: "Puoi allegarne varie (fino a 12). Foto dritte e nitide funzionano meglio.",
+    solveGo: "Risolvi", solveBusy: "Leggo le domande e le risolvo… può volerci circa un minuto.", solveNone: "Allega almeno una foto.", solveEmpty: "Non ho trovato domande nelle foto. Prova con foto più nitide.",
+    solvePrep: "Preparo le foto…", solveDone: "Fatto. Controlla le risposte segnate «controlla».", solveCheck: "controlla", solveWhy: "Vedi spiegazione", solveCopy: "Copia risposte", solveCopied: "Copiate!", solveCopyErr: "Non riesco a copiare.",
+    solveNew: "Nuovo invio", solveAns: "Risposta", solveRm: "Rimuovi foto", solveDup: "Ci sono numeri di domanda ripetuti: due schede potrebbero essersi mescolate. Mandane una alla volta.", solveCompact: "Copia solo numero e lettera nelle scelte",
     flashBtn: "Flashcard", simBtn: "Simulazione", pdfBtn: "Esporta PDF", linkBtn: "Copia link", linkOk: "Link copiato!",
     dueHere: "{n} domande di questo argomento da ripassare",
     speak: "Ascolta", speakStop: "Ferma",
@@ -2938,14 +2967,97 @@ function renderAgenda(){
 }
 
 
+
+/* ---------- Resolver questões por foto ---------- */
+ICON.solve = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 016.5 5h11A2.5 2.5 0 0120 7.5v9a2.5 2.5 0 01-2.5 2.5h-11A2.5 2.5 0 014 16.5z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 5l1-1.5h6L16 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+var SV = {photos: [], res: null, busy: false, msg: "", err: false, compact: false};
+async function solvePrepFile(file){
+  var bmp = await createImageBitmap(file), s = Math.min(1, 1800 / Math.max(bmp.width, bmp.height));
+  var c = document.createElement("canvas"); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height); if (bmp.close) bmp.close();
+  var url = c.toDataURL("image/jpeg", 0.85);
+  return {name: file.name, url: url, data: url.split(",")[1], type: "image/jpeg"};
+}
+function solveAnswerText(q){
+  var letters = (q.answer_letters || []).map(function(l){ return String(l).toLowerCase(); });
+  if (q.type === "choice") {
+    if (!letters.length) return "?";
+    return letters.map(function(l){ var t = q.options && q.options[l]; return l + ")" + (t ? " " + t : ""); }).join("  +  ");
+  }
+  return String(q.answer || "").trim() || "?";
+}
+function solveCopyText(compact){
+  return ((SV.res && SV.res.questions) || []).map(function(q){
+    if (q.type === "choice") {
+      var letters = (q.answer_letters || []).map(function(l){ return String(l).toLowerCase() + ")"; }).join(" e ") || "?";
+      return q.number + ". " + (compact ? letters : solveAnswerText(q));
+    }
+    return q.number + ". " + solveAnswerText(q);
+  }).join("\n");
+}
+function renderSolve(){
+  var qs = (SV.res && SV.res.questions) || [];
+  var thumbs = SV.photos.map(function(p, i){ return '<div class="th"><img alt="' + esc(p.name) + '" src="' + p.url + '"><button type="button" data-rm="' + i + '" aria-label="' + esc(L("solveRm")) + '">×</button></div>'; }).join("");
+  var seen = {}, dup = qs.some(function(q){ var k = String(q.number); if (seen[k]) return true; seen[k] = 1; return false; });
+  var cards = qs.map(function(q){
+    var low = q.confidence === "low" || q.confidence === "medium";
+    return '<div class="sq' + (low ? " low" : "") + '"><p class="sqp"><b>' + esc(q.number) + '.</b> ' + esc(String(q.prompt || "").slice(0, 220)) + (low ? ' <span class="sbadge">' + esc(L("solveCheck")) + '</span>' : "") + '</p>' +
+      '<p class="sqa"><small>' + esc(L("solveAns")) + '</small>' + esc(solveAnswerText(q)) + '</p>' +
+      (q.explanation ? '<details><summary>' + esc(L("solveWhy")) + '</summary><p>' + esc(q.explanation) + '</p></details>' : "") +
+      (q.note ? '<p class="sqn">' + esc(q.note) + '</p>' : "") + '</div>';
+  }).join("");
+  app.innerHTML =
+    '<div class="top"><div class="wrap"><button type="button" class="x" id="exit" aria-label="' + esc(L("back")) + '">' + ICON.back + '</button><h2 class="tt">' + esc(L("solveTitle")) + '</h2></div></div>' +
+    '<div class="wrap body solve">' +
+      '<label class="drop" for="sv-file"><strong>' + esc(L("solveDrop")) + '</strong><small>' + esc(L("solveDropSub")) + '</small></label>' +
+      '<input id="sv-file" type="file" accept="image/*" multiple hidden>' +
+      (thumbs ? '<div class="ths">' + thumbs + '</div>' : "") +
+      '<p class="msg' + (SV.err ? " err" : "") + '" id="sv-msg" role="status"' + (SV.msg ? "" : " hidden") + '>' + esc(SV.msg) + '</p>' +
+      (dup ? '<p class="msg err">' + esc(L("solveDup")) + '</p>' : "") +
+      (qs.length ? '<div class="sqbar"><button type="button" class="btn" id="sv-copy">' + esc(L("solveCopy")) + '</button><label class="cmp"><input type="checkbox" id="sv-cmp"' + (SV.compact ? " checked" : "") + '> ' + esc(L("solveCompact")) + '</label></div>' + cards : "") +
+    '</div>' +
+    '<div class="bar"><div class="wrap">' + (qs.length ? '<button type="button" class="btn" id="sv-new">' + esc(L("solveNew")) + '</button>' : "") +
+      '<button type="button" class="btn primary wide" id="sv-go"' + (SV.busy ? " disabled" : "") + '>' + esc(L("solveGo")) + '</button></div></div>';
+  $("#exit").onclick = toLib;
+  $("#sv-file").onchange = async function(){
+    var files = [].slice.call(this.files); this.value = "";
+    SV.msg = L("solvePrep"); SV.err = false; renderSolve();
+    for (var i = 0; i < files.length; i++) { if (SV.photos.length >= 12) break; try { SV.photos.push(await solvePrepFile(files[i])); } catch (e) {} }
+    SV.msg = ""; if (st.view === "solve") renderSolve();
+  };
+  app.querySelectorAll("[data-rm]").forEach(function(b){ b.onclick = function(){ SV.photos.splice(Number(b.getAttribute("data-rm")), 1); renderSolve(); }; });
+  var c = $("#sv-copy"); if (c) c.onclick = function(){
+    var old = c.textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(solveCopyText(SV.compact)) : Promise.reject()).then(function(){ c.textContent = L("solveCopied"); }, function(){ c.textContent = L("solveCopyErr"); });
+    setTimeout(function(){ c.textContent = old; }, 2000);
+  };
+  var cm = $("#sv-cmp"); if (cm) cm.onchange = function(){ SV.compact = cm.checked; };
+  var nw = $("#sv-new"); if (nw) nw.onclick = function(){ SV = {photos: [], res: null, busy: false, msg: "", err: false, compact: SV.compact}; renderSolve(); window.scrollTo(0, 0); };
+  $("#sv-go").onclick = async function(){
+    if (!SV.photos.length) { SV.msg = L("solveNone"); SV.err = true; renderSolve(); return; }
+    SV.busy = true; SV.err = false; SV.msg = L("solveBusy"); renderSolve();
+    WAITCB = function(m){ SV.msg = m; var e = document.getElementById("sv-msg"); if (e) { e.textContent = m; e.hidden = false; } };
+    try {
+      var d = await api("/api/solve", {images: SV.photos.map(function(p){ return {data: p.data, type: p.type}; })});
+      var list = (d.questions || []).filter(function(q){ return q && q.number != null; });
+      SV.res = {questions: list};
+      SV.msg = list.length ? L("solveDone") : L("solveEmpty"); SV.err = !list.length;
+    } catch (e) { SV.msg = e.message || L("errNet"); SV.err = true; }
+    WAITCB = null; SV.busy = false;
+    if (st.view === "solve") { renderSolve(); if (SV.res && SV.res.questions.length) { var f = document.querySelector(".sqbar"); if (f) f.scrollIntoView({behavior: "smooth", block: "start"}); } }
+  };
+}
+
 function dashHtml(){
   var ag = agendaSummary();
   return '<div class="dash">' +
     '<button type="button" class="agcard' + (ag.hot ? " hot" : "") + '" id="d-agenda"><span class="agi">' + ICON.cal + '</span><span class="agt"><strong>' + esc(L("agTitle")) + '</strong><small>' + esc(ag.txt) + '</small></span><span class="agc">' + ICON.next + '</span></button>' +
+    '<button type="button" class="agcard" id="d-solve"><span class="agi">' + ICON.solve + '</span><span class="agt"><strong>' + esc(L("solveBtn")) + '</strong><small>' + esc(L("solveSub")) + '</small></span><span class="agc">' + ICON.next + '</span></button>' +
     '<div class="searchbox"><input id="sq" type="search" autocomplete="off" placeholder="' + esc(L("searchPh")) + '" value="' + esc(SQ) + '"></div><div id="sres" class="sres-list"></div></div>';
 }
 function bindDash(){
   var ab = $("#d-agenda"); if (ab) ab.onclick = function(){ go("agenda"); };
+  var sb = $("#d-solve"); if (sb) sb.onclick = function(){ go("solve"); };
   setTimeout(maybeDeadline, 350);
   var sq = $("#sq");
   if (sq) {
@@ -3420,7 +3532,7 @@ function bindNewExtras(te, sl, upd, er){
   };
 }
 
-var EXTRA_VIEWS = {agenda: renderAgenda, rev: renderRev, revdone: renderRevDone, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes};
+var EXTRA_VIEWS = {agenda: renderAgenda, solve: renderSolve, rev: renderRev, revdone: renderRevDone, flash: renderFlash, sim: renderSimSetup, simq: renderSimq, simres: renderSimRes};
 /* Botão Voltar do aparelho: sobe um nível em vez de sair do site */
 try { history.replaceState({r: 1}, ""); history.pushState({a: 1}, ""); } catch (e) {}
 window.addEventListener("popstate", function(){
