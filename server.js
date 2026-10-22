@@ -3,8 +3,6 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
-const dns = require('node:dns').promises;
-const net = require('node:net');
 
 const PORT = Number(process.env.PORT || 3000);
 const API_KEY = process.env.GROQ_API_KEY;
@@ -15,36 +13,10 @@ const MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const ALLOWED = (process.env.ALLOWED_ORIGIN || '').split(',').map(s => s.trim().replace(/\/+$/, '')).filter(Boolean);
 const HTML = path.join(__dirname, 'index.html');
 const MAX_BODY = 96 * 1024;
-const LIMIT_PER_MIN = 90;      // todos os visitantes juntos (protege a cota da Groq)
-const LIMIT_PER_IP = 40;       // cada visitante; gerar um assunto inteiro usa uns 15 pedidos
+const LIMIT_PER_MIN = 90;
 const LANGS = { pt: 'português do Brasil', it: 'italiano' };
 
 let windowStart = Date.now(), requestCount = 0;
-const perIp = new Map();
-
-// IP do visitante. No Render o pedido passa por proxies que acrescentam o IP real ao fim de
-// X-Forwarded-For; o começo da lista pode ser inventado pelo cliente, então usamos o fim.
-function clientIp(req) {
-  const cf = String(req.headers['cf-connecting-ip'] || '').trim();
-  if (cf) return cf;
-  const xff = String(req.headers['x-forwarded-for'] || '').split(',').map(s => s.trim()).filter(Boolean);
-  if (xff.length >= 2) return xff[xff.length - 2];
-  if (xff.length === 1) return xff[0];
-  return req.socket.remoteAddress || '?';
-}
-
-// Devolve quantos segundos esperar, ou 0 se o pedido pode seguir.
-function rateLimit(req) {
-  const now = Date.now();
-  if (now - windowStart > 60_000) { windowStart = now; requestCount = 0; }
-  if (++requestCount > LIMIT_PER_MIN) return Math.ceil((windowStart + 60_000 - now) / 1000) || 1;
-  const ip = clientIp(req);
-  let e = perIp.get(ip);
-  if (!e || now - e.start > 60_000) { e = { start: now, n: 0 }; perIp.set(ip, e); }
-  if (++e.n > LIMIT_PER_IP) return Math.ceil((e.start + 60_000 - now) / 1000) || 1;
-  if (perIp.size > 5000) for (const [k, v] of perIp) if (now - v.start > 60_000) perIp.delete(k);
-  return 0;
-}
 
 class HttpError extends Error {
   constructor(status, message, retryAfter) { super(message); this.status = status; this.retryAfter = retryAfter || 0; }
@@ -63,16 +35,13 @@ function cors(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
-  if (!ALLOWED.length) return true;
-  // Navegadores sempre mandam Origin num POST; sem ele, é script chamando a API direto.
-  if (!origin) return req.method !== 'POST';
-  return ALLOWED.includes(origin);
+  return !ALLOWED.length || !origin || ALLOWED.includes(origin);
 }
 
-function readBody(req) {
+function readBody(req, max = MAX_BODY) {
   return new Promise((resolve, reject) => {
     let data = '';
-    req.on('data', chunk => { data += chunk; if (data.length > MAX_BODY) { reject(new HttpError(413, 'Pedido muito grande.')); req.destroy(); } });
+    req.on('data', chunk => { data += chunk; if (data.length > max) { reject(new HttpError(413, 'Pedido muito grande.')); req.destroy(); } });
     req.on('end', () => { try { resolve(JSON.parse(data || '{}')); } catch (e) { reject(new HttpError(400, 'JSON inválido.')); } });
     req.on('error', reject);
   });
@@ -140,7 +109,7 @@ async function chat(body) {
   const answer = await groq([
     { role: 'system', content: sys },
     { role: 'user', content: `TEXTO DE LEITURA:\n${context}\n\nPERGUNTA DO ESTUDANTE:\n${question}` }
-  ], 1500, false);
+  ], 700, false);
   return { answer: answer.slice(0, 9000), model: MODEL };
 }
 
@@ -196,8 +165,11 @@ const QRULES = {
   * TODO fato necessário para acertar tem de estar explicado nas etapas do módulo: o aluno precisa conseguir acertar só estudando o módulo, sem chute e sem conhecimento externo. Por isso, em módulo difícil as etapas trazem mais detalhe (datas, nomes, números, relações de causa e efeito, comparações).
   * "why" explica o raciocínio e por que a alternativa mais tentadora está errada.`
 };
-// O módulo nasce no nível médio; perguntas fáceis e difíceis são geradas depois, em /api/questions.
-const MODULE_DEPTH = 'Etapas: 3 a 5, com explicação clara e DETALHES CONCRETOS (datas, nomes, números, causas e consequências, comparações entre conceitos parecidos), pois as perguntas dos níveis médio e difícil vão cobrar esses detalhes.';
+const DEPTH = {
+  easy: 'Etapas: 2 a 3, com explicações simples e curtas.',
+  medium: 'Etapas: 3 a 5, com explicação clara e DETALHES CONCRETOS (datas, nomes, números, causas e consequências, comparações entre conceitos parecidos), pois as perguntas dos níveis médio e difícil vão cobrar esses detalhes.',
+  hard: 'Etapas: 3 a 5, densas: inclua datas, nomes, números, causas e consequências, e comparações entre conceitos parecidos, pois as perguntas vão cobrar esses detalhes.'
+};
 
 async function genModule(body) {
   const lang = needLang(body.lang);
@@ -209,6 +181,7 @@ async function genModule(body) {
   const total = Math.max(1, Math.min(Number(body.total) || 1, 50));
   const prev = (Array.isArray(body.prev) ? body.prev : []).slice(0, 14).map(x => str(x, 80)).filter(Boolean);
   if (!outline && text.length < 120) throw new HttpError(400, 'Texto curto demais para gerar um módulo.');
+  const level = 'medium';
   const memo = lang === 'it' ? 'Da ricordare' : 'Decorar';
   const sys = `Você cria material de estudo a partir de um texto fornecido pelo estudante. Responda SOMENTE com um objeto JSON válido, sem comentários e sem texto fora do JSON.
 Regras:
@@ -245,15 +218,15 @@ Regras do formato:
 - "kind": m = conceito ou definição; s = procedimento ou prática; w = ponto de atenção; p = erro comum ou o que evitar. Escolha o que melhor descreve o módulo.
 - "steps": de 2 a 4 etapas, cada uma com 1 a 3 blocos. Use os tipos de bloco que fizerem sentido (não é preciso usar todos). Inclua pelo menos um bloco "key" no módulo.
 - Cubra os pontos importantes do trecho, sem copiar o texto inteiro.
-- ${MODULE_DEPTH}
-${QRULES.medium}
+- ${DEPTH[level]}
+${QRULES[level]}
 - Em qualquer nível: as 4 alternativas têm tamanho e estrutura de frase quase iguais (diferença de poucas palavras) e a certa NÃO pode ser sempre a mais longa ou a mais detalhada; em várias perguntas a certa deve ser a mais curta. Proibido "todas as anteriores" e "nenhuma das anteriores".`;
   let lastErr = '';
   for (let i = 0; i < 2; i++) {
     const out = await groq([
       { role: 'system', content: sys },
       { role: 'user', content: usr + (lastErr ? `\n\nA tentativa anterior falhou (${lastErr}). Refaça com o JSON completo e válido.` : '') }
-    ], 3000, true, 'low');
+    ], level === 'hard' ? 4200 : 3000, true, level === 'hard' ? 'medium' : 'low');
     try {
       const mod = normModule(parseJson(out));
       const longest = mod.questions.filter(q => { const m = Math.max(...q.wrong.map(w => w.length)); return q.correct.length >= m * 1.15 + 3; }).length;
@@ -378,106 +351,133 @@ Responda SOMENTE com JSON no formato {"items": {"chave": "texto traduzido"}}.`;
   return { items: res };
 }
 
-// ---------- Texto de um link ----------
-// Bloqueia endereços internos para ninguém usar o servidor para espiar a rede do Render.
-function isPrivateIp(ip) {
+
+// ---------- Ler texto de um link ----------
+const dns = require('node:dns').promises;
+const net = require('node:net');
+function privateIp(ip) {
   if (net.isIPv4(ip)) {
     const [a, b] = ip.split('.').map(Number);
-    return a === 0 || a === 10 || a === 127 || a >= 224 || (a === 100 && b >= 64 && b <= 127) ||
-      (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) ||
-      (a === 192 && b === 0) || (a === 198 && (b === 18 || b === 19));
+    return a === 10 || a === 127 || a === 0 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127) || a >= 224;
   }
-  const v = ip.toLowerCase();
-  if (v.startsWith('::ffff:')) return isPrivateIp(v.slice(7));
-  return v === '::' || v === '::1' || v.startsWith('fc') || v.startsWith('fd') || v.startsWith('fe8') ||
-    v.startsWith('fe9') || v.startsWith('fea') || v.startsWith('feb') || v.startsWith('ff');
+  const l = ip.toLowerCase();
+  if (l.startsWith('::ffff:')) return privateIp(l.slice(7));
+  return l === '::1' || l === '::' || l.startsWith('fc') || l.startsWith('fd') || l.startsWith('fe80');
 }
-
-const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', laquo: '«', raquo: '»', ndash: '–', mdash: '—',
-  hellip: '…', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', deg: '°', ordm: 'º', ordf: 'ª', middot: '·', bull: '•', euro: '€', copy: '©' };
-// Letras acentuadas: &aacute; &Ccedil; &otilde; ...
-for (const [mark, pairs] of Object.entries({ acute: 'aáeéiíoóuúyý', grave: 'aàeèiìoòuù', circ: 'aâeêiîoôuû', tilde: 'aãoõnñ', uml: 'aäeëiïoöuü', cedil: 'cç' })) {
-  for (let i = 0; i < pairs.length; i += 2) { ENT[pairs[i] + mark] = pairs[i + 1]; ENT[pairs[i].toUpperCase() + mark] = pairs[i + 1].toUpperCase(); }
-}
-function decodeEntities(t) {
-  return t.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
-    if (e[0] === '#') {
-      const n = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
-      return n > 0 && n < 0x110000 ? String.fromCodePoint(n) : m;
-    }
-    return ENT[e] !== undefined ? ENT[e] : m;
-  });
-}
-
-function htmlToText(html) {
-  const tm = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html);
-  const title = tm ? decodeEntities(tm[1]).replace(/\s+/g, ' ').trim() : '';
-  let h = html.replace(/<!--[\s\S]*?-->/g, ' ')
-    .replace(/<(script|style|noscript|svg|template|iframe|head|nav|footer|aside|form|button|select)\b[\s\S]*?<\/\1\s*>/gi, ' ');
-  // Se a página marca o conteúdo principal, fica só com ele (tira menus e rodapés).
-  const main = /<(article|main)\b[^>]*>([\s\S]*?)<\/\1\s*>/i.exec(h);
-  if (main && main[2].replace(/<[^>]+>/g, '').trim().length > 400) h = main[2];
-  const text = decodeEntities(h
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<li\b[^>]*>/gi, '\n• ')
-    .replace(/<\/?(p|div|section|article|main|header|h[1-6]|ul|ol|li|tr|table|blockquote|pre|dl|dt|dd|figcaption)\b[^>]*>/gi, '\n')
-    .replace(/<[^>]+>/g, ' '))
-    .replace(/[ \t ]+/g, ' ')
-    .split('\n').map(l => l.trim()).filter(l => l && l !== '•').join('\n')
-    .replace(/\n{3,}/g, '\n\n');
-  return { title, text };
-}
-
-async function readLimited(r, max) {
-  const reader = r.body && r.body.getReader();
-  if (!reader) return Buffer.from(await r.arrayBuffer()).subarray(0, max);
-  const parts = []; let size = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    parts.push(value); size += value.length;
-    if (size >= max) { try { await reader.cancel(); } catch (e) { /* ok */ } break; }
-  }
-  return Buffer.concat(parts.map(p => Buffer.from(p))).subarray(0, max);
-}
-
-async function fetchPage(body) {
+async function safeUrl(u) {
   let url;
-  try { url = new URL(str(body.url, 2000)); } catch (e) { throw new HttpError(400, 'Link inválido.'); }
-  for (let hop = 0; hop < 5; hop++) {
-    if (!/^https?:$/.test(url.protocol) || url.username || url.password) throw new HttpError(400, 'Use um link que comece com http:// ou https://.');
-    if (url.port && !['80', '443', '8080'].includes(url.port)) throw new HttpError(400, 'Esse endereço não é permitido.');
-    const host = url.hostname.replace(/^\[|\]$/g, '');
-    let addrs;
-    try { addrs = net.isIP(host) ? [{ address: host }] : await dns.lookup(host, { all: true }); }
-    catch (e) { throw new HttpError(400, 'Não encontrei esse site. Confira o link.'); }
-    if (!addrs.length || addrs.some(a => isPrivateIp(a.address))) throw new HttpError(400, 'Esse endereço não é permitido.');
-    let r;
-    try {
-      r = await fetch(url, {
-        redirect: 'manual', signal: AbortSignal.timeout(15000),
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; CadernoDeEstudos/1.0)', Accept: 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.5', 'Accept-Language': 'pt-BR,pt;q=0.9,it;q=0.8,en;q=0.5' }
-      });
-    } catch (e) { throw new HttpError(400, 'O site não respondeu. Tente de novo ou copie o texto da página.'); }
-    const loc = r.headers.get('location');
-    if (r.status >= 300 && r.status < 400 && loc) { url = new URL(loc, url); continue; }
-    if (!r.ok) throw new HttpError(400, `O site respondeu com erro (HTTP ${r.status}).`);
-    const type = (r.headers.get('content-type') || '').toLowerCase();
-    if (type.includes('pdf')) throw new HttpError(400, 'Esse link é um PDF. Baixe o arquivo e use "Anexar PDF".');
-    if (type && !/text\/html|application\/xhtml|text\/plain/.test(type)) throw new HttpError(400, 'Esse link não é uma página de texto.');
-    const buf = await readLimited(r, 2 * 1024 * 1024);
-    let cs = (/charset=([\w-]+)/.exec(type) || [])[1];
-    if (!cs) cs = (/<meta[^>]+charset=["']?([\w-]+)/i.exec(buf.subarray(0, 4096).toString('latin1')) || [])[1];
-    let raw;
-    try { raw = new TextDecoder(cs || 'utf-8').decode(buf); } catch (e) { raw = buf.toString('utf8'); }
-    const out = type.includes('text/plain') ? { title: '', text: raw.replace(/\r/g, '').trim() } : htmlToText(raw);
-    if (out.text.length < 200) throw new HttpError(400, 'Não encontrei texto suficiente nessa página (ela pode exigir login ou JavaScript). Copie e cole o texto.');
-    return { title: out.title.slice(0, 120), text: out.text.slice(0, 30000) };
+  try { url = new URL(u); } catch { throw new HttpError(400, 'Link inválido.'); }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new HttpError(400, 'Use um link http ou https.');
+  const host = url.hostname.replace(/^\[|\]$/g, '');
+  if (!host.includes('.') && !net.isIP(host)) throw new HttpError(400, 'Endereço não permitido.');
+  const addrs = net.isIP(host) ? [{ address: host }] : await dns.lookup(host, { all: true }).catch(() => { throw new HttpError(400, 'Não encontrei esse endereço.'); });
+  if (!addrs.length || addrs.some(a => privateIp(a.address))) throw new HttpError(400, 'Endereço não permitido.');
+  return url;
+}
+function htmlToText(html) {
+  let h = String(html);
+  const title = (h.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '';
+  h = h.replace(/<(script|style|noscript|svg|nav|footer|header|form|aside|iframe)[\s\S]*?<\/\1>/gi, ' ');
+  const main = (h.match(/<(article|main)[\s\S]*?<\/\1>/i) || [])[0];
+  if (main && main.length > 800) h = main;
+  h = h.replace(/<\/(p|div|li|h[1-6]|tr|section|br)>|<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ' ');
+  const dec = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+  h = h.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (m, e) => {
+    if (e[0] === '#') { const n = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); return n > 0 && n < 0x110000 ? String.fromCodePoint(n) : ' '; }
+    return dec[e.toLowerCase()] || ' ';
+  });
+  const text = h.split('\n').map(l => l.replace(/[ \t ]+/g, ' ').trim()).filter(l => l.length > 1).join('\n\n');
+  return { title: title.replace(/\s+/g, ' ').trim().slice(0, 120), text };
+}
+async function fetchPage(body) {
+  let url = await safeUrl(String(body.url || '').trim());
+  let r;
+  for (let i = 0; i < 4; i++) {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 12000);
+    try { r = await fetch(url, { redirect: 'manual', signal: ctl.signal, headers: { 'User-Agent': 'Mozilla/5.0 CadernoDeEstudos', Accept: 'text/html,text/plain' } }); }
+    catch { throw new HttpError(502, 'Não consegui abrir esse link.'); }
+    finally { clearTimeout(t); }
+    if (r.status >= 300 && r.status < 400 && r.headers.get('location')) { url = await safeUrl(new URL(r.headers.get('location'), url).href); continue; }
+    break;
   }
-  throw new HttpError(400, 'O link redireciona demais.');
+  if (!r.ok) throw new HttpError(502, `O site respondeu com erro ${r.status}.`);
+  const type = r.headers.get('content-type') || '';
+  if (!/text\/(html|plain)|xml/i.test(type)) throw new HttpError(415, 'O link não é uma página de texto.');
+  const reader = r.body.getReader(); const chunks = []; let size = 0;
+  for (;;) { const { done, value } = await reader.read(); if (done) break; size += value.length; chunks.push(value); if (size > 2_000_000) { try { reader.cancel(); } catch {} break; } }
+  const raw = Buffer.concat(chunks).toString('utf8');
+  const out = /text\/plain/i.test(type) ? { title: '', text: raw.trim() } : htmlToText(raw);
+  if (out.text.length < 80) throw new HttpError(422, 'Não encontrei texto nessa página.');
+  return { title: out.title, text: out.text.slice(0, 30000) };
 }
 
-const routes = { '/api/chat': chat, '/api/fetch': fetchPage, '/api/module': genModule, '/api/plan': planSubject, '/api/questions': genQuestions, '/api/translate': translate };
+
+// ---------- Resolver questões por foto (API compatível com a da Anthropic) ----------
+// Variáveis do serviço: ANTHROPIC_API_KEY, ANTHROPIC_BASE_URL (ex.: https://api.kpalabz.com/), MODEL (ex.: claude-opus-5-5).
+const SOLVE_KEY = process.env.ANTHROPIC_API_KEY;
+const SOLVE_BASE = (process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com').replace(/\/+$/, '');
+const SOLVE_MODEL = process.env.MODEL || 'claude-opus-5-5';
+const SOLVE_MAX_BODY = 28 * 1024 * 1024;
+const SOLVE_SYSTEM = `You read photos of school exercises, worksheets or exams and solve every question visible.
+Reply with ONE JSON object and nothing else (no markdown fences, no commentary).
+
+Schema:
+{"title":"short title of the material (subject / page / chapter) or empty","questions":[
+ {"number":"6a","type":"choice|written|fill","prompt":"the question as printed, shortened to max 220 chars","options":{"a":"...","b":"..."},"asks_for":"correct|wrong","answer_letters":["b"],"answer":"the answer text (for written/fill questions; for choice questions the text of the chosen alternative)","explanation":"2-4 sentences: why this is the answer and, for choice questions, why the others are not","confidence":"high|medium|low","note":""}
+]}
+
+Rules:
+- Answer in the language of the question (Portuguese, Italian, English...). Explanations in the same language.
+- Use the numbering printed on the material (for example "5.12", "6a"). Never invent a question that is not visible; never replace a question with a different one.
+- If a question refers to an image, cartoon, chart, table or text printed on the page, look at it and use it. Cite concrete elements you see.
+- Choice questions: fill "asks_for" first ("wrong" if the stem asks for the incorrect option: errado, NON è, NOT, except, falso). When "wrong", answer_letters must contain ONLY the false alternative(s). Give exactly one letter unless the question says several are correct. Check every alternative one by one.
+- Written questions: answer fully but concisely, as a good student would, covering every item the question asks for. If the question has parts (a, b, c), make one entry per part.
+- Calculations and fill-in: show the final value and one line of working in "explanation".
+- Stems and alternatives can be split across photos: join them. If a question appears in more than one photo, include it once.
+- Never guess. If a question or its alternatives are cut off, rotated or unreadable, leave answer_letters [] and answer "", set confidence "low" and say what is missing in "note".
+- Inside string values never use the double-quote character: write quotation marks as « » or single quotes. Strictly valid JSON, no trailing commas.`;
+
+function parseJsonLoose(text) {
+  const t = String(text || '').trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a === -1 || b === -1) throw new Error('A resposta da IA não veio em JSON.');
+  return JSON.parse(t.slice(a, b + 1));
+}
+
+async function anthropicCall(system, content, maxTokens) {
+  const r = await fetch(SOLVE_BASE + '/v1/messages', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-api-key': SOLVE_KEY, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: SOLVE_MODEL, max_tokens: maxTokens, system, messages: [{ role: 'user', content }] }),
+    signal: AbortSignal.timeout(170000),
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new HttpError(r.status === 429 ? 429 : 502, (j.error && (j.error.message || j.error)) || ('Erro ' + r.status + ' na API de imagens.'), 20);
+  return (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+}
+
+async function solvePhotos(body) {
+  const images = Array.isArray(body.images) ? body.images : [];
+  if (!images.length) throw new HttpError(400, 'Envie pelo menos uma foto.');
+  if (images.length > 12) throw new HttpError(400, 'No máximo 12 fotos por vez.');
+  const content = [];
+  images.forEach((img, i) => {
+    const type = /^image\/(jpeg|png|webp|gif)$/.test(img && img.type) ? img.type : 'image/jpeg';
+    const data = String((img && img.data) || '');
+    if (!/^[A-Za-z0-9+\/=]+$/.test(data) || data.length < 100) throw new HttpError(400, 'Foto ' + (i + 1) + ' inválida.');
+    content.push({ type: 'text', text: 'Foto ' + (i + 1) + ':' });
+    content.push({ type: 'image', source: { type: 'base64', media_type: type, data } });
+  });
+  content.push({ type: 'text', text: 'Resolva todas as questões das fotos. Devolva apenas o JSON.' });
+  const text = await anthropicCall(SOLVE_SYSTEM, content, 8000);
+  try { return parseJsonLoose(text); }
+  catch (e) {
+    const fixed = await anthropicCall('You repair broken JSON. Return ONLY the corrected, strictly valid JSON, same content and structure, no commentary. Replace double quotes inside string values with « » and remove trailing commas.', [{ type: 'text', text }], 8000);
+    return parseJsonLoose(fixed);
+  }
+}
+
+const routes = { '/api/fetch': fetchPage, '/api/chat': chat, '/api/module': genModule, '/api/plan': planSubject, '/api/questions': genQuestions, '/api/translate': translate, '/api/solve': solvePhotos };
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
@@ -494,11 +494,13 @@ const server = http.createServer(async (req, res) => {
   }
   if (req.method === 'POST' && handler) {
     if (!cors(req, res)) return send(res, 403, { error: 'Origem não autorizada.' });
-    if (!API_KEY) return send(res, 503, { error: 'API não configurada. Defina GROQ_API_KEY nas variáveis do serviço.' });
-    const wait = rateLimit(req);
-    if (wait) return send(res, 429, { error: 'Muitos pedidos por minuto. Aguarde um pouco.', retryAfter: Math.min(Math.max(wait, 5), 60) });
+    const isSolve = url.pathname === '/api/solve';
+    if (isSolve && !SOLVE_KEY) return send(res, 503, { error: 'Falta ANTHROPIC_API_KEY (e ANTHROPIC_BASE_URL, MODEL) nas variáveis do serviço para resolver questões por foto.' });
+    if (!isSolve && !API_KEY) return send(res, 503, { error: 'API não configurada. Defina GROQ_API_KEY nas variáveis do serviço.' });
+    if (Date.now() - windowStart > 60_000) { windowStart = Date.now(); requestCount = 0; }
+    if (++requestCount > LIMIT_PER_MIN) return send(res, 429, { error: 'Muitos pedidos por minuto. Aguarde um pouco.', retryAfter: 20 });
     try {
-      const body = await readBody(req);
+      const body = await readBody(req, isSolve ? SOLVE_MAX_BODY : MAX_BODY);
       return send(res, 200, await handler(body));
     } catch (e) {
       const status = e instanceof HttpError ? e.status : 502;
@@ -510,5 +512,4 @@ const server = http.createServer(async (req, res) => {
   return send(res, 404, { error: 'Rota não encontrada' });
 });
 
-if (require.main === module) server.listen(PORT, '0.0.0.0', () => console.log(`Backend do caderno iniciado na porta ${PORT}`));
-module.exports = { server, htmlToText, isPrivateIp, clientIp, fetchPage };
+server.listen(PORT, '0.0.0.0', () => console.log(`Backend do caderno iniciado na porta ${PORT}`));
