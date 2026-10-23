@@ -1845,6 +1845,8 @@ function showError(title, detail, actions){
 
 /* ---------- Biblioteca ---------- */
 function builtMeta(){ return {id: "lab", title: "Sicurezza nei laboratori scolastici", origin: "mix", n: LAB.length, color: 0, built: true, createdAt: 0}; }
+function builtHidden(){ return LS.get(PK("cad-hide-lab")) === "1"; }
+function libBase(){ return builtHidden() ? [] : [builtMeta()]; }
 function hasTT(m){ return !!((m.tt && m.tt[LANG]) || TT[m.id + "|" + LANG]); }
 function titleFor(m){
   if (LANG === "orig" || m.origin === LANG) return m.title;
@@ -1853,7 +1855,7 @@ function titleFor(m){
 async function refreshLib(silent){
   var res = await Store.list();
   var items = res.items.filter(function(x){ return x && x.id && x.title; }).sort(function(a, b){ return (a.createdAt || 0) - (b.createdAt || 0); });
-  LIB = [builtMeta()].concat(items);
+  LIB = libBase().concat(items);
   LIBOFF = res.offline;
   if (st.view === "lib" && !(document.activeElement && document.activeElement.id === "sq")) renderLib();
   ensureTitleTr();
@@ -1905,8 +1907,10 @@ function renderLib(){
       (LIBOFF ? '<div class="banner warn">' + esc(L("offline")) + '</div>' : "") +
     '</div>' +
     '<div class="wrap shelf">' + cards +
-      '<button type="button" class="nb add" id="newcard">' + ICON.plus + '<span>' + esc(L("newSub")) + '</span></button></div>';
+      '<button type="button" class="nb add" id="newcard">' + ICON.plus + '<span>' + esc(L("newSub")) + '</span></button></div>' +
+    (builtHidden() ? '<div class="wrap" style="padding-block:6px 28px"><button type="button" class="btn ghost" id="restore-lab">' + esc(L("restoreLab")) + '</button></div>' : "");
   bindLang(); bindDash();
+  var rl = $("#restore-lab"); if (rl) rl.onclick = function(){ LS.del(PK("cad-hide-lab")); LIB = libBase().concat(LIB.filter(function(m){ return !m.built; })); renderLib(); };
   app.querySelectorAll(".nb[data-id]").forEach(function(b){ b.onclick = function(){ openSubject(b.getAttribute("data-id")); }; });
   $("#newtop").onclick = $("#newcard").onclick = function(){ st.form = st.form || {title: "", text: "", lang: LANG === "it" ? "it" : "pt"}; go("new"); };
 }
@@ -2121,7 +2125,7 @@ function renderHome(){
     '<div class="wrap path">' + cards + '</div>' +
     '<div class="wrap foot" style="gap:6px;flex-wrap:wrap">' +
       ((st.unlocked > 0 || st.xp > 0) ? '<button type="button" class="btn ghost" id="reset">' + esc(st.confirmReset ? L("confirm") : L("reset")) + '</button>' : "") +
-      (!S.built ? '<button type="button" class="btn ghost" id="del" style="color:var(--bad)">' + esc(st.confirmDel ? L("delConfirm") : L("delSub")) + '</button>' : "") +
+      '<button type="button" class="btn ghost" id="del" style="color:var(--bad)">' + esc(st.confirmDel ? L("delConfirm") : L("delSub")) + '</button>' +
     '</div>' +
     '<div class="bar"><div class="wrap"><button type="button" class="btn primary wide" id="cta">' + esc(ctaLabel) + '</button></div></div>';
   bindLang(); bindHomeTools();
@@ -2137,6 +2141,7 @@ function renderHome(){
   if (dl2) dl2.onclick = async function(){
     if (!st.confirmDel) { st.confirmDel = true; renderHome(); return; }
     var id = S.id;
+    if (S.built) { LS.set(PK("cad-hide-lab"), "1"); LIB = LIB.filter(function(m){ return !m.built; }); toLib(); return; }
     try { await Store.remove(id); } catch (e) { st.confirmDel = false; renderHome(); return; }
     toLib();
   };
@@ -3009,6 +3014,7 @@ T.pt.hwLong = "Longa para as {n} linhas da prova ({c} caracteres; cabem cerca de
 T.pt.hwExam = "Prova {n}"; T.it.hwExam = "Verifica {n}";
 T.pt.hwLetters = "Letra(s), ex.: b, d"; T.it.hwLetters = "Lettera/e, es.: b, d";
 T.pt.solveAnsH = "Respostas com explicação"; T.it.solveAnsH = "Risposte con spiegazione";
+T.pt.restoreLab = "Restaurar o assunto inicial"; T.it.restoreLab = "Ripristina l'argomento iniziale";
 T.pt.hwName = "Nome: ______________________"; T.it.hwName = "Nome: ______________________";
 
 var HW = (function(){
@@ -3850,7 +3856,7 @@ document.addEventListener("visibilitychange", function(){
   if (HIDDENAT && Date.now() - HIDDENAT > 14 * 60000) { AWAKE = false; pingServer(); }
 });
 initAI(); showAI(false);
-LIB = [builtMeta()];
+LIB = libBase();
 renderLib(); pullSync().then(function(ch){ if (ch && st.view === "lib") renderLib(); setTimeout(maybeDeadline, 200); });
 refreshLib(true).then(function(){
   var m = /[#&]s=([\w-]+)/.exec(location.hash || "");
