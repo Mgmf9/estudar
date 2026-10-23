@@ -418,24 +418,38 @@ const SOLVE_KEY = process.env.ANTHROPIC_API_KEY;
 const SOLVE_BASE = (process.env.ANTHROPIC_BASE_URL || 'https://api.kpalabz.com').replace(/\/+$/, '');
 const SOLVE_MODEL = process.env.MODEL || 'claude-sonnet-5';
 const SOLVE_MAX_BODY = 28 * 1024 * 1024;
-const SOLVE_SYSTEM = `You read photos of school exercises, worksheets or exams and solve every question visible.
+const SOLVE_SYSTEM = `You read photos of a school exam and answer every question on it.
 Reply with ONE JSON object and nothing else (no markdown fences, no commentary).
 
 Schema:
-{"title":"short title of the material (subject / page / chapter) or empty","questions":[
- {"number":"6a","type":"choice|written|fill","prompt":"the question as printed, shortened to max 220 chars","options":{"a":"...","b":"..."},"asks_for":"correct|wrong","answer_letters":["b"],"answer":"the answer text (for written/fill questions; for choice questions the text of the chosen alternative)","explanation":"2-4 sentences: why this is the answer and, for choice questions, why the others are not","confidence":"high|medium|low","note":""}
-]}
+{"exams":[{
+  "student_line":"copy the exam's own wording for the name line, with the name left blank, e.g. \\"Alunno: ____________\\"",
+  "header_lines":["up to 2 short lines printed at the top: class, subject, title"],
+  "questions":[
+    {"number":"1","type":"choice","prompt":"short version of the question, max 140 chars","options":{"a":"alternative text","b":"..."},"asks_for":"correct","answer_letters":["b"],"explanation":"one or two short sentences: why this is the answer","confidence":"high","note":""},
+    {"number":"21","type":"written","prompt":"short version of the question","points":"(__/3 pti)","ruled_lines":3,"answer":["one continuous paragraph, or numbered lines if asked","..."],"explanation":"one or two short sentences of reasoning","confidence":"high","note":""},
+    {"number":"19","type":"fill","prompt":"...","points":"","answer":["1 µm = 10^-6 m","..."],"confidence":"high","note":""}
+  ]
+}]}
 
 Rules:
-- Answer in the language of the question (Portuguese, Italian, English...). Explanations in the same language.
-- Use the numbering printed on the material (for example "5.12", "6a"). Never invent a question that is not visible; never replace a question with a different one.
-- If a question refers to an image, cartoon, chart, table or text printed on the page, look at it and use it. Cite concrete elements you see.
-- Choice questions: fill "asks_for" first ("wrong" if the stem asks for the incorrect option: errado, NON è, NOT, except, falso). When "wrong", answer_letters must contain ONLY the false alternative(s). Give exactly one letter unless the question says several are correct. Check every alternative one by one.
-- Written questions: answer fully but concisely, as a good student would, covering every item the question asks for. If the question has parts (a, b, c), make one entry per part.
-- Calculations and fill-in: show the final value and one line of working in "explanation".
-- Stems and alternatives can be split across photos: join them. If a question appears in more than one photo, include it once.
-- Never guess. If a question or its alternatives are cut off, rotated or unreadable, leave answer_letters [] and answer "", set confidence "low" and say what is missing in "note".
-- Inside string values never use the double-quote character: write quotation marks as « » or single quotes. Strictly valid JSON, no trailing commas.`;
+- "explanation" is optional and always short (max 220 characters): why the answer is right and, for choice questions, why the others are not. Leave it empty in FREE MODE.
+- FREE MODE: the input is not always an exam. If the photos or the typed text are a single exercise, a topic, or an instruction to write something (for example «Velocità di una reazione: relazione 1 = in base alla concentrazione, relazione 2 = in base alla temperatura e al catalizzatore»), do NOT look for exam questions. Return ONE exam object with student_line "", header_lines [] and ONE question: number "1", type "written", prompt = a short restatement of the task, points "", answer = the full requested text or the full worked solution (steps of the exercise, formulas, final result), written in the language of the task and with the length the person asked for (if none is given, a complete but compact answer). In this mode ignore the 65-characters-per-line limit: set ruled_lines to the number of handwritten lines the answer needs (about 65 characters per line). Use several array elements (one per paragraph or step) when it reads better. If the input contains several separate exercises, make one written question for each, numbered 1, 2, 3.
+- One exam object per distinct exam. Two pages belong to the same exam ONLY if their printed titles match. Different printed titles (for example "Fondamenti della microbiologia" versus "EDUCAZIONE CIVICA: Il microbiota umano") are different exams: never put questions from two titles in one exam, even when the question numbers collide. Pages of the same exam may come in any order: merge them, sorted by printed question order. If a question shows up in more than one photo, include it once.
+- Stems and options can be split across photos or pages: a list of alternatives at the top of a photo belongs to the question stem at the bottom of the previous photo. Join them. Copy each prompt as printed. Never replace a question with a different one, and never write a question that is not printed.
+- Use the numbering printed on the exam (for example "5.12").
+- For every choice question first fill "asks_for": "wrong" if the stem asks for the incorrect option ("errato", "NON è", "NOT", "except", "falso"), otherwise "correct". When asks_for is "wrong", answer_letters must contain ONLY the false alternative(s), never the true ones. Re-check this before answering. For multiple-answer questions, list every letter that satisfies the stem.
+- Written answers: same language as the exam, written the way a good student would on the few ruled lines provided: Count the ruled (blank) lines printed under the question and put that number in ruled_lines (if you cannot see them, assume 3). The whole answer must fit in that many handwritten lines: about 65 characters per line, so never exceed ruled_lines x 65 characters in total; be concise and keep only the essential points. Write ONE continuous paragraph in a single array element, unless the question asks for a numbered list. Cover every key idea the question asks for (the definition, the reason, the causes, the examples) and use the standard technical terms from the course; do not drop an essential point. Always put a space after every full stop. If the question asks for N items, give exactly N numbered lines.
+- Calculations and fill-in blanks: put the final value in each blank, plain text, powers written like 10^-6.
+- If part of a question is cut off or unreadable, still give your best answer, set confidence to "low" and explain in "note".
+- If two alternatives share the same letter, say so in "note".
+- Exams are told apart by the title printed in the header (for example "Fondamenti della microbiologia" vs "EDUCAZIONE CIVICA: Il microbiota umano") and by the numbering: if the numbering restarts at 1 or the topic changes, it is ANOTHER exam. Never merge two exams into one object. Pages without a header belong to the exam whose numbering and topic they continue.
+- A question can start at the bottom of one photo while its alternatives continue at the top of another photo (or a page can be cut off): join them into one question. Always answer the question exactly as printed. NEVER replace a question with a different one and never turn a multiple-choice question into an open question.
+- For a choice question give exactly ONE letter in answer_letters, unless the printed question says it has several correct answers (e.g. "risposta multipla", "2 risposte corrette"). Before answering a question that asks for the wrong/incorrect completion ("errato", "NON", "tranne"), check every alternative one by one and pick the false one.
+- Text fragments at the very edge of a photo (for example a lone line like "n modo casuale", or alternatives starting with a/b/c/d) are alternatives of the question printed just above or on the neighbouring photo, NOT new questions.
+- Never guess a letter. If the question or its alternatives are cut off, rotated or unreadable, set answer_letters to [] and explain in note; the app will show a question mark so the student checks it.
+- Never invent questions that are not visible in the photos.
+- The reply must be strictly valid JSON. Inside any string value never use the double-quote character: write quotation marks as « » or single quotes. Escape nothing else; no trailing commas.`;
 
 function parseJsonLoose(text) {
   const t = String(text || '').trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
@@ -458,7 +472,8 @@ async function anthropicCall(system, content, maxTokens) {
 
 async function solvePhotos(body) {
   const images = Array.isArray(body.images) ? body.images : [];
-  if (!images.length) throw new HttpError(400, 'Envie pelo menos uma foto.');
+  const typed = String(body.text || '').trim().slice(0, 20000);
+  if (!images.length && !typed) throw new HttpError(400, 'Envie uma foto ou digite as questões.');
   if (images.length > 12) throw new HttpError(400, 'No máximo 12 fotos por vez.');
   const content = [];
   images.forEach((img, i) => {
@@ -468,7 +483,8 @@ async function solvePhotos(body) {
     content.push({ type: 'text', text: 'Foto ' + (i + 1) + ':' });
     content.push({ type: 'image', source: { type: 'base64', media_type: type, data } });
   });
-  content.push({ type: 'text', text: 'Resolva todas as questões das fotos. Devolva apenas o JSON.' });
+  if (typed) content.push({ type: 'text', text: 'Questões digitadas pelo aluno (tratar como parte da prova):\n' + typed });
+  content.push({ type: 'text', text: 'Responda todas as questões das fotos e do texto. Devolva apenas o JSON.' });
   const text = await anthropicCall(SOLVE_SYSTEM, content, 8000);
   try { return parseJsonLoose(text); }
   catch (e) {
