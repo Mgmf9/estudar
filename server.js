@@ -488,6 +488,14 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(204); return res.end();
   }
   if ((req.method === 'GET' || req.method === 'HEAD') && url.pathname === '/health') return send(res, 200, { ok: true });
+  const staticM = req.method === 'GET' && /^\/(manifest\.webmanifest|apple-touch-icon\.png|icons\/[A-Za-z0-9._-]+\.png)$/.exec(url.pathname);
+  if (staticM) {
+    try {
+      const f = fs.readFileSync(path.join(__dirname, url.pathname.slice(1)));
+      res.writeHead(200, { 'Content-Type': url.pathname.endsWith('.png') ? 'image/png' : 'application/manifest+json; charset=utf-8', 'Cache-Control': 'public, max-age=86400' });
+      return res.end(f);
+    } catch { return send(res, 404, { error: 'Arquivo não encontrado' }); }
+  }
   if (req.method === 'GET' && url.pathname === '/sw.js') {
     try { res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(fs.readFileSync(path.join(__dirname, 'sw.js'))); }
     catch { return send(res, 404, { error: 'sw.js não encontrado' }); }
